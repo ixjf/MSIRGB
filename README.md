@@ -50,19 +50,10 @@
  - MSI Z370M MORTAR
  
 # Examples
-## Static colours on motherboard that _supposedly_ only supports 7 colours
-![picture 1](https://i.imgur.com/mBC6klW.jpg =250x250)
-![picture 2](https://i.imgur.com/5Dan3JZ.jpg =250x250)
-![picture 3](https://i.imgur.com/HHjLiK4.jpg =250x250)
-![picture 4](https://i.imgur.com/2NEy0Du.jpg =250x250)
-![picture 5](https://i.imgur.com/yl8oXdo.jpg =250x250)
-![picture 6](https://i.imgur.com/YJ0xYqD.jpg =250x250)
-![picture 7](https://i.imgur.com/ywdEWCY.jpg =250x250)
-![picture 8](https://i.imgur.com/nPzac8f.jpg =250x250)
-![picture 9](https://i.imgur.com/DhaTctC.jpg =250x250)
-
 ## Hue wheel (from msi-rgb)
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
+
+This example can be found in examples/hue_wheel.py. It requires you to install Python. In order to run the example, you need to set an environment variable in the command line beforehand pointing to MSIRGB's EXE, like this: `set MSIRGB_PATH=../x64/Release/MSIRGB.exe`
  
 # License
  The code is licensed under the ISC license - the same one that [@nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) uses. You're free to use, modify, redistribute and even use it in any commercial projects so long as you keep the copyright notice. **Be aware that this means I provide no warranty whatsoever should your motherboard malfunction**.
