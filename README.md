@@ -50,7 +50,7 @@
  - MSI Z370M MORTAR
  
 # Examples
-## Hue wheel (from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
+## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
 
 This example can be found in examples/hue_wheel.py. It requires you to install Python. In order to run the example, you need to set an environment variable in the command line beforehand pointing to MSIRGB's EXE, like this: `set MSIRGB_PATH=../x64/Release/MSIRGB.exe`
