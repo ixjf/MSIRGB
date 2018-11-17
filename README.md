@@ -42,7 +42,7 @@
  
  **There are other boards not supported by Mystic Light which reportedly work as well. One case is MSI B350M MORTAR ARCTIC. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this tool with any motherboard that isn't listed above by passing the --ignore-check flag to it, but do it at your own risk.**
  
- **Some boards which [@nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows, and should work with this tool as well:**
+ **Some boards which [@nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
  - MSI X470 GAMING PRO
  - MSI X470 GAMING PLUS
