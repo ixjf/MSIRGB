@@ -51,18 +51,18 @@
  
 # Examples
 ## Static colours on motherboard that _supposedly_ only supports 7 colours
-![](https://i.imgur.com/mBC6klW.jpg =250x250)
-![](https://i.imgur.com/5Dan3JZ.jpg =250x250)
-![](https://i.imgur.com/HHjLiK4.jpg =250x250)
-![](https://i.imgur.com/2NEy0Du.jpg =250x250)
-![](https://i.imgur.com/yl8oXdo.jpg =250x250)
-![](https://i.imgur.com/YJ0xYqD.jpg =250x250)
-![](https://i.imgur.com/ywdEWCY.jpg =250x250)
-![](https://i.imgur.com/nPzac8f.jpg =250x250)
-![](https://i.imgur.com/DhaTctC.jpg =250x250)
+![picture 1](https://i.imgur.com/mBC6klW.jpg =250x250)
+![picture 2](https://i.imgur.com/5Dan3JZ.jpg =250x250)
+![picture 3](https://i.imgur.com/HHjLiK4.jpg =250x250)
+![picture 4](https://i.imgur.com/2NEy0Du.jpg =250x250)
+![picture 5](https://i.imgur.com/yl8oXdo.jpg =250x250)
+![picture 6](https://i.imgur.com/YJ0xYqD.jpg =250x250)
+![picture 7](https://i.imgur.com/ywdEWCY.jpg =250x250)
+![picture 8](https://i.imgur.com/nPzac8f.jpg =250x250)
+![picture 9](https://i.imgur.com/DhaTctC.jpg =250x250)
 
-## Hue wheel
-[In a moment]
+## Hue wheel (from msi-rgb)
+![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
  
 # License
  The code is licensed under the ISC license - the same one that [@nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) uses. You're free to use, modify, redistribute and even use it in any commercial projects so long as you keep the copyright notice. **Be aware that this means I provide no warranty whatsoever should your motherboard malfunction**.
@@ -71,9 +71,21 @@
  1. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/latest).
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
  3. Run the command line as administrator (the tool requires such privileges to load a kernel driver needed to access the hardware).
- 4. Run MSIRGB.exe with the command `MSIRGB.exe -h`. That should present all available commands. To see options for LED configuration, run `MSIRGB.exe config -h`. To disable the LEDs, run `MSIRGB.exe disable`. To run any command with an unsupported motherboard, run `MSIRGB.exe --ignore-check <command>`. Here's an example: 
+ 4. Run MSIRGB.exe with the command `MSIRGB.exe -h`. That should present all available commands. To see options for LED configuration, run `MSIRGB.exe config -h`. 
+ 
+ You can: 
+ - Disable the LEDs, by running `MSIRGB.exe disable`.
+ - Change LED colour (there are 4 different values for colour, hardware implemented, which the chip loops through every x time, whose value is set by the -d option).
+ - Set LED breathing mode enabled/disabled. (turns on/off smoothly)
+ - Set LED flashing mode enabled/disabled. (turns on/off instantly)
+ - Set step duration. (as I said above, the -d option)
+ - Set channels inverted.
+ - Enable some fade-in effect that I ported over from [@nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) but which only works with certain boards. (There are other effects, but those also seem to work only on some boards)
+ - Run any command with an unsupported motherboard, with `MSIRGB.exe --ignore-check <command>`. 
+ 
+ Here's an example for changing LED config (sets colour to 0xffee11, flashing mode disabled, step duration set to max, breathing mode enabled): `MSIRGB.exe config 0xffee11 0xffee11 0xffee11 0xffee11 -f0 -d511 -b`
  
 # How to build
- 1. Install Visual Studio 2017 (any version) with C++ desktop development tools. The project is currently set to use the Windows 10 SDK from build 17663, but it should work with any other version.
+ 1. Install Visual Studio 2017 (any edition) with C++ desktop development tools. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
  2. Open the solution (MSIRGB.sln)
  3. Select debug/release target & build.
