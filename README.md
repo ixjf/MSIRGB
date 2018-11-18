@@ -5,7 +5,7 @@
  **Many thanks to @nagisa for [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) (a tool for controlling MSI MBs' RGB LEDs on Linux), which this tool is based on and which made it all the much easier to get going and figure out how the hardware worked.**
  
 # Motherboard support
- This tool should work out-of-the-box with the following motherboards:
+ This tool **should** work with the following motherboards:
  - MSI B450I GAMING PLUS AC
  - MSI B350I PRO AC
  - MSI A320M GAMING PRO
