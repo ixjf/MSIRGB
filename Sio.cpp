@@ -38,13 +38,17 @@ Sio::Sio(bool ignore_mb_check)
     // Enable RGB control
     // E0 = 0b11100000 (these 3 bits enable RGB, the remaining 5 have unknown purpose)
     std::uint8_t val_at_e0 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE0);
-    chip_write_cell_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000); // Coincidence, huh
+    chip_write_cell_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000);
 
     // 0xFD in bank 12h seems to be related to some rainbow mode
     // but it is apparently not supported on my board, so I can't test it.
     // I think it's only supported on other MBs that have RGB headers but are
     // different somehow - those function differently from the MBs supported
     // here.
+
+    // Turn on header
+    std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
+    chip_write_cell_to_bank(RGB_LED_BANK, 0xFF, val_at_ff | 0b00000010);
 }
 
 void Sio::set_led_disabled() const
