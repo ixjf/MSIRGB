@@ -40,7 +40,9 @@
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC
  
- **There are other boards not supported by Mystic Light which reportedly work as well. One case is MSI B350M MORTAR ARCTIC. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this tool with any motherboard that isn't listed above by passing the --ignore-check flag to it, but do it at your own risk.**
+ **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this tool with any motherboard that isn't listed above by passing the --ignore-check flag to it, but do it at your own risk. Motherboards which fit this criteria and are reportedly working are:**
+ - MSI B350 TOMAHAWK
+ - MSI B350M MORTAR ARTIC
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
@@ -53,7 +55,7 @@
 ## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
 
-This example can be found in examples/hue_wheel.py. It requires you to install Python. In order to run the example, you need to set an environment variable in the command line beforehand pointing to MSIRGB's EXE, like this: `set MSIRGB_PATH=path_to_exe`
+This example can be found in examples/hue_wheel.py. It requires you to install Python. In order to run the example, you need to set an environment variable in the command line beforehand pointing to MSIRGB's EXE, like this: `set MSIRGB_PATH=path_to_exe`. Please see that you don't add quotation marks to the path.
  
 # License
  The code is licensed under the ISC license - the same one that [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) uses. You're free to use, modify, redistribute and even use it in any commercial projects so long as you keep the copyright notice. **Be aware that this means I provide no warranty whatsoever should your motherboard malfunction**.
@@ -61,7 +63,7 @@ This example can be found in examples/hue_wheel.py. It requires you to install P
 # How to use
  1. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/latest).
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
- 3. Run the command line as administrator (the tool requires such privileges to load a kernel driver needed to access the hardware).
+ 3. Run the command line as administrator (the tool requires such privileges to load a kernel driver needed to access the hardware; this kernel driver can be found in the folder resources/ and is the same one that can be found [here](https://github.com/ellysh/InpOut32) - it is signed and therefore impossible to have been modified by me for any purposes).
  4. Run MSIRGB.exe with the command `MSIRGB.exe -h`. That should present all available commands. To see options for LED configuration, run `MSIRGB.exe config -h`. 
  
  You can: 
