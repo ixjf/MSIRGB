@@ -150,7 +150,9 @@ This function returns the current step duration.
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC
  
- **There are other boards not supported by Mystic Light which reportedly work as well. One case is MSI B350M MORTAR ARCTIC. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this tool with any motherboard that isn't listed above by passing the --ignore-check flag to it, but do it at your own risk.**
+ **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this tool with any motherboard that isn't listed above by passing the --ignore-check flag to it, but do it at your own risk. Motherboards which fit this criteria and are reportedly working are:**
+ - MSI B350 TOMAHAWK
+ - MSI B350M MORTAR ARTIC
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
@@ -159,8 +161,36 @@ This function returns the current step duration.
  - MSI Z270 SLI PLUS
  - MSI Z370M MORTAR
 
+<<<<<<< HEAD
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
+=======
+This example can be found in examples/hue_wheel.py. It requires you to install Python. In order to run the example, you need to set an environment variable in the command line beforehand pointing to MSIRGB's EXE, like this: `set MSIRGB_PATH=path_to_exe`. Please see that you don't add quotation marks to the path.
+ 
+# License
+ The code is licensed under the ISC license - the same one that [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) uses. You're free to use, modify, redistribute and even use it in any commercial projects so long as you keep the copyright notice. **Be aware that this means I provide no warranty whatsoever should your motherboard malfunction**.
+ 
+# How to use
+ 1. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/latest).
+ 2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
+ 3. Run the command line as administrator (the tool requires such privileges to load a kernel driver needed to access the hardware; this kernel driver can be found in the folder resources/ and is the same one that can be found [here](https://github.com/ellysh/InpOut32) - it is signed and therefore impossible to have been modified by me for any purposes).
+ 4. Run MSIRGB.exe with the command `MSIRGB.exe -h`. That should present all available commands. To see options for LED configuration, run `MSIRGB.exe config -h`. 
+ 
+ You can: 
+ - Disable the LEDs, by running `MSIRGB.exe disable`.
+ - Change LED colour (there are 4 different values for colour, hardware implemented, which the chip loops through every x time, whose value is set by the -d option).
+ - Set LED breathing mode enabled/disabled. (turns on/off smoothly)
+ - Set LED flashing mode enabled/disabled. (turns on/off instantly)
+ - Set step duration. (as I said above, the -d option)
+ - Set channels inverted.
+ - Enable some fade-in effect that I ported over from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) but which only works with certain boards. (There are other effects, but those also seem to work only on some boards)
+ - Run any command with an unsupported motherboard, with `MSIRGB.exe --ignore-check <command>`. 
+ 
+ Here's an example for changing LED config (sets colour to 0xffee11, flashing mode disabled, step duration set to max, breathing mode enabled): `MSIRGB.exe config 0xffee11 0xffee11 0xffee11 0xffee11 -f0 -d511 -b`
+ 
+# How to build
+ 1. Install Visual Studio 2017 (any edition) with C++ desktop development tools. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
+>>>>>>> 52831e5d1e118f64174b2502eaf90be557e6cfc5
  2. Open the solution (MSIRGB.sln)
  3. Select debug/release target & build.
  
