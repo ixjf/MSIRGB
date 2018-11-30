@@ -30,11 +30,11 @@ Scripts are written in Lua and allow you to create new effects. Lua is a very ea
 
 Scripts are loaded from the 'Scripts' folder in the directory where you have saved MSIRGB. Any file with a .lua extension in that folder (subdirectories excluded) will be loaded. The name of the script that will appear on MSIRGB is the file name without extension. As a convention, you should use upper camel case and spaces between words for your file names, e.g. 'Hue Wheel', 'Single Colour', 'Edgy Rainbow'.
 
-I'm open to pull requests for new scripting functionality. I'll also be opening an issue regarding the ability to use 'require' and whether it's worth it.
-
 Scripts, when enabled, run on Windows startup, so you don't have to enable them every time.
 
 It is recommended that scripts set all LED settings on startup because there are no guarantees on their state at that point.
+
+I'm open to pull requests for new scripting functionality. I'll also be opening an issue regarding the ability to use 'require' and whether it's worth it.
 
 ## API
 Scripts are loaded into a sandboxed Lua 5.2 environment with the following standard functions and packages:
