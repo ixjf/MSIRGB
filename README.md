@@ -9,7 +9,7 @@
 # Functionality
 ![MSIRGB](https://i.imgur.com/x37qlj6.png)
 
-**The program allows you to set up to 4 different colours for the LEDs**. The chip will go through these colours (seemingly) randomly with an interval between each that is called 'step duration' and which can also be changed. This function mirrors the hardware implementation, i.e. it merely provides you with a way to use the built-in functions of the MB's LED controller. **Scripts allow you to change between any number of colours with any step duration.**
+**The program allows you to set up to 4 different colours for the LEDs to switch between.** The chip will go through these colours (seemingly) randomly with an interval between each that is called 'step duration' and which can also be changed. This function mirrors the hardware implementation, i.e. it merely provides you with a way to use the built-in functions of the MB's LED controller. **Scripts allow you to change between any number of colours with any step duration.**
 
 In the 'Effects' group, you're given the option to **change the step duration** (min 0, max 511, arbitrary time unit), and **enable/disable/adjust pulsing modes** - again, hardware implemented. Breathing mode is a smooth pulsing mode (gradually turning the LEDs brighter, and then less bright until they're off, then brighter again). Flashing mode is a 'sharp' pulsing mode, i.e., it'll turn the LEDs on and off instantly. There are 6 possible speeds, along with the option to keep the LEDs always on (flashing speed 'disabled').
 
