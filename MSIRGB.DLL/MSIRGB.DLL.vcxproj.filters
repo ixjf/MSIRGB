@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MSIRGB.Sio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\IsaDrv.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\Sio.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\wmi_helper.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\pch.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\module_helper.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="logic\IsaDrv.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\Sio.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\wmi_helper.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="MSIRGB.Sio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\pch.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\module_helper.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5da014f5-8911-45ab-ab95-eb55df2e1788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic">
+      <UniqueIdentifier>{610447ac-d40b-4b16-81c2-c0198f3a075c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{64e14cdb-f4d9-49d5-90c7-7022b45865f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{e8d166bf-a57e-42c7-b3ab-28225b7e5dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic">
+      <UniqueIdentifier>{167ea981-f39e-4e42-b08d-f5fd29cda1a0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\inpoutx64.sys">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rsrc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
