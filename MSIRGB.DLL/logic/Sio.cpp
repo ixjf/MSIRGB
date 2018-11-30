@@ -195,8 +195,7 @@ namespace logic {
     // (at least then we know it's not enabled)
     void Sio::set_flash_speed(FlashingSpeed flash_speed) const
     {
-        if (flash_speed != FlashingSpeed::Disabled && is_breathing_mode_enabled())
-        {
+        if (flash_speed != FlashingSpeed::Disabled && is_breathing_mode_enabled()) {
             set_breathing_mode_enabled(false);
         }
 

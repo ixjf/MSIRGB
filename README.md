@@ -1,4 +1,4 @@
- This program allows full control of the RGB LED controller on select MSI boards. Unlike MSI's own Mystic Light, there is no colour limitation (which is a software limitation, not a hardware one). Aside from being able to set colours and other hardware-implemented effects with a single click, it also allows you to create and run Lua scripts producing other effects, which are run every time the computer starts, so you don't have to worry about re-applying them.
+ This program allows full control of the RGB LED controller on select MSI boards. Unlike MSI Mystic Light, there is no colour limitation (which is a software limitation, not a hardware one). Aside from being able to set colours and other hardware-implemented effects with a single click, it also allows you to create and run Lua scripts producing other effects, which are run every time the computer starts, so you don't have to worry about re-applying them.
 
  The program runs on Windows 10 (x64 only), so long as VC Redist 2017 x64 is installed and .NET support is enabled (which it is, by default).
 
@@ -7,7 +7,7 @@
  **Many thanks to @nagisa for [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) (a tool for controlling MSI MBs' RGB LEDs on Linux), which this tool is based on and which made it all the much easier to get going and figure out how the hardware worked.**
 
 # Functionality
-[MSIRGB](https://i.imgur.com/x37qlj6.png)
+![MSIRGB](https://i.imgur.com/x37qlj6.png)
 
 **The program allows you to set up to 4 different colours for the LEDs**. The chip will go through these colours (seemingly) randomly with an interval between each that is called 'step duration' and which can also be changed. This function mirrors the hardware implementation, i.e. it merely provides you with a way to use the built-in functions of the MB's LED controller. **Scripts allow you to change between any number of colours with any step duration.**
 
@@ -21,7 +21,7 @@ Along with those 'one-click-here-you-go' options, you also have the ability to *
 ## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
 
-This example can be found in Scripts/Hue Wheel.lua. If you downloaded the latest release, all you have to do is run MSIRGB and it'll find it.
+This example can be found in Scripts\Hue Wheel.lua. If you downloaded the latest release, all you have to do is run MSIRGB and it'll find it.
 
 I welcome anyone to share scripts and open pull requests to add new ones here.
 
@@ -30,8 +30,10 @@ Scripts are written in Lua and allow you to create new effects. Lua is a very ea
 
 Scripts are loaded from the 'Scripts' folder in the directory where you have saved MSIRGB. Any file with a .lua extension in that folder (subdirectories excluded) will be loaded. The name of the script that will appear on MSIRGB is the file name without extension. As a convention, you should use upper camel case and spaces between words for your file names, e.g. 'Hue Wheel', 'Single Colour', 'Edgy Rainbow'.
 
+## Debugging
 In order to debug scripts, you can click on 'Open script log' in the 'Scripts' group to open the script log containing errors, warnings and other information from the script. The script can also call 'print' to print information to the log.
 
+## API
 Scripts are loaded into a sandboxed Lua 5.2 environment with the following standard functions and packages:
  - assert
  - collectgarbage
@@ -54,7 +56,8 @@ Additionally, there is one extension function to the os package:
 ```lua
 os.sleep(number ms)
 ```
-This function pauses the Lua thread for the number of milliseconds specified in 'ms'. 'ms' must be a positive number.
+This function pauses the Lua thread for the number of milliseconds specified in 'ms'. 'ms' must be a positive number. Execution stops if an invalid value is passed.
+
 
 I'm open to pull requests for new scripting functionality. I'll also be opening an issue regarding the ability to use 'require' and whether it's worth it.
 
@@ -62,48 +65,57 @@ Scripts, when enabled, run on Windows startup, so you don't have to enable them 
 
 It is recommended that scripts set all LED settings on startup because there are no guarantees on their state at that point.
 
-## Lighting module
+### Lighting module
 The 'Lighting' module provides the API to control the LEDs. Here follows documentation for each function:
+
 
 ```lua
 Lighting.SetAllEnabled(boolean enabled)
 ```
 This function allows you to enable or disable the LEDs connected to the motherboard. As far as I know, this controls both motherboard and header LEDs.
 
+
 ```lua
 Lighting.SetColour(number index, number r, number g, number b)
 ```
-This function sets the colour of one of the 4 built-in colours. 'index' can be a number between 1 and 4, inclusive. 'r', 'g', 'b' are the R, G, B values between 0 and 255. Execution stops if any argument is invalid.
+This function sets the colour of one of the 4 built-in colours. 'index' can be a number between 1 and 4, inclusive. 'r', 'g', 'b' are the R, G, B values between 0 and 255. Execution stops if any of the arguments is invalid.
+
 
 ```lua
 number, number, number Lighting.GetColour(number index)
 ```
 This function gets the current colour of one of the 4 built-in colours. 'index' can be a number between 1 and 4, inclusive. The function returns the R, G, B values in that order. Execution stops if 'index' is invalid.
 
+
 ```lua
 boolean Lighting.SetBreathingModeEnabled(boolean enabled)
 ```
 This function sets the state of the breathing mode. Breathing mode and flashing mode are exclusive, and the latter will override the former. If flashing mode is enabled at the time of the call, this function will fail and return false, otherwise it returns true.
+
 
 ```lua
 boolean Lighting.IsBreathingModeEnabled()
 ```
 This function returns whether breathing mode is currently enabled.
 
+
 ```lua
 boolean Lighting.SetFlashingSpeed(number flashingSpeed)
 ```
 This function sets the flashing mode speed. Valid values for 'flashingSpeed' range from 0 to 6, inclusive. A value of '0' means that flashing mode will be disabled. A value of '1' means fastest flashing, while a value of '6' means slowest flashing. This function will disable breathing mode if it was previously enabled. Execution stops if 'flashingSpeed' is invalid.
+
 
 ```lua
 number Lighting.GetFlashingSpeed()
 ```
 This function returns the current flashing mode speed. Speeds are as described above for 'SetFlashingSpeed'.
 
+
 ```lua
 Lighting.SetStepDuration(number stepDuration)
 ```
-This function sets the value for step duration. Step duration is the interval of time between changes in any of the 4 hardware implemented colours. It is in an arbitrary time unit. Valid values range from 0 to 511, inclusive. Execution stops if 'stepDuration' is invalid.
+This function sets the value for step duration. Step duration is the interval of time between changes in any of the 4 chosen colours. It is in an arbitrary time unit. Valid values range from 0 to 511, inclusive. Execution stops if 'stepDuration' is invalid.
+
 
 ```lua
 number Lighting.GetStepDuration()
@@ -150,7 +162,7 @@ This function returns the current step duration.
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC
  
- **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this tool with any motherboard that isn't listed above by passing the --ignore-check flag to it, but do it at your own risk. Motherboards which fit this criteria and are reportedly working are:**
+ **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this program with any motherboard that isn't listed above, but do it at your own risk. Motherboards which fit this criterion and are reportedly working are:**
  - MSI B350 TOMAHAWK
  - MSI B350M MORTAR ARTIC
  
@@ -161,36 +173,8 @@ This function returns the current step duration.
  - MSI Z270 SLI PLUS
  - MSI Z370M MORTAR
 
-<<<<<<< HEAD
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
-=======
-This example can be found in examples/hue_wheel.py. It requires you to install Python. In order to run the example, you need to set an environment variable in the command line beforehand pointing to MSIRGB's EXE, like this: `set MSIRGB_PATH=path_to_exe`. Please see that you don't add quotation marks to the path.
- 
-# License
- The code is licensed under the ISC license - the same one that [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) uses. You're free to use, modify, redistribute and even use it in any commercial projects so long as you keep the copyright notice. **Be aware that this means I provide no warranty whatsoever should your motherboard malfunction**.
- 
-# How to use
- 1. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/latest).
- 2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
- 3. Run the command line as administrator (the tool requires such privileges to load a kernel driver needed to access the hardware; this kernel driver can be found in the folder resources/ and is the same one that can be found [here](https://github.com/ellysh/InpOut32) - it is signed and therefore impossible to have been modified by me for any purposes).
- 4. Run MSIRGB.exe with the command `MSIRGB.exe -h`. That should present all available commands. To see options for LED configuration, run `MSIRGB.exe config -h`. 
- 
- You can: 
- - Disable the LEDs, by running `MSIRGB.exe disable`.
- - Change LED colour (there are 4 different values for colour, hardware implemented, which the chip loops through every x time, whose value is set by the -d option).
- - Set LED breathing mode enabled/disabled. (turns on/off smoothly)
- - Set LED flashing mode enabled/disabled. (turns on/off instantly)
- - Set step duration. (as I said above, the -d option)
- - Set channels inverted.
- - Enable some fade-in effect that I ported over from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) but which only works with certain boards. (There are other effects, but those also seem to work only on some boards)
- - Run any command with an unsupported motherboard, with `MSIRGB.exe --ignore-check <command>`. 
- 
- Here's an example for changing LED config (sets colour to 0xffee11, flashing mode disabled, step duration set to max, breathing mode enabled): `MSIRGB.exe config 0xffee11 0xffee11 0xffee11 0xffee11 -f0 -d511 -b`
- 
-# How to build
- 1. Install Visual Studio 2017 (any edition) with C++ desktop development tools. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
->>>>>>> 52831e5d1e118f64174b2502eaf90be557e6cfc5
  2. Open the solution (MSIRGB.sln)
  3. Select debug/release target & build.
  
