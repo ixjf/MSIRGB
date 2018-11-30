@@ -6,7 +6,7 @@ using namespace System;
 using namespace System::Windows::Media;
 
 namespace MSIRGB {
-	public ref class Sio {
+    public ref class Sio {
     public:
         enum class ColourIndex : Byte {
             Colour1 = static_cast<Byte>(logic::Sio::ColourIndex::Colour1),

@@ -52,9 +52,7 @@ namespace MSIRGB
             var scriptPath = Path.Combine(Path.GetFullPath(SCRIPTS_FOLDER), scriptName + ".lua");
 
             if (!File.Exists(scriptPath))
-            {
                 throw new Exception("Invalid script path");
-            }
 
             string svcFullPath = Path.GetFullPath(SCRIPT_SVC_EXE);
 
