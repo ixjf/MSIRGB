@@ -34,7 +34,7 @@ Scripts, when enabled, run on Windows startup, so you don't have to enable them 
 
 It is recommended that scripts set all LED settings on startup because there are no guarantees on their state at that point.
 
-I'm open to pull requests for new scripting functionality. I'll also be opening an issue regarding the ability to use 'require' and whether it's worth it.
+I'm open to pull requests/issues for new scripting functionality. I'll also be opening an issue regarding the ability to use 'require' and whether it's worth it.
 
 ## API
 Scripts are loaded into a sandboxed Lua 5.2 environment with the following standard functions and packages:
@@ -154,7 +154,6 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
  
  **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this program with any motherboard that isn't listed above, but do it at your own risk. Motherboards which fit this criterion and are reportedly working are:**
  - MSI B350 TOMAHAWK
- - MSI B350M MORTAR ARTIC
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
@@ -164,7 +163,7 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
  - MSI Z370M MORTAR
 
  # How to build
- 1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
+ 1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
  2. Open the solution (MSIRGB.sln)
  3. Select debug/release target & build.
  
