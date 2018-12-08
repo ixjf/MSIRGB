@@ -1,18 +1,23 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace MSIRGB.ScriptService
+namespace MSIRGB.ScriptService.LuaBindings
 {
     class CustomConverters
     {
+        public static void Register()
+        {
+            Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Number, typeof(byte), NumberToByte);
+        }
+
         public static object NumberToByte(DynValue v)
         {
             double? n = v.CastToNumber();
 
             if (!n.HasValue)
-                throw new ScriptRuntimeException(string.Format("cannot convert a {0} to byte", v.Type.ToLuaTypeString()));
+                throw ScriptRuntimeException.ConvertToNumberFailed(0);
 
             if (n.Value < 0 || n.Value > 255)
-                throw new ScriptRuntimeException(string.Format("cannot convert number to byte (range is 0-255)"));
+                throw new ScriptRuntimeException(string.Format("number is out of range (0-255)"));
 
             return (byte)n.Value;
         }

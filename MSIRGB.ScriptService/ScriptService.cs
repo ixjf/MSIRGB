@@ -2,7 +2,6 @@
 using System.IO;
 using System.ServiceProcess;
 using System.Threading;
-using System.Threading.Tasks;
 using MoonSharp.Interpreter;
 
 namespace MSIRGB.ScriptService
@@ -61,49 +60,38 @@ namespace MSIRGB.ScriptService
             log.OutputInfo(String.Format("Initializing script thread (script file: '{0}')", Path.GetFileName(scriptPath)));
 
             // Add custom converters
-            Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Number, typeof(byte), CustomConverters.NumberToByte);
+            LuaBindings.CustomConverters.Register();
 
             // Create new Lua environment
-            Script script = new Script(CoreModules.Basic |
-                                       CoreModules.TableIterators |
-                                       CoreModules.String |
-                                       CoreModules.Table |
-                                       CoreModules.Math |
-                                       CoreModules.Bit32 |
-                                       CoreModules.OS_Time);
+            var script = new ExecutionConstrainedScript(CoreModules.Basic |
+                                                        CoreModules.TableIterators |
+                                                        CoreModules.String |
+                                                        CoreModules.Table |
+                                                        CoreModules.Math |
+                                                        CoreModules.Bit32 |
+                                                        CoreModules.OS_Time);
 
             script.Options.DebugPrint = s => log.OutputScriptPrint(s);
 
             // Bind modules & extensions
-            UserData.RegisterType(typeof(LuaBindings.LightingModule));
-
-            script.Globals["Lighting"] = new LuaBindings.LightingModule(ignoreMbCheck);
-
-            script.Globals.Get("os").Table["sleep"] = (Action<double>)LuaBindings.OsExtensions.Sleep;
+            LuaBindings.LightingModule.Register(script, ignoreMbCheck);
+            LuaBindings.OsExtensions.Register(script);
 
             // Run the script while waiting for stop
             // If one of the script service Lua functions takes too long (they shouldn't), this won't work
             // but it's the best that can be done here
-            DynValue scriptCoroutine = script.CreateCoroutine(script.LoadFile(scriptPath));
-            scriptCoroutine.Coroutine.AutoYieldCounter = 15000; // Yield execution of the Lua script every 15,000 instructions
+            script.LoadFile(scriptPath);
 
-            while (true)
+            try
             {
-                try
+                script.Do(15000, () => 
                 {
-                    DynValue scriptCoroutineResult = scriptCoroutine.Coroutine.Resume();
-
-                    if (scriptCoroutineResult.Type != DataType.YieldRequest) // Script has finished
-                        break;
-                }
-                catch (InterpreterException exc)
-                {
-                    log.OutputScriptError(exc.DecoratedMessage);
-                    break;
-                }
-
-                if (_shutdownEvent.IsSet)
-                    break;
+                    return !_shutdownEvent.IsSet;
+                });
+            }
+            catch (InterpreterException exc)
+            {
+                log.OutputScriptError(exc.DecoratedMessage);
             }
 
             log.OutputInfo(String.Format("Finalizing script thread (script file: '{0}')", Path.GetFileName(scriptPath)));
