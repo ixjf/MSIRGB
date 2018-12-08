@@ -35,13 +35,12 @@ namespace logic {
 
         // Set chip LED config
 
-        // Enable flashing mode support
+        // Enable RGB control
         // Sets bit 5 and set bit 4 to 0
         // All other bits seem to do nothing, but they MAY have a purpose on certain boards
         std::uint8_t val_at_2c = chip_read_cell_from_bank(0x09, 0x2C);
         chip_write_cell_to_bank(0x09, 0x2C, (val_at_2c & 0b11100111) | 0b10000);
 
-        // Enable RGB control
         // E0 = 0b11100000 (these 3 bits enable RGB, the remaining 5 have unknown purpose)
         std::uint8_t val_at_e0 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE0);
         chip_write_cell_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000);
@@ -53,8 +52,7 @@ namespace logic {
         // here.
 
         // Make sure RGB channels are not inverted
-        // Also make sure some 'weird' fade in behaviour that happens in some boards
-        // is disabled
+        // Also make sure some 'weird' fade in behaviour that happens in some boards is disabled
         std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
 
         // Invert value is second group of 3 bits from the left in 0xFF: BGR, in this order, from leftmost bit to rightmost bit
