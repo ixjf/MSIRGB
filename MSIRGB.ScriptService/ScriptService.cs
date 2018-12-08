@@ -65,12 +65,12 @@ namespace MSIRGB.ScriptService
 
             // Create new Lua environment
             Script script = new Script(CoreModules.Basic |
-                                        CoreModules.TableIterators |
-                                        CoreModules.String |
-                                        CoreModules.Table |
-                                        CoreModules.Math |
-                                        CoreModules.Bit32 |
-                                        CoreModules.OS_Time);
+                                       CoreModules.TableIterators |
+                                       CoreModules.String |
+                                       CoreModules.Table |
+                                       CoreModules.Math |
+                                       CoreModules.Bit32 |
+                                       CoreModules.OS_Time);
 
             script.Options.DebugPrint = s => log.OutputScriptPrint(s);
 
@@ -82,17 +82,26 @@ namespace MSIRGB.ScriptService
             script.Globals.Get("os").Table["sleep"] = (Action<double>)LuaBindings.OsExtensions.Sleep;
 
             // Run the script while waiting for stop
-            script.DoFileAsync(scriptPath).ContinueWith(t =>
-            {
-                var e = (InterpreterException)t.Exception.InnerException;
-
-                log.OutputScriptError(e.DecoratedMessage);
-
-                _shutdownEvent.Set();
-            }, TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnFaulted);
+            // If one of the script service Lua functions takes too long (they shouldn't), this won't work
+            // but it's the best that can be done here
+            DynValue scriptCoroutine = script.CreateCoroutine(script.LoadFile(scriptPath));
+            scriptCoroutine.Coroutine.AutoYieldCounter = 15000; // Yield execution of the Lua script every 15,000 instructions
 
             while (true)
             {
+                try
+                {
+                    DynValue scriptCoroutineResult = scriptCoroutine.Coroutine.Resume();
+
+                    if (scriptCoroutineResult.Type != DataType.YieldRequest) // Script has finished
+                        break;
+                }
+                catch (InterpreterException exc)
+                {
+                    log.OutputScriptError(exc.DecoratedMessage);
+                    break;
+                }
+
                 if (_shutdownEvent.IsSet)
                     break;
             }
