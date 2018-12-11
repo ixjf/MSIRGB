@@ -152,9 +152,10 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC
  
- **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this program with any motherboard that isn't listed above, but do it at your own risk. Motherboards which fit this criterion and are reportedly working are:**
+ **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. Motherboards which fit this criterion and are reportedly working are:**
  - MSI B350 TOMAHAWK
  - MSI B350 GAMING PLUS
+ - MSI B350 PC MATE
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
@@ -162,6 +163,8 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
  - MSI X470 GAMING PLUS
  - MSI Z270 SLI PLUS
  - MSI Z370M MORTAR
+ 
+ **It is still possible to use this program with any motherboard that isn't listed above or in section #[Motherboard support](#motherboard-support), but do it at your own risk**
 
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
