@@ -164,7 +164,7 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
  - MSI Z270 SLI PLUS
  - MSI Z370M MORTAR
  
- **It is still possible to use this program with any motherboard that isn't listed above or in section #[Motherboard support](#motherboard-support), but do it at your own risk**
+ **It is still possible to use this program with any motherboard that isn't listed above or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
 
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
