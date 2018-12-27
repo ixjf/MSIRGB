@@ -90,7 +90,7 @@ boolean Lighting.IsBreathingModeEnabled()
 This function returns whether breathing mode is currently enabled.
 ##  
 ```lua
-boolean Lighting.SetFlashingSpeed(number flashingSpeed)
+Lighting.SetFlashingSpeed(number flashingSpeed)
 ```
 This function sets the flashing mode speed. Valid values for 'flashingSpeed' range from 0 to 6, inclusive. A value of '0' means that flashing mode will be disabled. A value of '1' means fastest flashing, while a value of '6' means slowest flashing. This function will disable breathing mode if it was previously enabled. Execution stops if 'flashingSpeed' is invalid. Any call to this function that succeeds automatically turns on the LEDs.
 ##  
