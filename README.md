@@ -17,6 +17,8 @@ In the 'Effects' group, you're given the option to **change the step duration** 
 
 Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful. There is one example available right now - the hue wheel - which cycles through blue, violet, 'pinkish' red and 'blueish' green. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
 
+The tool has been reported to affect all motherboard LEDs as well as the headers.
+
 # Example scripts
 ## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
