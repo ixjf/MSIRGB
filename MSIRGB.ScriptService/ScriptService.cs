@@ -75,7 +75,7 @@ namespace MSIRGB.ScriptService
 
             // Bind modules & extensions
             LuaBindings.LightingModule.Register(script, ignoreMbCheck);
-            LuaBindings.OsExtensions.Register(script);
+            LuaBindings.OsExtensions.Register(script, _shutdownEvent);
 
             // Run the script while waiting for stop
             // If one of the script service Lua functions takes too long (they shouldn't), this won't work
