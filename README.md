@@ -7,7 +7,7 @@
  **Many thanks to @nagisa for [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) (a tool for controlling MSI MBs' RGB LEDs on Linux), which this tool is based on and which made it all the much easier to get going and figure out how the hardware worked.**
 
 # Functionality
-![MSIRGB](https://i.imgur.com/x37qlj6.png)
+![MSIRGB](https://i.imgur.com/uvMEWFi.png)
 
 **The program allows you to set up to 4 different colours for the LEDs to switch between.** The chip will go through these colours (seemingly) randomly with an interval between each that is called 'step duration' and which can also be changed. This function mirrors the hardware implementation, i.e. it merely provides you with a way to use the built-in functions of the MB's LED controller. **Scripts allow you to change between any number of colours with any step duration.**
 
