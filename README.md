@@ -17,6 +17,8 @@ In the 'Effects' group, you're given the option to **change the step duration** 
 
 Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful. There is one example available right now - the hue wheel - which cycles through blue, violet, 'pinkish' red and 'blueish' green. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
 
+The tool has been reported to affect all motherboard LEDs as well as the headers.
+
 # Example scripts
 ## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
@@ -72,7 +74,7 @@ This function allows you to enable or disable the LEDs connected to the motherbo
 ```lua
 Lighting.SetColour(number index, number r, number g, number b)
 ```
-This function sets the colour of one of the 4 built-in colours. 'index' can be a number between 1 and 4, inclusive. 'r', 'g', 'b' are the R, G, B values between 0 and 255. Execution stops if any of the arguments is invalid.
+This function sets the colour of one of the 4 built-in colours. 'index' can be a number between 1 and 4, inclusive. 'r', 'g', 'b' are the R, G, B values between 0 and 255. Execution stops if any of the arguments is invalid. Any call to this function that succeeds automatically turns on the LEDs.
 ##  
 ```lua
 number, number, number Lighting.GetColour(number index)
@@ -82,7 +84,7 @@ This function gets the current colour of one of the 4 built-in colours. 'index' 
 ```lua
 boolean Lighting.SetBreathingModeEnabled(boolean enabled)
 ```
-This function sets the state of the breathing mode. Breathing mode and flashing mode are exclusive, and the latter will override the former. If flashing mode is enabled at the time of the call, this function will fail and return false, otherwise it returns true.
+This function sets the state of the breathing mode. Breathing mode and flashing mode are exclusive, and the latter will override the former. If flashing mode is enabled at the time of the call, this function will fail and return false, otherwise it returns true. Any call to this function that succeeds automatically turns on the LEDs.
 ##  
 ```lua
 boolean Lighting.IsBreathingModeEnabled()
@@ -90,9 +92,9 @@ boolean Lighting.IsBreathingModeEnabled()
 This function returns whether breathing mode is currently enabled.
 ##  
 ```lua
-boolean Lighting.SetFlashingSpeed(number flashingSpeed)
+Lighting.SetFlashingSpeed(number flashingSpeed)
 ```
-This function sets the flashing mode speed. Valid values for 'flashingSpeed' range from 0 to 6, inclusive. A value of '0' means that flashing mode will be disabled. A value of '1' means fastest flashing, while a value of '6' means slowest flashing. This function will disable breathing mode if it was previously enabled. Execution stops if 'flashingSpeed' is invalid.
+This function sets the flashing mode speed. Valid values for 'flashingSpeed' range from 0 to 6, inclusive. A value of '0' means that flashing mode will be disabled. A value of '1' means fastest flashing, while a value of '6' means slowest flashing. This function will disable breathing mode if it was previously enabled. Execution stops if 'flashingSpeed' is invalid. Any call to this function that succeeds automatically turns on the LEDs.
 ##  
 ```lua
 number Lighting.GetFlashingSpeed()
@@ -102,7 +104,7 @@ This function returns the current flashing mode speed. Speeds are as described a
 ```lua
 Lighting.SetStepDuration(number stepDuration)
 ```
-This function sets the value for step duration. Step duration is the interval of time between changes in any of the 4 chosen colours. It is in an arbitrary time unit. Valid values range from 0 to 511, inclusive. Execution stops if 'stepDuration' is invalid.
+This function sets the value for step duration. Step duration is the interval of time between changes in any of the 4 chosen colours. It is in an arbitrary time unit. Valid values range from 0 to 511, inclusive. Execution stops if 'stepDuration' is invalid. Any call to this function that succeeds automatically turns on the LEDs.
 ##  
 ```lua
 number Lighting.GetStepDuration()
@@ -152,9 +154,10 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC
  
- **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. It is still possible to use this program with any motherboard that isn't listed above, but do it at your own risk. Motherboards which fit this criterion and are reportedly working are:**
+ **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. Motherboards which fit this criterion and are reportedly working are:**
  - MSI B350 TOMAHAWK
  - MSI B350 GAMING PLUS
+ - MSI B350 PC MATE
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
@@ -162,6 +165,8 @@ In order to debug scripts, you can click on 'Open script log' in the 'Scripts' g
  - MSI X470 GAMING PLUS
  - MSI Z270 SLI PLUS
  - MSI Z370M MORTAR
+ 
+ **It is still possible to use this program with any motherboard that isn't listed above or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
 
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.

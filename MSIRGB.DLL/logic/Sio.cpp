@@ -335,24 +335,4 @@ namespace logic {
 
         chip_exit_extended_function_mode();
     }
-
-    std::uint8_t Sio::chip_read_cell_from_global(std::uint8_t index) const
-    {
-        chip_enter_extended_function_mode();
-
-        std::uint8_t ret = chip_read(index);
-
-        chip_exit_extended_function_mode();
-
-        return ret;
-    }
-
-    void Sio::chip_write_cell_to_global(std::uint8_t index, std::uint8_t data) const
-    {
-        chip_enter_extended_function_mode();
-
-        chip_write(index, data);
-
-        chip_exit_extended_function_mode();
-    }
 }
