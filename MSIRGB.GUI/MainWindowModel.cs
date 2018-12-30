@@ -63,8 +63,6 @@ namespace MSIRGB
                                 bool breathingEnabled, 
                                 FlashingSpeed flashingSpeed)
         {
-            ScriptService.StopAnyRunningScript();
-
             _sio.SetColour(Sio.ColourIndex.Colour1, c1);
             _sio.SetColour(Sio.ColourIndex.Colour2, c2);
             _sio.SetColour(Sio.ColourIndex.Colour3, c3);
@@ -99,6 +97,11 @@ namespace MSIRGB
         public string GetRunningScript()
         {
             return ScriptService.GetRunningScript();
+        }
+
+        public void StopAnyRunningScript()
+        {
+            ScriptService.StopAnyRunningScript();
         }
 
         public void OpenScriptLog()

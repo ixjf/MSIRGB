@@ -64,6 +64,12 @@ namespace MSIRGB
             typeof(MainWindowViewModel),
             new PropertyMetadata(-1));
 
+        public static readonly DependencyProperty StopRunningScriptBtnEnabledProperty = DependencyProperty.Register(
+            "StopRunningScriptBtnEnabled",
+            typeof(bool),
+            typeof(MainWindowViewModel),
+            new PropertyMetadata(false));
+
         public string ColourRText
         {
             get { return (string)GetValue(ColourRTextProperty); }
@@ -118,6 +124,12 @@ namespace MSIRGB
             set { SetValue(ScriptsSelectedIndexProperty, value); }
         }
 
+        public bool StopRunningScriptBtnEnabled
+        {
+            get { return (bool)GetValue(StopRunningScriptBtnEnabledProperty); }
+            set { SetValue(StopRunningScriptBtnEnabledProperty, value); }
+        }
+
         public ObservableCollection<ColourItem> ColourList { get; set; }
         public ObservableCollection<FlashingSpeedItem> FlashingSpeedList { get; set; }
         public ObservableCollection<ScriptItem> ScriptsList { get; set; }
@@ -153,12 +165,14 @@ namespace MSIRGB
             ApplyCommand = new DelegateCommand(Apply);
             DisableLightingCommand = new DelegateCommand(DisableLighting);
             OpenScriptLogCommand = new DelegateCommand(OpenScriptLog);
+            StopRunningScriptCommand = new DelegateCommand(StopRunningScript);
         }
 
         #region Commands
         public DelegateCommand ApplyCommand { get; private set; }
         public DelegateCommand DisableLightingCommand { get; private set; }
         public DelegateCommand OpenScriptLogCommand { get; private set; }
+        public DelegateCommand StopRunningScriptCommand { get; private set; }
 
         public void Apply()
         {
@@ -186,6 +200,11 @@ namespace MSIRGB
         public void OpenScriptLog()
         {
             _model.OpenScriptLog();
+        }
+
+        public void StopRunningScript()
+        {
+            ScriptsSelectedIndex = -1;
         }
         #endregion
 
@@ -220,6 +239,9 @@ namespace MSIRGB
             }
 
             ScriptsSelectedIndex = ScriptsList.IndexOf(ScriptsList.FirstOrDefault(x => x.Name == _model.GetRunningScript()));
+
+            if (ScriptsSelectedIndex != -1)
+                StopRunningScriptBtnEnabled = true;
         }
 
         public void ListSelectedColourChangedEvent()
@@ -338,7 +360,15 @@ namespace MSIRGB
         public void ScriptsListSelectedItemChangedEvent()
         {
             if (ScriptsSelectedIndex != -1)
+            {
                 _model.RunScript(ScriptsList[ScriptsSelectedIndex].Name);
+                StopRunningScriptBtnEnabled = true;
+            }
+            else
+            {
+                _model.StopAnyRunningScript();
+                StopRunningScriptBtnEnabled = false;
+            }
         }
         #endregion
     }
