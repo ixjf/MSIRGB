@@ -211,7 +211,6 @@ namespace MSIRGB
         #region Events
         public void LoadedEvent()
         {
-            // Update to current config
             _model.GetCurrentConfig(out Color c1,
                                     out Color c2,
                                     out Color c3,

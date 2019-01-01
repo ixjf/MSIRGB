@@ -49,6 +49,9 @@ namespace MSIRGB
 
         public static void RunScript(string scriptName, bool ignoreMbCheck)
         {
+            if (GetRunningScript() == scriptName)
+                return;
+
             var scriptPath = Path.Combine(Path.GetFullPath(SCRIPTS_FOLDER), scriptName + ".lua");
 
             if (!File.Exists(scriptPath))
