@@ -32,38 +32,6 @@ namespace logic {
         catch (IsaDrv::Exception &) {
             throw Exception(ErrorCode::DriverLoadFailed);
         }
-
-        // Set chip LED config
-
-        // Enable RGB control
-        // Sets bit 5 and set bit 4 to 0
-        // All other bits seem to do nothing, but they MAY have a purpose on certain boards
-        std::uint8_t val_at_2c = chip_read_cell_from_bank(0x09, 0x2C);
-        chip_write_cell_to_bank(0x09, 0x2C, (val_at_2c & 0b11100111) | 0b10000);
-
-        // E0 = 0b11100000 (these 3 bits enable RGB, the remaining 5 have unknown purpose)
-        std::uint8_t val_at_e0 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE0);
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000);
-
-        // 0xFD in bank 12h seems to be related to some rainbow mode
-        // but it is apparently not supported on my board, so I can't test it.
-        // I think it's only supported on other MBs that have RGB headers but are
-        // different somehow - those function differently from the MBs supported
-        // here.
-
-        // Make sure RGB channels are not inverted
-        // Also make sure some 'weird' fade in behaviour that happens in some boards is disabled
-        std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
-
-        // Invert value is second group of 3 bits from the left in 0xFF: BGR, in this order, from leftmost bit to rightmost bit
-        // If bit is set, channel is inverted
-        val_at_ff &= 0b11100011;
-
-        // Fade in value is first 3 bits: BGR, in this order, from leftmost bit to rightmost bit
-        // If bit is set, fade in is disabled
-        val_at_ff |= 0b11100000;
-
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xFF, val_at_ff);
     }
 
     // By enabling the LEDs, flashing mode is disabled
@@ -72,9 +40,41 @@ namespace logic {
     void Sio::set_led_enabled(bool enable) const
     {
         if (enable) {
-            // Turn on header
+            // Enable RGB control
+            // Sets bit 5 and set bit 4 to 0
+            // All other bits seem to do nothing, but they MAY have a purpose on certain boards
+            std::uint8_t val_at_2c = chip_read_cell_from_bank(0x09, 0x2C);
+            chip_write_cell_to_bank(0x09, 0x2C, (val_at_2c & 0b11100111) | 0b10000);
+
+            // E0 = 0b11100000 (these 3 bits enable RGB, the remaining 5 have unknown purpose)
+            std::uint8_t val_at_e0 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE0);
+            chip_write_cell_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000);
+
+            // 0xFD in bank 12h seems to be related to some rainbow mode
+            // but it is apparently not supported on my board, so I can't test it.
+            // I think it's only supported on other MBs that have RGB headers but are
+            // different somehow - those function differently from the MBs supported
+            // here.
+
+
             std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
-            chip_write_cell_to_bank(RGB_LED_BANK, 0xFF, val_at_ff | 0b00000010);
+
+            // Turn on header
+            val_at_ff |= 0b00000010;
+
+            // Make sure RGB channels are not inverted
+            // Also make sure some 'weird' fade in behaviour that happens in some boards is disabled
+
+            // Invert value is second group of 3 bits from the left in 0xFF: BGR, in this order, from leftmost bit to rightmost bit
+            // If bit is set, channel is inverted
+            val_at_ff &= 0b11100011;
+
+            // Fade in value is first 3 bits: BGR, in this order, from leftmost bit to rightmost bit
+            // If bit is set, fade in is disabled
+            val_at_ff |= 0b11100000;
+
+            chip_write_cell_to_bank(RGB_LED_BANK, 0xFF, val_at_ff);
+
 
             // Enabling the LEDs involves setting flashing bits to 000
             std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
