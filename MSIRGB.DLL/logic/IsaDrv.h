@@ -7,7 +7,6 @@ namespace logic {
     public:
         enum class ErrorCode {
             LoadFailed,
-            OpenIoFailed
         };
 
         class Exception : public std::runtime_error {
@@ -51,6 +50,7 @@ namespace logic {
         bool            unload_drv      ();
 
         HANDLE          drv_handle;
-        bool            drv_already_existed;
+        HANDLE          drv_handle_count_sem;
+        HANDLE          op_mutex_handle;
     };
 }

@@ -6,7 +6,7 @@ using namespace std::string_literals;
 
 const auto DRV_FILE_NAME = L"inpoutx64.sys";
 const auto DRV_DEVICE_NAME = L"inpoutx64";
-const auto DRV_SVC_NAME = L"MSIRGB.Driver";
+const auto DRV_SVC_NAME = L"inpoutx64";
 
 const auto IOCTL_READ_PORT_UCHAR  = CTL_CODE(0x9C40, 0x801, METHOD_BUFFERED, FILE_ANY_ACCESS);
 const auto IOCTL_WRITE_PORT_UCHAR = CTL_CODE(0x9C40, 0x802, METHOD_BUFFERED, FILE_ANY_ACCESS);
@@ -14,7 +14,50 @@ const auto IOCTL_WRITE_PORT_UCHAR = CTL_CODE(0x9C40, 0x802, METHOD_BUFFERED, FIL
 namespace logic {
     IsaDrv::IsaDrv()
     {
+        // We need to lock this section so that neither MSIRGB nor the script service
+        // mess up between the load_drv call and opening a handle to the driver
+        op_mutex_handle = CreateMutex(NULL, false, L"Global\\MSIRGB_Driver_Load_Lock");
+        // initial ownership must be set to false above, else the script service
+        // might grab a handle to the mutex before the GUI tries to release it
+        // and then releasing the mutex won't work, because there are two handles to it
+
+        if (op_mutex_handle == NULL) {
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
+        // Wait for control of the mutex
+        WaitForSingleObject(op_mutex_handle, INFINITE);
+        
+        // Try to load the driver
         if (!load_drv()) {
+            ReleaseMutex(op_mutex_handle);
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
+        // We use a semaphore to keep track of how many handles to the driver service
+        // are open at the same time. There can be at most two - one from the script service
+        // and one from the GUI.
+        SECURITY_DESCRIPTOR sd;
+        
+        if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION)) {
+            ReleaseMutex(op_mutex_handle);
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
+        if (!SetSecurityDescriptorDacl(&sd, true, NULL, false)) {
+            ReleaseMutex(op_mutex_handle);
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
+        SECURITY_ATTRIBUTES sa;
+        sa.nLength = sizeof(sa);
+        sa.lpSecurityDescriptor = &sd;
+        sa.bInheritHandle = false;
+
+        drv_handle_count_sem = CreateSemaphore(&sa, 0, 2, L"Global\\MSIRGB_Driver_Counter");
+
+        if (drv_handle_count_sem == NULL) {
+            ReleaseMutex(op_mutex_handle);
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -27,15 +70,36 @@ namespace logic {
                                 NULL);
 
         if (drv_handle == INVALID_HANDLE_VALUE) {
+            ReleaseMutex(op_mutex_handle);
             unload_drv();
-            throw Exception(ErrorCode::OpenIoFailed);
+            throw Exception(ErrorCode::LoadFailed);
         }
+
+        // Increase the count of handles open to the driver service by 1
+        ReleaseSemaphore(drv_handle_count_sem, 1, NULL);
+
+        ReleaseMutex(op_mutex_handle);
     }
 
     IsaDrv::~IsaDrv()
     {
+        // We also need to lock this section. The script service could be deleting
+        // the service while the GUI was trying to start it again.
+        WaitForSingleObject(op_mutex_handle, INFINITE);
+
         CloseHandle(drv_handle);
-        unload_drv();
+
+        // If there are no more handles to the driver service, unload it
+        // WaitForSingleObject decrements the count already when called
+        if (WaitForSingleObject(drv_handle_count_sem, 0) == WAIT_TIMEOUT) {
+            unload_drv();
+        }
+        
+        CloseHandle(drv_handle_count_sem);
+
+        ReleaseMutex(op_mutex_handle);
+
+        CloseHandle(op_mutex_handle);
     }
 
     std::uint8_t IsaDrv::inb(std::uint8_t port) const
@@ -123,12 +187,6 @@ namespace logic {
             DWORD err = GetLastError();
 
             if (err == ERROR_SERVICE_EXISTS) {
-                // We want to be able to use the same instance of the loaded driver in both
-                // the GUI and the script service, but we don't want either one uninstalling
-                // the driver before the other is finished. Whoever installs the driver shall
-                // uninstall it.
-                drv_already_existed = true;
-
                 err = ERROR_SUCCESS;
             }
             else {
@@ -139,9 +197,6 @@ namespace logic {
             return err;
         }
         else {
-            // See above (service == NULL && err == ERROR_SERVICE_EXISTS)
-            drv_already_existed = false;
-
             CloseServiceHandle(service);
             CloseServiceHandle(sc_manager);
             return ERROR_SUCCESS;
@@ -150,11 +205,6 @@ namespace logic {
 
     DWORD IsaDrv::uninstall_drv()
     {
-        // See IsaDrv::install_drv for more info about this
-        if (drv_already_existed) {
-            return ERROR_SUCCESS;
-        }
-
         SC_HANDLE sc_manager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
 
         SC_HANDLE service = OpenService(sc_manager, DRV_SVC_NAME, DELETE);
@@ -238,9 +288,6 @@ namespace logic {
 
     DWORD IsaDrv::stop_drv()
     {
-        if (drv_already_existed)
-            return ERROR_SUCCESS;
-
         SC_HANDLE sc_manager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
 
         SC_HANDLE service = OpenService(sc_manager, DRV_SVC_NAME, SERVICE_STOP);
