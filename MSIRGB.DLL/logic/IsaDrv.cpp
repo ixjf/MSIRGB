@@ -31,6 +31,7 @@ namespace logic {
         // Try to load the driver
         if (!load_drv()) {
             ReleaseMutex(op_mutex_handle);
+            CloseHandle(op_mutex_handle);
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -41,11 +42,13 @@ namespace logic {
         
         if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION)) {
             ReleaseMutex(op_mutex_handle);
+            CloseHandle(op_mutex_handle);
             throw Exception(ErrorCode::LoadFailed);
         }
 
         if (!SetSecurityDescriptorDacl(&sd, true, NULL, false)) {
             ReleaseMutex(op_mutex_handle);
+            CloseHandle(op_mutex_handle);
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -58,6 +61,7 @@ namespace logic {
 
         if (drv_handle_count_sem == NULL) {
             ReleaseMutex(op_mutex_handle);
+            CloseHandle(op_mutex_handle);
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -71,6 +75,8 @@ namespace logic {
 
         if (drv_handle == INVALID_HANDLE_VALUE) {
             ReleaseMutex(op_mutex_handle);
+            CloseHandle(op_mutex_handle);
+            CloseHandle(drv_handle_count_sem);
             unload_drv();
             throw Exception(ErrorCode::LoadFailed);
         }
