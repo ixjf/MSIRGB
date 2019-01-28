@@ -25,7 +25,3 @@ f, e
 h, g
 h
 ... ad infinitum
-
-
-
-Also, maybe add aida64 support for temps, clocks, etc. for effects? maybe as an external module?
