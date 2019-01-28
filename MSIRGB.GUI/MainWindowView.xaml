@@ -213,7 +213,7 @@
                     
                     <ListView Style="{StaticResource CustomListViewStyle}"
                               Width="150" 
-                              Height="130"
+                              Height="150"
                               ItemsSource="{Binding Path=ScriptsList, Mode=OneWay}"
                               DisplayMemberPath="Name"
                               SelectionMode="Single"
