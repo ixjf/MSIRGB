@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Management;
 using MoonSharp.Interpreter;
-using System.Linq;
-using System;
 
 namespace MSIRGB.ScriptService.LuaBindings
 {
