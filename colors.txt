@@ -1,0 +1,31 @@
+It's actually possible to set 8 different colours, hence why I sometimes saw weird patterns of colours when testing. I never knew because Mystic Light transforms the R, G, B values into single byte, symmetric values - only supports 4 colours, and i.e. if requested colour 1 to be 210, 200, 49 (D2, C8, 31), it transforms the colour as such: (byte)((210/16) * 0x11111111) = DD, (byte)((200/16) * 0x11111111) = CC, (byte)((49/16) * 0x11111111) = 33, so doesn't take advantage of the eight possible colours
+
+a - f00 - very red
+b - 0f0 - very green
+c - 00f - very blue
+d - 0ff - very light blue
+e - ff0 - very yellow
+f - fff - very white
+g - f0f - very violet
+h - 000 - very nothing
+
+
+F0 00 FF F0 0F 0F FF 00 00 FF 0F F0
+
+
+Pattern is:
+
+h
+e, f
+c, d
+a, b
+a
+d, c
+f, e
+h, g
+h
+... ad infinitum
+
+
+
+Also, maybe add aida64 support for temps, clocks, etc. for effects? maybe as an external module?

@@ -43,12 +43,12 @@ namespace logic {
             // Enable RGB control
             // Sets bit 5 and set bit 4 to 0
             // All other bits seem to do nothing, but they MAY have a purpose on certain boards
-            std::uint8_t val_at_2c = chip_read_cell_from_bank(0x09, 0x2C);
-            chip_write_cell_to_bank(0x09, 0x2C, (val_at_2c & 0b11100111) | 0b10000);
+            std::uint8_t val_at_2c = chip_read_uint8_from_bank(0x09, 0x2C);
+            chip_write_uint8_to_bank(0x09, 0x2C, (val_at_2c & 0b11100111) | 0b10000);
 
             // E0 = 0b11100000 (these 3 bits enable RGB, the remaining 5 have unknown purpose)
-            std::uint8_t val_at_e0 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE0);
-            chip_write_cell_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000);
+            std::uint8_t val_at_e0 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE0);
+            chip_write_uint8_to_bank(RGB_LED_BANK, 0xE0, val_at_e0 | 0b11100000);
 
             // 0xFD in bank 12h seems to be related to some rainbow mode
             // but it is apparently not supported on my board, so I can't test it.
@@ -57,7 +57,7 @@ namespace logic {
             // here.
 
 
-            std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
+            std::uint8_t val_at_ff = chip_read_uint8_from_bank(RGB_LED_BANK, 0xFF);
 
             // Turn on header
             val_at_ff |= 0b00000010;
@@ -73,29 +73,33 @@ namespace logic {
             // If bit is set, fade in is disabled
             val_at_ff |= 0b11100000;
 
-            chip_write_cell_to_bank(RGB_LED_BANK, 0xFF, val_at_ff);
+            chip_write_uint8_to_bank(RGB_LED_BANK, 0xFF, val_at_ff);
 
 
             // Enabling the LEDs involves setting flashing bits to 000
-            std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
+            std::uint8_t val_at_e4 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE4);
 
             // If flashing mode is set (LEDs are not disabled), do not overwrite
             if ((val_at_e4 & 0b111) != 0b001) {
                 return;
             }
 
-            chip_write_cell_to_bank(RGB_LED_BANK, 0xE4, val_at_e4 & 0b11111000);
+            chip_write_uint8_to_bank(RGB_LED_BANK, 0xE4, val_at_e4 & 0b11111000);
         }
         else {
             // Disabling the LEDs involves disabling breathing and flashing modes
             // So you need to reset them after you disable the LEDs
-            std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
-            chip_write_cell_to_bank(RGB_LED_BANK, 0xE4, val_at_e4 & 0b11110000 | 0b1);
+            std::uint8_t val_at_e4 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE4);
+            chip_write_uint8_to_bank(RGB_LED_BANK, 0xE4, val_at_e4 & 0b11110000 | 0b1);
         }
     }
 
-    void Sio::set_colour(ColourIndex index, Colour colour) const
+    bool Sio::set_colour(std::uint8_t index, Colour colour) const
     {
+        if (index < 1 || index > 8) {
+            return false;
+        }
+
         set_led_enabled(true);
 
         //
@@ -104,25 +108,45 @@ namespace logic {
         // ---------------------------------------------------
         //    00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
         //
+        // Colour indices:
+        //    12 34 56 78 12 34 56 78 12 34 56 78
         //
-        // F0-F3: each byte corresponds to the red component of colours 1-4, respectively
-        // F4-F7: each byte corresponds to the green component of colours 1-4, respectively
-        // F8-FB: each byte corresponds to the blue component of colours 1-4, respectively
+        // F0-F3: each nibble correspond to the red component of colours 1-8 (as shown in the row above)
+        // F4-F7: each nibble correspond to the green component of colours 1-8 (as shown in the row above)
+        // F8-FB: each nibble correspond to the blue component of colours 1-8 (as shown in the row above)
 
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xF0 + (static_cast<std::uint8_t>(index) - 1), colour.r);
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xF4 + (static_cast<std::uint8_t>(index) - 1), colour.g);
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xF8 + (static_cast<std::uint8_t>(index) - 1), colour.b);
+        std::uint32_t r_cells = chip_read_uint32_from_bank(RGB_LED_BANK, 0xF0);
+        std::uint32_t g_cells = chip_read_uint32_from_bank(RGB_LED_BANK, 0xF4);
+        std::uint32_t b_cells = chip_read_uint32_from_bank(RGB_LED_BANK, 0xF8);
+
+        std::uint8_t colour_offset = 32 - (4 * index);
+
+        // Mask to clear the nibble at the place specified by 'colour_offset' in the uint32 r group
+        std::uint32_t offset_clear_mask = 0xFFFFFFFF & ~(0xF << colour_offset);
+
+        // 'Colour' represents a 12-bit depth RGB colour, so this will only overwrite a nibble each
+        chip_write_uint32_to_bank(RGB_LED_BANK, 0xF0, (r_cells & offset_clear_mask) | (colour.r << colour_offset));
+        chip_write_uint32_to_bank(RGB_LED_BANK, 0xF4, (g_cells & offset_clear_mask) | (colour.g << colour_offset));
+        chip_write_uint32_to_bank(RGB_LED_BANK, 0xF8, (b_cells & offset_clear_mask) | (colour.b << colour_offset));
+
+        return true;
     }
 
-    Sio::Colour Sio::get_colour(ColourIndex index) const
+    std::optional<Sio::Colour> Sio::get_colour(std::uint8_t index) const
     {
+        if (index < 1 || index > 8) {
+            return std::nullopt;
+        }
+
         // See Sio::set_colour
 
-        std::uint8_t r = chip_read_cell_from_bank(RGB_LED_BANK, 0xF0 + (static_cast<std::uint8_t>(index) - 1));
-        std::uint8_t g = chip_read_cell_from_bank(RGB_LED_BANK, 0xF4 + (static_cast<std::uint8_t>(index) - 1));
-        std::uint8_t b = chip_read_cell_from_bank(RGB_LED_BANK, 0xF8 + (static_cast<std::uint8_t>(index) - 1));
+        std::uint8_t colour_offset = 32 - (4 * index);
 
-        return Colour(r, g, b);
+        std::uint8_t r = (chip_read_uint32_from_bank(RGB_LED_BANK, 0xF0) >> colour_offset) & 0x0F;
+        std::uint8_t g = (chip_read_uint32_from_bank(RGB_LED_BANK, 0xF4) >> colour_offset) & 0x0F;
+        std::uint8_t b = (chip_read_uint32_from_bank(RGB_LED_BANK, 0xF8) >> colour_offset) & 0x0F;
+
+        return std::make_optional(Colour(r, g, b));
     }
 
     // Breathing mode is only enabled if flashing mode is not enabled
@@ -136,8 +160,8 @@ namespace logic {
 
         // Breathing mode is enabled by setting bit 5 (counting from the left) in 0xE4
 
-        std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xE4, enable ? (val_at_e4 | 0b00001000) : (val_at_e4 & 0b11110111));
+        std::uint8_t val_at_e4 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE4);
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xE4, enable ? (val_at_e4 | 0b00001000) : (val_at_e4 & 0b11110111));
 
         return true;
     }
@@ -146,16 +170,14 @@ namespace logic {
     {
         // See Sio::set_breathing_mode_enabled
 
-        std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
+        std::uint8_t val_at_e4 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE4);
 
         return (val_at_e4 & 0b00001000) != 0b0;
     }
 
-    // TODO: Step duration switches between specified colour and white??? Also it seems if more than two colours are set, it'll _randomly_ switch
-    // between them
     void Sio::set_step_duration(std::uint16_t step_duration) const
     {
-        if (step_duration > STEP_DURATION_MAX_VALUE) throw std::invalid_argument("step_duration"); // PANIC!
+        if (step_duration > STEP_DURATION_MAX_VALUE) throw std::invalid_argument("step_duration is invalid"); // PANIC!
 
         set_led_enabled(true);
 
@@ -171,19 +193,19 @@ namespace logic {
         // FF contains the other byte (which has at most one bit set)
         // and other settings
 
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xFE, step_duration & 0x00FF);
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xFE, step_duration & 0x00FF);
 
-        std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xFF, val_at_ff | ((step_duration >> 8) & 0b1));
+        std::uint8_t val_at_ff = chip_read_uint8_from_bank(RGB_LED_BANK, 0xFF);
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xFF, val_at_ff | ((step_duration >> 8) & 0b1));
     }
 
     std::uint16_t Sio::get_step_duration() const
     {
         // See Sio::set_step_duration
 
-        std::uint8_t val_at_fe = chip_read_cell_from_bank(RGB_LED_BANK, 0xFE);
+        std::uint8_t val_at_fe = chip_read_uint8_from_bank(RGB_LED_BANK, 0xFE);
 
-        std::uint8_t val_at_ff = chip_read_cell_from_bank(RGB_LED_BANK, 0xFF);
+        std::uint8_t val_at_ff = chip_read_uint8_from_bank(RGB_LED_BANK, 0xFF);
 
         return (std::uint16_t)(((val_at_ff & 0b1) << 8) | val_at_fe);
     }
@@ -203,7 +225,7 @@ namespace logic {
         // 000 = always on
         // any other value = flashing (different speed)
 
-        std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
+        std::uint8_t val_at_e4 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE4);
 
         // If LEDs are disabled, do not do anything, else it will turn on the LEDs
         if ((val_at_e4 & 0b111) == 0b001) {
@@ -212,14 +234,14 @@ namespace logic {
 
         set_led_enabled(true);
 
-        chip_write_cell_to_bank(RGB_LED_BANK, 0xE4, (flash_speed == FlashingSpeed::Disabled ? (val_at_e4 & 0b11111000) : (val_at_e4 & 0b000 | (static_cast<std::uint8_t>(flash_speed) + 1))));
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xE4, (flash_speed == FlashingSpeed::Disabled ? (val_at_e4 & 0b11111000) : (val_at_e4 & 0b000 | (static_cast<std::uint8_t>(flash_speed) + 1))));
     }
 
     Sio::FlashingSpeed Sio::get_flash_speed() const
     {
         // See Sio::set_flash_speed
 
-        std::uint8_t val_at_e4 = chip_read_cell_from_bank(RGB_LED_BANK, 0xE4);
+        std::uint8_t val_at_e4 = chip_read_uint8_from_bank(RGB_LED_BANK, 0xE4);
 
         std::uint8_t flash_speed = val_at_e4 & 0b00000111;
 
@@ -312,7 +334,7 @@ namespace logic {
         drv->outb(DATA_REG, data);
     }
 
-    std::uint8_t Sio::chip_read_cell_from_bank(std::uint8_t bank, std::uint8_t index) const
+    std::uint8_t Sio::chip_read_uint8_from_bank(std::uint8_t bank, std::uint8_t index) const
     {
         chip_enter_extended_function_mode();
 
@@ -325,7 +347,7 @@ namespace logic {
         return ret;
     }
 
-    void Sio::chip_write_cell_to_bank(std::uint8_t bank, std::uint8_t index, std::uint8_t data) const
+    void Sio::chip_write_uint8_to_bank(std::uint8_t bank, std::uint8_t index, std::uint8_t data) const
     {
         chip_enter_extended_function_mode();
 
@@ -334,5 +356,29 @@ namespace logic {
         chip_write(index, data);
 
         chip_exit_extended_function_mode();
+    }
+
+    std::uint32_t Sio::chip_read_uint32_from_bank(std::uint8_t bank, std::uint8_t index) const
+    {
+        if (index > 0xFF - 4) {
+            throw std::out_of_range("there are not enough cells to read");
+        }
+
+        return (chip_read_uint8_from_bank(bank, index) << 24) 
+             | (chip_read_uint8_from_bank(bank, index + 1) << 16) 
+             | (chip_read_uint8_from_bank(bank, index + 2) << 8)
+             | chip_read_uint8_from_bank(bank, index + 3);
+    }
+
+    void Sio::chip_write_uint32_to_bank(std::uint8_t bank, std::uint8_t index, std::uint32_t data) const
+    {
+        if (index > 0xFF - 4) {
+            throw std::out_of_range("there are not enough cells to write to");
+        }
+
+        chip_write_uint8_to_bank(bank, index, (data & 0xFF000000) >> 24);
+        chip_write_uint8_to_bank(bank, index + 1, (data & 0x00FF0000) >> 16);
+        chip_write_uint8_to_bank(bank, index + 2, (data & 0x0000FF00) >> 8);
+        chip_write_uint8_to_bank(bank, index + 3, (data & 0x000000FF));
     }
 }

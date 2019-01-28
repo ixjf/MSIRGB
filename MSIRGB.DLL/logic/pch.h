@@ -11,6 +11,7 @@
 #include <memory>
 #include <algorithm>
 #include <stdexcept>
+#include <optional>
 
 #include <Windows.h>
 #include <Wbemidl.h>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
+using static System.Linq.Enumerable;
 
 namespace MSIRGB
 {
@@ -35,18 +37,15 @@ namespace MSIRGB
                 _sio.Dispose();
         }
 
-        public void GetCurrentConfig(out Color c1, 
-                                     out Color c2, 
-                                     out Color c3, 
-                                     out Color c4, 
+        public void GetCurrentConfig(ref List<Color> colours,
                                      out UInt16 stepDuration, 
                                      out bool breathingEnabled, 
                                      out FlashingSpeed flashingSpeed)
         {
-            c1 = _sio.GetColour(Sio.ColourIndex.Colour1);
-            c2 = _sio.GetColour(Sio.ColourIndex.Colour2);
-            c3 = _sio.GetColour(Sio.ColourIndex.Colour3);
-            c4 = _sio.GetColour(Sio.ColourIndex.Colour4);
+            foreach(Byte index in Range(1,8))
+            {
+                colours.Add(_sio.GetColour(index).Value);
+            }
 
             stepDuration = _sio.GetStepDuration();
 
@@ -55,18 +54,15 @@ namespace MSIRGB
             flashingSpeed = (FlashingSpeed)_sio.GetFlashingSpeed();
         }
 
-        public void ApplyConfig(Color c1, 
-                                Color c2, 
-                                Color c3, 
-                                Color c4, 
+        public void ApplyConfig(List<Color> colours,
                                 UInt16 stepDuration, 
                                 bool breathingEnabled, 
                                 FlashingSpeed flashingSpeed)
         {
-            _sio.SetColour(Sio.ColourIndex.Colour1, c1);
-            _sio.SetColour(Sio.ColourIndex.Colour2, c2);
-            _sio.SetColour(Sio.ColourIndex.Colour3, c3);
-            _sio.SetColour(Sio.ColourIndex.Colour4, c4);
+            foreach(Byte index in Range(1, 8))
+            {
+                _sio.SetColour(index, colours[index - 1]);
+            }
 
             _sio.SetStepDuration(stepDuration);
 

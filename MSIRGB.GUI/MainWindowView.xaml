@@ -29,16 +29,22 @@
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
                            FontSize="14"
-                           Text="Choose up to 4 different colours for the LEDs to switch between:" />
+                           Text="Choose up to 8 different colours for the LEDs to switch between:" />
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <ListBox Background="Transparent"
                              BorderThickness="0"
                              VerticalAlignment="Center"
                              Margin="55,0,10,0"
                              ItemsSource="{Binding Path=ColourList, Mode=TwoWay}"
                              SelectedIndex="{Binding Path=ListSelectedColourIndex, Mode=TwoWay}"
-                             SelectionChanged="ListSelectedColourChangedEvent">
+                             SelectionChanged="ListSelectedColourChangedEvent"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                                 <Setter Property="Template">
@@ -47,8 +53,8 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Rectangle x:Name="ViewColourItemColour" 
                                                            Fill="{Binding Path=Background, Mode=OneWay}" 
-                                                           Width="35" 
-                                                           Height="35" 
+                                                           Width="30" 
+                                                           Height="30" 
                                                            Margin="5"
                                                            ToolTip="{Binding Path=DisplayName, Mode=OneWay}" />
                                             </StackPanel>
@@ -207,7 +213,7 @@
                     
                     <ListView Style="{StaticResource CustomListViewStyle}"
                               Width="150" 
-                              Height="180"
+                              Height="130"
                               ItemsSource="{Binding Path=ScriptsList, Mode=OneWay}"
                               DisplayMemberPath="Name"
                               SelectionMode="Single"

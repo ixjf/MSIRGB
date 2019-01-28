@@ -34,18 +34,18 @@ namespace MSIRGB.ScriptService.LuaBindings
 
         public void SetColour(byte index, byte r, byte g, byte b)
         {
-            if (!Enum.IsDefined(typeof(Sio.ColourIndex), index))
+            if (index < 1 || index > 8)
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("SetColour", 0);
 
-            _sio.SetColour((Sio.ColourIndex)index, Color.FromRgb(r, g, b));
+            _sio.SetColour(index, Color.FromRgb(r, g, b));
         }
 
         public DynValue GetColour(byte index)
         {
-            if (!Enum.IsDefined(typeof(Sio.ColourIndex), index))
+            if (index < 1 || index > 8)
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("GetColour", 0);
 
-            Color c = _sio.GetColour((Sio.ColourIndex)index);
+            Color c = _sio.GetColour(index).Value;
 
             return DynValue.NewTuple(new DynValue[] 
             {

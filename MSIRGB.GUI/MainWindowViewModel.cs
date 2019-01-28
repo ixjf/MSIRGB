@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
+using static System.Linq.Enumerable;
 using Prism.Commands;
 
 namespace MSIRGB
@@ -147,6 +149,10 @@ namespace MSIRGB
                 new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 2" },
                 new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 3" },
                 new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 4" },
+                new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 5" },
+                new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 6" },
+                new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 7" },
+                new ColourItem() { Background = new SolidColorBrush(Colors.White), DisplayName = "Colour 8" },
             };
 
             FlashingSpeedList = new ObservableCollection<FlashingSpeedItem>()
@@ -181,12 +187,11 @@ namespace MSIRGB
 
             ScriptsSelectedIndex = -1;
 
-            _model.ApplyConfig(((SolidColorBrush)ColourList[0].Background).Color,
-                               ((SolidColorBrush)ColourList[1].Background).Color,
-                               ((SolidColorBrush)ColourList[2].Background).Color,
-                               ((SolidColorBrush)ColourList[3].Background).Color,
-                               Convert.ToUInt16(StepDurationText),
-                               BreathingModeEnabled,
+            var colours = ColourList.Select(ci => ((SolidColorBrush)ci.Background).Color).ToList();
+
+            _model.ApplyConfig(colours, 
+                               Convert.ToUInt16(StepDurationText), 
+                               BreathingModeEnabled, 
                                FlashingSpeedList[FlashingSpeedSelectedIndex].Type);
         }
 
@@ -211,18 +216,17 @@ namespace MSIRGB
         #region Events
         public void LoadedEvent()
         {
-            _model.GetCurrentConfig(out Color c1,
-                                    out Color c2,
-                                    out Color c3,
-                                    out Color c4,
+            var colours = new List<Color>();
+
+            _model.GetCurrentConfig(ref colours,
                                     out ushort stepDuration,
                                     out bool breathingEnabled,
                                     out MainWindowModel.FlashingSpeed flashingSpeed);
 
-            ColourList[0].Background = new SolidColorBrush(c1);
-            ColourList[1].Background = new SolidColorBrush(c2);
-            ColourList[2].Background = new SolidColorBrush(c3);
-            ColourList[3].Background = new SolidColorBrush(c4);
+            foreach(Byte index in Range(1, 8))
+            {
+                ColourList[index - 1].Background = new SolidColorBrush(colours[index - 1]);
+            }
 
             StepDurationText = Convert.ToString(stepDuration);
 
@@ -249,9 +253,9 @@ namespace MSIRGB
             {
                 PickerSelectedColour = ((SolidColorBrush)ColourList[ListSelectedColourIndex].Background).Color;
 
-                ColourRText = Convert.ToDecimal(PickerSelectedColour.R).ToString();
-                ColourGText = Convert.ToDecimal(PickerSelectedColour.G).ToString();
-                ColourBText = Convert.ToDecimal(PickerSelectedColour.B).ToString();
+                //ColourRText = Convert.ToDecimal(PickerSelectedColour.R).ToString();
+                //ColourGText = Convert.ToDecimal(PickerSelectedColour.G).ToString();
+                //ColourBText = Convert.ToDecimal(PickerSelectedColour.B).ToString();
             }
         }
 

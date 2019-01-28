@@ -8,13 +8,6 @@ using namespace System::Windows::Media;
 namespace MSIRGB {
     public ref class Sio {
     public:
-        enum class ColourIndex : Byte {
-            Colour1 = static_cast<Byte>(logic::Sio::ColourIndex::Colour1),
-            Colour2 = static_cast<Byte>(logic::Sio::ColourIndex::Colour2),
-            Colour3 = static_cast<Byte>(logic::Sio::ColourIndex::Colour3),
-            Colour4 = static_cast<Byte>(logic::Sio::ColourIndex::Colour4)
-        };
-
         enum class Channel : Byte {
             R = static_cast<Byte>(logic::Sio::Channel::R),
             G = static_cast<Byte>(logic::Sio::Channel::G),
@@ -74,16 +67,25 @@ namespace MSIRGB {
             sio->set_led_enabled(enable);
        }
 
-       void SetColour(ColourIndex index, Color colour)
+       bool SetColour(Byte index, Color colour)
        {
-            sio->set_colour(static_cast<logic::Sio::ColourIndex>(index), logic::Sio::Colour(colour.R, colour.G, colour.B));
+           try {
+               return sio->set_colour(index, logic::Sio::Colour(colour.R / 16, colour.G / 16, colour.B / 16));
+           }
+           catch (std::invalid_argument &) {
+               return false;
+           }
        }
 
-       Color GetColour(ColourIndex index)
+       Nullable<Color> GetColour(Byte index)
        {
-            logic::Sio::Colour colour = sio->get_colour(static_cast<logic::Sio::ColourIndex>(index));
+            std::optional<logic::Sio::Colour> colour = sio->get_colour(index);
 
-            return Color::FromArgb(0xFF, colour.r, colour.g, colour.b);
+            if (!colour) {
+                return Nullable<Color>();
+            }
+
+            return Nullable<Color>(Color::FromRgb(colour->r * 16, colour->g * 16, colour->b * 16));
        }
 
        bool SetBreathingModeEnabled(Boolean enabled)

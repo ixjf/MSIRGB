@@ -33,13 +33,6 @@ namespace logic {
             B
         };
 
-        enum class ColourIndex : std::uint8_t {
-            Colour1 = 1,
-            Colour2,
-            Colour3,
-            Colour4
-        };
-
         enum class FlashingSpeed : std::uint8_t {
             Disabled,
             Speed1,
@@ -58,7 +51,9 @@ namespace logic {
             Colour(std::uint8_t r, std::uint8_t g, std::uint8_t b)
                 : r(r), g(g), b(b)
             {
-            
+                if (r > 0x0F || g > 0x0F || b > 0x0F) {
+                    throw std::out_of_range("rgb value out of range");
+                }
             }
         };
 
@@ -72,8 +67,8 @@ namespace logic {
 
         // Disabling the LEDs overwrites flashing and breathing modes. Those must be reset after enabling the LEDs again
         void                    set_led_enabled                     (bool enable) const;
-        void                    set_colour                          (ColourIndex index, Colour colour) const;
-        Colour                  get_colour                          (ColourIndex index) const;
+        bool                    set_colour                          (std::uint8_t index, Colour colour) const;
+        std::optional<Colour>   get_colour                          (std::uint8_t index) const;
         bool                    set_breathing_mode_enabled          (bool enable) const;
         bool                    is_breathing_mode_enabled           () const;
         void                    set_step_duration                   (std::uint16_t step_duration) const;
@@ -91,10 +86,11 @@ namespace logic {
         std::uint8_t            chip_read                           (std::uint8_t index) const;
         void                    chip_write                          (std::uint8_t index, std::uint8_t data) const;
 
-        std::uint8_t            chip_read_cell_from_bank            (std::uint8_t bank, std::uint8_t index) const;
-        void                    chip_write_cell_to_bank             (std::uint8_t bank, std::uint8_t index, std::uint8_t data) const;
-        std::uint8_t            chip_read_cell_from_global          (std::uint8_t index) const;
-        void                    chip_write_cell_to_global           (std::uint8_t index, std::uint8_t data) const;
+        std::uint8_t            chip_read_uint8_from_bank           (std::uint8_t bank, std::uint8_t index) const;
+        void                    chip_write_uint8_to_bank            (std::uint8_t bank, std::uint8_t index, std::uint8_t data) const;
+
+        std::uint32_t           chip_read_uint32_from_bank          (std::uint8_t bank, std::uint8_t index) const;
+        void                    chip_write_uint32_to_bank           (std::uint8_t bank, std::uint8_t index, std::uint32_t data) const;
 
         std::unique_ptr<IsaDrv> drv;
     };
