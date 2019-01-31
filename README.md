@@ -75,6 +75,7 @@ Learn more about scripting functionality and find the API reference in the [wiki
  - MSI B350 GAMING PLUS
  - MSI B350 PC MATE
  - MSI A320M BAZOOKA
+ - MSI B250M MORTAR
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
