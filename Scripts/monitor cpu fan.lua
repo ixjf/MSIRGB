@@ -16,11 +16,15 @@
 -- PERFORMANCE OF THIS SOFTWARE.
 
 -- Min and Max speed of the CPU fan
-fan = {750, 1800}
+local fan = {700, 1800}
 
-color_min = 0
-color_max = 200
-delay = 200
+local color_min = 0
+local color_max = 200
+local delay = 200
+
+Lighting.SetStepDuration(511)
+Lighting.SetFlashingSpeed(0)
+Lighting.SetBreathingModeEnabled(false)
 
 -- https://gist.github.com/GigsD4X/8513963
 function HSVToRGB( hue, saturation, value )
@@ -50,16 +54,11 @@ function HSVToRGB( hue, saturation, value )
     end;
 end;
 
--- Adapted from nagisa/msi-rgb's Hue Wheel effect
-Lighting.SetStepDuration(511)
-Lighting.SetFlashingSpeed(0)
-Lighting.SetBreathingModeEnabled(false)
-
 while true do
     if Aida64.IsInstalledAndRunning() then
-        rpm = Aida64.GetSensorValue('FCPU')
-        percent = (rpm - fan[1]) / (fan[2] - fan[1])
-        color = color_max - percent * (color_max - color_min)
+        local rpm = Aida64.GetSensorValue('FCPU')
+        local percent = (rpm - fan[1]) / (fan[2] - fan[1])
+        local color = color_max - percent * (color_max - color_min)
 
         local r, g, b = HSVToRGB(color, 1.0, 1.0)
         r = tonumber(("%x"):format(r * 15):rep(2), 16)

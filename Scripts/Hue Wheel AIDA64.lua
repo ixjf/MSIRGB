@@ -16,35 +16,44 @@
 -- PERFORMANCE OF THIS SOFTWARE.
 
 -- cpu, gpu, fan or hue
-mode = 'hue'
+local mode = 'hue'
 
 -- Min and Max speed of the CPU fan
-fan = {750, 1800}
+local fan = {700, 1800}
 -- temperatur minimum and max, applies for gpu and cpu
-temp = {35, 65}
+local temp = {35, 65}
 
-color_min = 0
-color_max = 200
+-- Max CPU temperature and color for alarm
+local cpu = {}
+cpu['max_temp'] = 60
+cpu['r'] = 0
+cpu['g'] = 0
+cpu['b'] = 255
 
-cpu_temp = 50
-gpu_temp = 60
-mb_temp = 50
+-- Max GPU temperature and color for alarm
+local gpu = {}
+gpu['max_temp'] = 70
+gpu['r'] = 0
+gpu['g'] = 255
+gpu['b'] = 0
 
-cpu_r = 0
-cpu_g = 0
-cpu_b = 255
+-- Max MB temperature and color for alarm
+local mb = {}
+mb['max_temp'] = 50
+mb['r'] = 255
+mb['g'] = 255
+mb['b'] = 255
 
-gpu_r = 0
-gpu_g = 255
-gpu_b = 0
+-- HSV color range
+local color_min = 0
+local color_max = 200
+-- Steps for the "hue" mode
+local color_steps = 0.5
+local delay = 500
 
-mb_r = 255
-mb_g = 255
-mb_b = 255
-
-color_steps = 0.5
-delay = 500
-
+Lighting.SetStepDuration(511)
+Lighting.SetFlashingSpeed(0)
+Lighting.SetBreathingModeEnabled(false)
 
 -- https://gist.github.com/GigsD4X/8513963
 function HSVToRGB(hue, saturation, value)
@@ -59,89 +68,92 @@ function HSVToRGB(hue, saturation, value)
     local q = value * ( 1 - saturation * hue_sector_offset );
     local t = value * ( 1 - saturation * ( 1 - hue_sector_offset ) );
 
+    local r
+    local g
+    local b
     if hue_sector == 0 then
-        return value, t, p;
+        r, g, b = value, t, p;
     elseif hue_sector == 1 then
-        return q, value, p;
+        r, g, b = q, value, p;
     elseif hue_sector == 2 then
-        return p, value, t;
+        r, g, b = p, value, t;
     elseif hue_sector == 3 then
-        return p, q, value;
+        r, g, b = p, q, value;
     elseif hue_sector == 4 then
-        return t, p, value;
-    elseif hue_sector == 5 then
-        return value, p, q;
+        r, g, b = t, p, value;
+    else
+        r, g, b = value, p, q;
     end;
-end;
-
--- Adapted from nagisa/msi-rgb's Hue Wheel effect
-Lighting.SetStepDuration(511)
-Lighting.SetFlashingSpeed(0)
-Lighting.SetBreathingModeEnabled(false)
-
-function Color(value, temp1, temp2)
-    percent = (value - temp1) / (temp2 - temp1)
-    color = color_max - percent * (color_max - color_min)
-    return color
-end
-
-local color = 0
-while true do
-    if Aida64.IsInstalledAndRunning() then
-        if mode == 'fan' then
-            rpm = Aida64.GetSensorValue('FCPU')
-            color = Color(rpm, fan[1], fan[2])
-        elseif mode == 'cpu' then
-            hw_temp = Aida64.GetSensorValue('TCPU')
-            color = Color(hw_temp, temp[1], temp[2])
-        elseif mode == 'gpu' then
-            hw_temp = Aida64.GetSensorValue('TGPU1DIO')
-            color = Color(hw_temp, temp[1], temp[2])
-        else
-            while Aida64.GetSensorValue('TCPU') >= cpu_temp  do
-                for i = 1, 8 do
-                    Lighting.SetColour(i, 255, 0, 0)
-                end
-                os.sleep(200)
-                for i = 1, 8 do
-                    Lighting.SetColour(i, cpu_r, cpu_g, cpu_b)
-                end
-                os.sleep(200)
-            end
-            while Aida64.GetSensorValue('TGPU1DIO') >= gpu_temp do
-                for i = 1, 8 do
-                    Lighting.SetColour(i, 255, 0, 0)
-                end
-                os.sleep(200)
-                for i = 1, 8 do
-                    Lighting.SetColour(i, gpu_r, gpu_g, gpu_b)
-                end
-                os.sleep(200)
-            end
-            while Aida64.GetSensorValue('TMOBO') >= mb_temp do
-                for i = 1, 8 do
-                    Lighting.SetColour(i, 255, 0, 0)
-                end
-                os.sleep(200)
-                for i = 1, 8 do
-                    Lighting.SetColour(i, mb_r, mb_g, mb_b)
-                end
-                os.sleep(200)
-            end
-            color = color + color_steps
-            if color == 360 then
-                color = 0
-            end
-        end
-    end
-
-    local r, g, b = HSVToRGB(color, 1.0, 1.0)
     r = tonumber(("%x"):format(r * 15):rep(2), 16)
     g = tonumber(("%x"):format(g * 15):rep(2), 16)
     b = tonumber(("%x"):format(b * 15):rep(2), 16)
 
+    return r, g, b
+end;
+
+-- Blinks between red and configured hardware-color - the "alarm"
+function Alarm(r, g, b)
+    for i = 1, 8 do
+        Lighting.SetColour(i, 255, 0, 0)
+    end
+    os.sleep(200)
     for i = 1, 8 do
         Lighting.SetColour(i, r, g, b)
     end
-    os.sleep(delay)
+    os.sleep(200)
+end
+
+function Color(value, temp1, temp2)
+    local percent = (value - temp1) / (temp2 - temp1)
+    local color = color_max - percent * (color_max - color_min)
+    return color
+end
+
+local min = temp[1]
+local max = temp[2]
+if mode == 'cpu' then
+    hardware = 'TCPU'
+elseif mode == 'gpu' then
+    hardware = 'TGPU1DIO'
+elseif mode == 'fan' then
+    hardware = 'FCPU'
+    min = fan[1]
+    max = fan[2]
+end
+
+local color = 0
+local alarm = false
+while true do
+    if Aida64.IsInstalledAndRunning() then
+        cpu['curr_temp'] = Aida64.GetSensorValue('TCPU')
+        gpu['curr_temp'] = Aida64.GetSensorValue('TGPU1DIO')
+        mb['curr_temp'] = Aida64.GetSensorValue('TMOBO')
+    end
+    if mode ~= 'hue' then
+        if Aida64.IsInstalledAndRunning() then
+            local hardware_value = Aida64.GetSensorValue(hardware)
+            color = Color(hardware_value, min, max)
+        end
+    else
+        color = color + color_steps
+        if color == 360 then
+            color = 0
+        end
+    end
+
+    local devices = {cpu, gpu, mb}
+    for devicecount=1,3 do
+        if devices[devicecount]['curr_temp'] >= devices[devicecount]['max_temp'] then
+            Alarm(devices[devicecount]['r'], devices[devicecount]['g'], devices[devicecount]['b'])
+            alarm = true
+        end
+    end
+    if alarm == false then
+        local r, g, b = HSVToRGB(color, 1.0, 1.0)
+        for i = 1, 8 do
+            Lighting.SetColour(i, r, g, b)
+        end
+        os.sleep(delay)
+    end
+    alarm = false
 end
