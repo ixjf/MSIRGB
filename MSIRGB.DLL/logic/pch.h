@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <optional>
+#include <unordered_map>
 
 #include <Windows.h>
 #include <Wbemidl.h>

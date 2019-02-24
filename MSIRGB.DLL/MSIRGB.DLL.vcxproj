@@ -84,12 +84,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="logic\IsaDrv.h" />
+    <ClInclude Include="logic\Lighting.h" />
     <ClInclude Include="logic\math_helper.h" />
     <ClInclude Include="logic\module_helper.h" />
     <ClInclude Include="logic\pch.h" />
     <ClInclude Include="logic\Sio.h" />
     <ClInclude Include="logic\wmi_helper.h" />
-    <ClInclude Include="MSIRGB.Sio.h" />
+    <ClInclude Include="MSIRGB.Lighting.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +103,10 @@
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="logic\IsaDrv.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="logic\Lighting.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -123,7 +128,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="MSIRGB.Sio.cpp">
+    <ClCompile Include="MSIRGB.Lighting.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>

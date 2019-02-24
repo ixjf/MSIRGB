@@ -8,7 +8,7 @@ namespace MSIRGB.ScriptService.LuaBindings
     [MoonSharpHideMember("Register")]
     class LightingModule
     {
-        private Sio _sio;
+        private Lighting _lighting;
 
         public static void Register(Script script, bool ignoreMbCheck)
         {
@@ -19,17 +19,22 @@ namespace MSIRGB.ScriptService.LuaBindings
 
         private LightingModule(bool ignoreMbCheck)
         {
-            _sio = new Sio(ignoreMbCheck); // This should just crash if it fails
+            _lighting = new Lighting(ignoreMbCheck); // This should just crash if it fails
         }
 
         ~LightingModule()
         {
-            _sio.Dispose();
+            _lighting.Dispose();
         }
 
         public void SetAllEnabled(bool enabled)
         {
-            _sio.SetLedEnabled(enabled);
+            _lighting.SetLedEnabled(enabled);
+        }
+
+        public bool BatchBegin()
+        {
+            return _lighting.BatchBegin();
         }
 
         public void SetColour(byte index, byte r, byte g, byte b)
@@ -37,7 +42,7 @@ namespace MSIRGB.ScriptService.LuaBindings
             if (index < 1 || index > 8)
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("SetColour", 0);
 
-            _sio.SetColour(index, Color.FromRgb(r, g, b));
+            _lighting.SetColour(index, Color.FromRgb(r, g, b));
         }
 
         public DynValue GetColour(byte index)
@@ -45,7 +50,7 @@ namespace MSIRGB.ScriptService.LuaBindings
             if (index < 1 || index > 8)
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("GetColour", 0);
 
-            Color c = _sio.GetColour(index).Value;
+            Color c = _lighting.GetColour(index).Value;
 
             return DynValue.NewTuple(new DynValue[] 
             {
@@ -57,38 +62,43 @@ namespace MSIRGB.ScriptService.LuaBindings
 
         public bool SetBreathingModeEnabled(bool enabled)
         {
-            return _sio.SetBreathingModeEnabled(enabled);
+            return _lighting.SetBreathingModeEnabled(enabled);
         }
 
         public bool IsBreathingModeEnabled()
         {
-            return _sio.IsBreathingModeEnabled();
+            return _lighting.IsBreathingModeEnabled();
         }
 
         public void SetFlashingSpeed(byte flashingSpeed)
         {
-            if (!Enum.IsDefined(typeof(Sio.FlashingSpeed), flashingSpeed))
+            if (!Enum.IsDefined(typeof(Lighting.FlashingSpeed), flashingSpeed))
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("SetFlashingSpeed", 0);
 
-            _sio.SetFlashingSpeed((Sio.FlashingSpeed)flashingSpeed);
+            _lighting.SetFlashingSpeed((Lighting.FlashingSpeed)flashingSpeed);
         }
 
         public byte GetFlashingSpeed()
         {
-            return (byte)_sio.GetFlashingSpeed();
+            return (byte)_lighting.GetFlashingSpeed();
         }
 
         public void SetStepDuration(ushort stepDuration)
         {
-            if (stepDuration > Sio.STEP_DURATION_MAX_VALUE)
+            if (stepDuration > Lighting.STEP_DURATION_MAX_VALUE)
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("SetStepDuration", 0);
 
-            _sio.SetStepDuration(stepDuration);
+            _lighting.SetStepDuration(stepDuration);
         }
 
         public ushort GetStepDuration()
         {
-            return _sio.GetStepDuration();
+            return _lighting.GetStepDuration();
+        }
+
+        public bool BatchEnd()
+        {
+            return _lighting.BatchEnd();
         }
     }
 }

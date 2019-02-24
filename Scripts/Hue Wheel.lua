@@ -48,9 +48,11 @@ function HsvToRgb(h, s, v)
 end
 
 -- Adapted from nagisa/msi-rgb's Hue Wheel effect
+Lighting.BatchBegin()
 Lighting.SetStepDuration(511)
 Lighting.SetFlashingSpeed(0)
 Lighting.SetBreathingModeEnabled(false)
+Lighting.BatchEnd()
 
 local i = 0
 while true do
@@ -60,11 +62,13 @@ while true do
     g = tonumber(("%x"):format(g * 15):rep(2), 16)
     b = tonumber(("%x"):format(b * 15):rep(2), 16)
 
+	Lighting.BatchBegin()
     for i = 1, 8 do
         Lighting.SetColour(i, r, g, b)
     end
+	Lighting.BatchEnd()
 
-    os.sleep(100)
+    os.sleep(80)
 
-    i = i + 1
+    i = i + 1.1
 end

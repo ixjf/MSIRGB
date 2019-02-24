@@ -10,20 +10,20 @@ namespace MSIRGB
 {
     public class MainWindowModel
     {
-        private Sio _sio;
+        private Lighting _lighting;
         private bool _ignoredMbCheck;
 
-        public static UInt16 STEP_DURATION_MAX_VALUE = Sio.STEP_DURATION_MAX_VALUE;
+        public static UInt16 STEP_DURATION_MAX_VALUE = Lighting.STEP_DURATION_MAX_VALUE;
 
         public enum FlashingSpeed
         {
-            Disabled = Sio.FlashingSpeed.Disabled,
-            Speed1 = Sio.FlashingSpeed.Speed1,
-            Speed2 = Sio.FlashingSpeed.Speed2,
-            Speed3 = Sio.FlashingSpeed.Speed3,
-            Speed4 = Sio.FlashingSpeed.Speed4,
-            Speed5 = Sio.FlashingSpeed.Speed5,
-            Speed6 = Sio.FlashingSpeed.Speed6,
+            Disabled = Lighting.FlashingSpeed.Disabled,
+            Speed1 = Lighting.FlashingSpeed.Speed1,
+            Speed2 = Lighting.FlashingSpeed.Speed2,
+            Speed3 = Lighting.FlashingSpeed.Speed3,
+            Speed4 = Lighting.FlashingSpeed.Speed4,
+            Speed5 = Lighting.FlashingSpeed.Speed5,
+            Speed6 = Lighting.FlashingSpeed.Speed6,
         }
 
         public MainWindowModel()
@@ -33,8 +33,8 @@ namespace MSIRGB
 
         ~MainWindowModel()
         {
-            if (_sio != null)
-                _sio.Dispose();
+            if (_lighting != null)
+                _lighting.Dispose();
         }
 
         public void GetCurrentConfig(ref List<Color> colours,
@@ -44,14 +44,14 @@ namespace MSIRGB
         {
             foreach(Byte index in Range(1,8))
             {
-                colours.Add(_sio.GetColour(index).Value);
+                colours.Add(_lighting.GetColour(index).Value);
             }
 
-            stepDuration = _sio.GetStepDuration();
+            stepDuration = _lighting.GetStepDuration();
 
-            breathingEnabled = _sio.IsBreathingModeEnabled();
+            breathingEnabled = _lighting.IsBreathingModeEnabled();
 
-            flashingSpeed = (FlashingSpeed)_sio.GetFlashingSpeed();
+            flashingSpeed = (FlashingSpeed)_lighting.GetFlashingSpeed();
         }
 
         public void ApplyConfig(List<Color> colours,
@@ -59,25 +59,29 @@ namespace MSIRGB
                                 bool breathingEnabled, 
                                 FlashingSpeed flashingSpeed)
         {
+            _lighting.BatchBegin();
+
             foreach(Byte index in Range(1, 8))
             {
-                _sio.SetColour(index, colours[index - 1]);
+                _lighting.SetColour(index, colours[index - 1]);
             }
 
-            _sio.SetStepDuration(stepDuration);
+            _lighting.SetStepDuration(stepDuration);
 
             // Since breathing mode can't be enabled if flashing was previously enabled
             // we need to set the new flashing speed setting before trying to change breathing mode state
-            _sio.SetFlashingSpeed((Sio.FlashingSpeed)flashingSpeed);
+            _lighting.SetFlashingSpeed((Lighting.FlashingSpeed)flashingSpeed);
 
-            _sio.SetBreathingModeEnabled(breathingEnabled);
+            _lighting.SetBreathingModeEnabled(breathingEnabled);
+
+            _lighting.BatchEnd();
         }
 
         public void DisableLighting()
         {
             ScriptService.StopAnyRunningScript();
 
-            _sio.SetLedEnabled(false);
+            _lighting.SetLedEnabled(false);
         }
 
         public string[] GetScripts()
@@ -118,11 +122,11 @@ namespace MSIRGB
 
             try
             {
-                _sio = new Sio(ignoreMbCheck);
+                _lighting = new Lighting(ignoreMbCheck);
             }
-            catch (Sio.Exception exc)
+            catch (Lighting.Exception exc)
             {
-                if (exc.GetErrorCode() == Sio.ErrorCode.MotherboardNotSupported)
+                if (exc.GetErrorCode() == Lighting.ErrorCode.MotherboardNotSupported)
                 {
                     if (!ignoreMbCheck)
                     {
@@ -138,7 +142,7 @@ namespace MSIRGB
                         }
                     }
                 }
-                else if (exc.GetErrorCode() == Sio.ErrorCode.DriverLoadFailed)
+                else if (exc.GetErrorCode() == Lighting.ErrorCode.DriverLoadFailed)
                 {
                     MessageBox.Show("Failed to load driver.", assemblyTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
