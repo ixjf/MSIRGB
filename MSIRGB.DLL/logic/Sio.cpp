@@ -95,6 +95,31 @@ namespace logic {
         }
     }
 
+    static inline std::tuple<std::uint8_t, std::uint8_t> colour_cell_pos_from_index(std::uint8_t index)
+    {
+        // The nibble no. from 1 to 8 in order from 0xF0 to 0xF3, 0xF3 to 0xF7, 0xF8 to 0xFB
+        // So colour 1 = nibble 2
+        //    colour 2 = nibble 1
+        //    colour 3 = nibble 4
+        //    colour 4 = nibble 3
+        // and so on...
+        // (Nibble order is reversed in the chip)
+        std::uint8_t nibble_from_index = (index % 2 == 0) ? (index - 1) : (index + 1);
+
+        // The byte number relative to the start pos (0xF0, 0xF4, 0xF8)
+        // So nibble_from_index = 1, byte = +0
+        //    nibble_from_index = 2, byte = +0
+        //    nibble_from_index = 3, byte = +1
+        // and so on...
+        std::uint8_t byte_no = fast_ceil(nibble_from_index, 2) - 1;
+
+        // The nibble position relative to the start pos of the byte
+        // 0 if the first nibble, 1 if the second nibble
+        std::uint8_t nibble_pos = !(nibble_from_index % 2);
+
+        return std::make_tuple(byte_no, nibble_pos);
+    }
+
     bool Sio::set_colour(std::uint8_t index, Colour colour) const
     {
         if (index < 1 || index > 8) {
@@ -116,26 +141,10 @@ namespace logic {
         // F4-F7: each nibble correspond to the green component of colours 1-8 (as shown in the row above)
         // F8-FB: each nibble correspond to the blue component of colours 1-8 (as shown in the row above)
 
+        std::tuple<std::uint8_t, std::uint8_t> colour_cell_pos = colour_cell_pos_from_index(index);
 
-        // The nibble no. from 1 to 8 in order from 0xF0 to 0xF3, 0xF3 to 0xF7, 0xF8 to 0xFB
-        // So colour 1 = nibble 2
-        //    colour 2 = nibble 1
-        //    colour 3 = nibble 4
-        //    colour 4 = nibble 3
-        // and so on...
-        // (Nibble order is reversed in the chip)
-        std::uint8_t nibble_from_index = (index % 2 == 0) ? (index - 1) : (index + 1);
-
-        // The byte number relative to the start pos (0xF0, 0xF4, 0xF8)
-        // So nibble_from_index = 1, byte = +0
-        //    nibble_from_index = 2, byte = +0
-        //    nibble_from_index = 3, byte = +1
-        // and so on...
-        std::uint8_t byte_no = fast_ceil(nibble_from_index, 2) - 1;
-
-        // The nibble position relative to the start pos of the byte
-        // 0 if the first nibble, 1 if the second nibble
-        std::uint8_t nibble_pos = !(nibble_from_index % 2);
+        std::uint8_t byte_no = std::get<0>(colour_cell_pos);
+        std::uint8_t nibble_pos = std::get<1>(colour_cell_pos);
 
         std::uint8_t r_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF0 + byte_no);
         std::uint8_t g_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF4 + byte_no);
@@ -165,11 +174,18 @@ namespace logic {
 
         // See Sio::set_colour
 
-        std::uint8_t colour_offset = 32 - (4 * index);
+        std::tuple<std::uint8_t, std::uint8_t> colour_cell_pos = colour_cell_pos_from_index(index);
 
-        std::uint8_t r = (chip_read_uint32_from_bank(RGB_LED_BANK, 0xF0) >> colour_offset) & 0x0F;
-        std::uint8_t g = (chip_read_uint32_from_bank(RGB_LED_BANK, 0xF4) >> colour_offset) & 0x0F;
-        std::uint8_t b = (chip_read_uint32_from_bank(RGB_LED_BANK, 0xF8) >> colour_offset) & 0x0F;
+        std::uint8_t byte_no = std::get<0>(colour_cell_pos);
+        std::uint8_t nibble_pos = std::get<1>(colour_cell_pos);
+
+        std::uint8_t r_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF0 + byte_no);
+        std::uint8_t g_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF4 + byte_no);
+        std::uint8_t b_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF8 + byte_no);
+
+        std::uint8_t r = (r_cell >> (!nibble_pos * 4)) & 0x0F;
+        std::uint8_t g = (g_cell >> (!nibble_pos * 4)) & 0x0F;
+        std::uint8_t b = (b_cell >> (!nibble_pos * 4)) & 0x0F;
 
         return std::make_optional(Colour(r, g, b));
     }
@@ -381,29 +397,5 @@ namespace logic {
         chip_write(index, data);
 
         chip_exit_extended_function_mode();
-    }
-
-    std::uint32_t Sio::chip_read_uint32_from_bank(std::uint8_t bank, std::uint8_t index) const
-    {
-        if (index > 0xFF - 4) {
-            throw std::out_of_range("there are not enough cells to read");
-        }
-
-        return (chip_read_uint8_from_bank(bank, index) << 24) 
-             | (chip_read_uint8_from_bank(bank, index + 1) << 16) 
-             | (chip_read_uint8_from_bank(bank, index + 2) << 8)
-             | chip_read_uint8_from_bank(bank, index + 3);
-    }
-
-    void Sio::chip_write_uint32_to_bank(std::uint8_t bank, std::uint8_t index, std::uint32_t data) const
-    {
-        if (index > 0xFF - 4) {
-            throw std::out_of_range("there are not enough cells to write to");
-        }
-
-        chip_write_uint8_to_bank(bank, index, (data & 0xFF000000) >> 24);
-        chip_write_uint8_to_bank(bank, index + 1, (data & 0x00FF0000) >> 16);
-        chip_write_uint8_to_bank(bank, index + 2, (data & 0x0000FF00) >> 8);
-        chip_write_uint8_to_bank(bank, index + 3, (data & 0x000000FF));
     }
 }
