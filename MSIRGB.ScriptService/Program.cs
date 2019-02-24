@@ -1,5 +1,7 @@
-﻿using System.ServiceProcess;
+﻿using System;
+using System.ServiceProcess;
 using System.Diagnostics;
+using System.IO;
 
 namespace MSIRGB.ScriptService
 {
