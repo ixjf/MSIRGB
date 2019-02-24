@@ -64,7 +64,7 @@ while true do
         Lighting.SetColour(i, r, g, b)
     end
 
-    os.sleep(80)
+    os.sleep(100)
 
-    i = i + 1.1
+    i = i + 1
 end

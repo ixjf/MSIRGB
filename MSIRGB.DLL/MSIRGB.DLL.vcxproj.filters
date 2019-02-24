@@ -45,6 +45,9 @@
     <ClInclude Include="logic\module_helper.h">
       <Filter>Header Files\logic</Filter>
     </ClInclude>
+    <ClInclude Include="logic\math_helper.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="logic\IsaDrv.h" />
+    <ClInclude Include="logic\math_helper.h" />
     <ClInclude Include="logic\module_helper.h" />
     <ClInclude Include="logic\pch.h" />
     <ClInclude Include="logic\Sio.h" />

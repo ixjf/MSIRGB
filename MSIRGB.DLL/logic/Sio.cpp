@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Sio.h"
 #include "wmi_helper.h"
+#include "math_helper.h"
 
 const auto INDEX_REG    = 0x4E; // All Mystic Light-supported MBs's chips are found at this port
 const auto DATA_REG     = 0x4F; // INDEX_REG+1
@@ -115,19 +116,43 @@ namespace logic {
         // F4-F7: each nibble correspond to the green component of colours 1-8 (as shown in the row above)
         // F8-FB: each nibble correspond to the blue component of colours 1-8 (as shown in the row above)
 
-        std::uint32_t r_cells = chip_read_uint32_from_bank(RGB_LED_BANK, 0xF0);
-        std::uint32_t g_cells = chip_read_uint32_from_bank(RGB_LED_BANK, 0xF4);
-        std::uint32_t b_cells = chip_read_uint32_from_bank(RGB_LED_BANK, 0xF8);
 
-        std::uint8_t colour_offset = 32 - (4 * index);
+        // The nibble no. from 1 to 8 in order from 0xF0 to 0xF3, 0xF3 to 0xF7, 0xF8 to 0xFB
+        // So colour 1 = nibble 2
+        //    colour 2 = nibble 1
+        //    colour 3 = nibble 4
+        //    colour 4 = nibble 3
+        // and so on...
+        // (Nibble order is reversed in the chip)
+        std::uint8_t nibble_from_index = (index % 2 == 0) ? (index - 1) : (index + 1);
 
-        // Mask to clear the nibble at the place specified by 'colour_offset' in the uint32 r group
-        std::uint32_t offset_clear_mask = 0xFFFFFFFF & ~(0xF << colour_offset);
+        // The byte number relative to the start pos (0xF0, 0xF4, 0xF8)
+        // So nibble_from_index = 1, byte = +0
+        //    nibble_from_index = 2, byte = +0
+        //    nibble_from_index = 3, byte = +1
+        // and so on...
+        std::uint8_t byte_no = fast_ceil(nibble_from_index, 2) - 1;
 
-        // 'Colour' represents a 12-bit depth RGB colour, so this will only overwrite a nibble each
-        chip_write_uint32_to_bank(RGB_LED_BANK, 0xF0, (r_cells & offset_clear_mask) | (colour.r << colour_offset));
-        chip_write_uint32_to_bank(RGB_LED_BANK, 0xF4, (g_cells & offset_clear_mask) | (colour.g << colour_offset));
-        chip_write_uint32_to_bank(RGB_LED_BANK, 0xF8, (b_cells & offset_clear_mask) | (colour.b << colour_offset));
+        // The nibble position relative to the start pos of the byte
+        // 0 if the first nibble, 1 if the second nibble
+        std::uint8_t nibble_pos = !(nibble_from_index % 2);
+
+        std::uint8_t r_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF0 + byte_no);
+        std::uint8_t g_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF4 + byte_no);
+        std::uint8_t b_cell = chip_read_uint8_from_bank(RGB_LED_BANK, 0xF8 + byte_no);
+
+        //                                CLEAR MASK                      COLOUR
+        //                                    nibble offset                    nibble offset 
+        //                                                                                   (colour is in first nibble from right, e.g. 0x1, 0xA, 0xF, 0xC, 
+        //                                                                                    so if nibble_pos = 0 (first nibble from left-to-right), 
+        //                                                                                    then we need to offset it to the left)
+        std::uint8_t r = (r_cell & (0x0F << (nibble_pos * 4))) | (colour.r << (!nibble_pos * 4));
+        std::uint8_t g = (g_cell & (0x0F << (nibble_pos * 4))) | (colour.g << (!nibble_pos * 4));
+        std::uint8_t b = (b_cell & (0x0F << (nibble_pos * 4))) | (colour.b << (!nibble_pos * 4));
+
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xF0 + byte_no, r);
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xF4 + byte_no, g);
+        chip_write_uint8_to_bank(RGB_LED_BANK, 0xF8 + byte_no, b);
 
         return true;
     }
