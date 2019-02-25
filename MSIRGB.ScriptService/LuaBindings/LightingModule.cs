@@ -32,9 +32,10 @@ namespace MSIRGB.ScriptService.LuaBindings
             _lighting.SetLedEnabled(enabled);
         }
 
-        public bool BatchBegin()
+        public void BatchBegin()
         {
-            return _lighting.BatchBegin();
+            if (!_lighting.BatchBegin())
+                throw new ScriptRuntimeException("BatchBegin was called but previous batch has not been committed yet");
         }
 
         public void SetColour(byte index, byte r, byte g, byte b)
@@ -51,7 +52,8 @@ namespace MSIRGB.ScriptService.LuaBindings
             if (b > 0x0F)
                 throw ScriptRuntimeException.BadArgument(3, "SetColour", "value is out of range (range is 0x0-0xF)");
 
-            _lighting.SetColour(index, Color.FromRgb(r, g, b));
+            if (!_lighting.SetColour(index, Color.FromRgb(r, g, b)))
+                throw new ScriptRuntimeException("rip");
         }
 
         public DynValue GetColour(byte index)
@@ -105,9 +107,10 @@ namespace MSIRGB.ScriptService.LuaBindings
             return _lighting.GetStepDuration();
         }
 
-        public bool BatchEnd()
+        public void BatchEnd()
         {
-            return _lighting.BatchEnd();
+            if (!_lighting.BatchEnd())
+                throw new ScriptRuntimeException("BatchEnd was called without a matching BatchBegin");
         }
     }
 }
