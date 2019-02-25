@@ -57,6 +57,10 @@ namespace logic {
     void Lighting::set_led_enabled(bool enable)
     {
         curr_batch.enabled = enable;
+
+        if (!batch_calls) {
+            batch_commit();
+        }
     }
 
     static inline std::tuple<std::uint8_t, std::uint8_t> colour_cell_pos_from_index(std::uint8_t index)
@@ -259,7 +263,7 @@ namespace logic {
     {
         std::uint8_t val_at_e4 = sio->read_uint8_from_bank(RGB_BANK, 0xE4);
         std::uint8_t val_at_2c = sio->read_uint8_from_bank(UNKNOWN_BANK, 0x2C);
-        std::uint8_t val_at_e0 = sio->read_uint8_from_bank(UNKNOWN_BANK, 0xE0);
+        std::uint8_t val_at_e0 = sio->read_uint8_from_bank(RGB_BANK, 0xE0);
         std::uint8_t val_at_ff = sio->read_uint8_from_bank(RGB_BANK, 0xFF);
         std::uint8_t val_at_fe = sio->read_uint8_from_bank(RGB_BANK, 0xFE);
 
@@ -307,8 +311,8 @@ namespace logic {
             // we should only do this if flashing mode isn't
             // already enabled
             // if it is, then leds are enabled already, so we don't need to do this
-
-            if (get_flash_speed() == FlashingSpeed::Disabled) {
+            // 0b001 = LEDs disabled
+            if ((val_at_e4 & 0b111) == 0b001) {
                 val_at_e4 &= 0b11111000;
             }
         }
@@ -393,11 +397,9 @@ namespace logic {
 
             // If LEDs are disabled, do not do anything, else it will turn on the LEDs
             if ((val_at_e4 & 0b111) != 0b001) {
-                if (flash_speed == FlashingSpeed::Disabled) {
-                    val_at_e4 &= 0b11111000;
-                }
-                else {
-                    val_at_e4 &= 0b000;
+                val_at_e4 &= 0b11111000;
+
+                if (flash_speed != FlashingSpeed::Disabled) {
                     val_at_e4 |= static_cast<std::uint8_t>(flash_speed) + 1;
                 }
             }
@@ -406,7 +408,7 @@ namespace logic {
         // Write new values to the chip
         sio->write_uint8_to_bank(RGB_BANK, 0xE4, val_at_e4);
         sio->write_uint8_to_bank(UNKNOWN_BANK, 0x2C, val_at_2c);
-        sio->write_uint8_to_bank(UNKNOWN_BANK, 0xE0, val_at_e0);
+        sio->write_uint8_to_bank(RGB_BANK, 0xE0, val_at_e0);
         sio->write_uint8_to_bank(RGB_BANK, 0xFF, val_at_ff);
         sio->write_uint8_to_bank(RGB_BANK, 0xFE, val_at_fe);
 
