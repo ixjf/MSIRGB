@@ -90,6 +90,10 @@ namespace logic {
             return false;
         }
 
+        if (colour.r > 0x0F || colour.g > 0x0F || colour.b > 0x0F) {
+            return false;
+        }
+
         curr_batch.colours.insert_or_assign(index, colour);
 
         if (!batch_calls) {
@@ -117,7 +121,7 @@ namespace logic {
         std::uint8_t g = (g_cell >> (!nibble_pos * 4)) & 0x0F;
         std::uint8_t b = (b_cell >> (!nibble_pos * 4)) & 0x0F;
 
-        return std::make_optional(Colour(r, g, b));
+        return std::make_optional(Colour{r, g, b});
     }
 
     bool Lighting::set_breathing_mode_enabled(bool enable)
@@ -338,9 +342,9 @@ namespace logic {
             // RGB colour, any value of 'Colour' will be at the right, so if we want to insert
             // it in the first nibble (left), we need to shift it 4 bits to the left, hence (!nibble_pos * 4) (inverts
             // it so that if nibble_pos = 0, !nibble_pos * 4 = 4, rather than = 0)
-            std::uint8_t r = (r_cell & (0x0F << (nibble_pos * 4))) | (colour.get_r() << (!nibble_pos * 4));
-            std::uint8_t g = (g_cell & (0x0F << (nibble_pos * 4))) | (colour.get_g() << (!nibble_pos * 4));
-            std::uint8_t b = (b_cell & (0x0F << (nibble_pos * 4))) | (colour.get_b() << (!nibble_pos * 4));
+            std::uint8_t r = (r_cell & (0x0F << (nibble_pos * 4))) | (colour.r << (!nibble_pos * 4));
+            std::uint8_t g = (g_cell & (0x0F << (nibble_pos * 4))) | (colour.g << (!nibble_pos * 4));
+            std::uint8_t b = (b_cell & (0x0F << (nibble_pos * 4))) | (colour.b << (!nibble_pos * 4));
 
             sio->write_uint8_to_bank(RGB_BANK, 0xF0 + byte_no, r);
             sio->write_uint8_to_bank(RGB_BANK, 0xF4 + byte_no, g);

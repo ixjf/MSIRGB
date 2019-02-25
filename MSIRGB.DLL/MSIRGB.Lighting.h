@@ -69,7 +69,7 @@ namespace MSIRGB {
        bool SetColour(Byte index, Color colour)
        {
            try {
-               return lighting->set_colour(index, logic::Lighting::Colour(colour.R / 16, colour.G / 16, colour.B / 16));
+               return lighting->set_colour(index, logic::Lighting::Colour {colour.R, colour.G, colour.B});
            }
            catch (std::invalid_argument &) {
                return false;
@@ -84,7 +84,7 @@ namespace MSIRGB {
                 return Nullable<Color>();
             }
 
-            return Nullable<Color>(Color::FromRgb(colour->get_r() * 16, colour->get_g() * 16, colour->get_b() * 16));
+            return Nullable<Color>(Color::FromRgb(colour->r, colour->g, colour->b));
        }
 
        bool SetBreathingModeEnabled(Boolean enabled)

@@ -38,32 +38,7 @@ namespace logic {
             Speed6
         };
 
-        class Colour {
-        public:
-            Colour(std::uint8_t r, std::uint8_t g, std::uint8_t b)
-                : r(r), g(g), b(b)
-            {
-                if (r > 0xF || g > 0xF || b > 0xF) {
-                    throw std::out_of_range("rgb value out of range");
-                }
-            }
-
-            std::uint8_t get_r() const
-            {
-                return r;
-            }
-
-            std::uint8_t get_g() const
-            {
-                return g;
-            }
-
-            std::uint8_t get_b() const
-            {
-                return b;
-            }
-
-        private:
+        struct Colour {
             std::uint8_t r;
             std::uint8_t g;
             std::uint8_t b;

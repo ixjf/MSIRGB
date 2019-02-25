@@ -42,6 +42,15 @@ namespace MSIRGB.ScriptService.LuaBindings
             if (index < 1 || index > 8)
                 throw ScriptRuntimeException.BadArgumentIndexOutOfRange("SetColour", 0);
 
+            if (r > 0x0F)
+                throw ScriptRuntimeException.BadArgument(1, "SetColour", "value is out of range (range is 0x0-0xF)");
+
+            if (g > 0x0F)
+                throw ScriptRuntimeException.BadArgument(2, "SetColour", "value is out of range (range is 0x0-0xF)");
+
+            if (b > 0x0F)
+                throw ScriptRuntimeException.BadArgument(3, "SetColour", "value is out of range (range is 0x0-0xF)");
+
             _lighting.SetColour(index, Color.FromRgb(r, g, b));
         }
 
