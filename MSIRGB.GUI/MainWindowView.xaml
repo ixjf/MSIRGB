@@ -18,238 +18,184 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450" />
+            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="342" />
+            <ColumnDefinition Width="250" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Grid.Column="0" Header="Colours">
-            <Grid Margin="0,10,0,10">
-                <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+        <StackPanel Grid.Column="0">
+            <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Colours">
+                <StackPanel Margin="25,10,25,10">
+                    <TextBlock Style="{StaticResource CustomTextBlockStyle}"
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
-                           FontSize="14"
                            Text="Choose up to 8 different colours for the LEDs to switch between:" />
 
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <ListBox Background="Transparent"
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0, 10, 0, 0">
+                        <ListBox Background="Transparent"
                              BorderThickness="0"
                              VerticalAlignment="Center"
-                             Margin="55,0,10,0"
+                             HorizontalAlignment="Center"
                              ItemsSource="{Binding Path=ColourList, Mode=TwoWay}"
                              SelectedIndex="{Binding Path=ListSelectedColourIndex, Mode=TwoWay}"
                              SelectionChanged="ListSelectedColourChangedEvent"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel IsItemsHost="True" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Rectangle x:Name="ViewColourItemColour" 
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Rectangle x:Name="ViewColourItemColour" 
                                                            Fill="{Binding Path=Background, Mode=OneWay}" 
                                                            Width="30" 
                                                            Height="30" 
                                                            Margin="5"
                                                            ToolTip="{Binding Path=DisplayName, Mode=OneWay}" />
-                                            </StackPanel>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="ViewColourItemColour" Property="Stroke" Value="#5e5e5e" />
-                                                    <Setter TargetName="ViewColourItemColour" Property="StrokeThickness" Value="3" />
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="ViewColourItemColour" Property="Stroke" Value="#5e5e5e" />
-                                                    <Setter TargetName="ViewColourItemColour" Property="StrokeThickness" Value="3" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
+                                                </StackPanel>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="ViewColourItemColour" Property="Stroke" Value="#5e5e5e" />
+                                                        <Setter TargetName="ViewColourItemColour" Property="StrokeThickness" Value="3" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ViewColourItemColour" Property="Stroke" Value="#5e5e5e" />
+                                                        <Setter TargetName="ViewColourItemColour" Property="StrokeThickness" Value="3" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
 
-                    <StackPanel Orientation="Vertical">
-                        <customcontrols:ColourPicker Margin="0,20,0,0" 
-                                                     SelectedColour="{Binding Path=PickerSelectedColour, Mode=TwoWay}"
-                                                     SelectedColourChanged="PickerSelectedColourChangedEvent" />
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
-                                       Text="R: " 
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" />
-                            <TextBox Style="{StaticResource CustomTextBoxStyle}"
-                                     Tag="R" 
-                                     Width="28" 
-                                     Height="20"
-                                     HorizontalAlignment="Center"
-                                     Margin="0,0,10,0"
-                                     Text="{Binding Path=ColourRText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     PreviewTextInput="TextBoxIsDecNumberInput"
-                                     TextChanged="ColourCodeTextBoxTextChangedEvent" />
-
-                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
-                                       Text="G: " 
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" />
-                            <TextBox Style="{StaticResource CustomTextBoxStyle}"
-                                     Tag="G"
-                                     Width="28" 
-                                     Height="20"
-                                     HorizontalAlignment="Center"
-                                     Margin="0,0,10,0"
-                                     Text="{Binding Path=ColourGText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     PreviewTextInput="TextBoxIsDecNumberInput"
-                                     TextChanged="ColourCodeTextBoxTextChangedEvent" />
-
-                                <TextBlock Style="{StaticResource CustomTextBlockStyle}" 
-                                       Text="B: "
-                                       VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center" />
-                            <TextBox Style="{StaticResource CustomTextBoxStyle}"
-                                     Tag="B"
-                                     Width="28" 
-                                     Height="20"
-                                     HorizontalAlignment="Center"
-                                     Text="{Binding Path=ColourBText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     PreviewTextInput="TextBoxIsDecNumberInput"
-                                     TextChanged="ColourCodeTextBoxTextChangedEvent" />
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <customcontrols:ColourPicker 
+                            Margin="0, 20,0,0"
+                            SelectedColour="{Binding Path=PickerSelectedColour, Mode=TwoWay}"
+                            SelectedColourChanged="PickerSelectedColourChangedEvent" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-            </Grid>
-        </GroupBox>
+            </GroupBox>
 
-        <StackPanel Grid.Column="2">
-            <StackPanel>
-                <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Effects">
-                    <StackPanel Margin="0,10,0,10">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
-                                <TextBlock Style="{StaticResource CustomTextBlockStyle}"
-                                           FontSize="14"
+            <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Effects" Margin="0, 5, 0, 0">
+                <StackPanel Margin="0,10,0,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
                                            Text="Step duration: "
                                            Margin="0,0,5,0"
                                            ToolTip="Interval of time (unknown unit) between each change of colour." />
-                                <TextBox Style="{StaticResource CustomTextBoxStyle}"
+                            <TextBox Style="{StaticResource CustomTextBoxStyle}"
                                          Width="28" 
                                          Text="{Binding Path=StepDurationText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          PreviewTextInput="TextBoxIsDecNumberInput"
                                          TextChanged="StepDurationTextBoxTextChangedEvent" />
-                            </StackPanel>
+                        </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
-                                <TextBlock Style="{StaticResource CustomTextBlockStyle}"
-                                           FontSize="14"
+                        <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
                                            Text="Enable breathing mode"
                                            VerticalAlignment="Center"
                                            Margin="0,0,5,0"
                                            ToolTip="Enable or disable breathing effect (smooth pulsing). Flashing mode will override this effect if set." />
-                                <CheckBox Style="{StaticResource CustomCheckBoxStyle}"
+                            <CheckBox Style="{StaticResource CustomCheckBoxStyle}"
                                           VerticalAlignment="Stretch" 
                                           Margin="5,1,0,0"
                                           IsChecked="{Binding Path=BreathingModeEnabled, Mode=TwoWay}" />
-                            </StackPanel>
+                        </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" 
+                        <StackPanel Orientation="Horizontal" 
                                         Margin="20,10,0,0">
-                                <TextBlock Style="{StaticResource CustomTextBlockStyle}"
-                                           FontSize="14"
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
                                            Text="Flashing speed: "
                                            Margin="0,0,5,0"
                                            VerticalAlignment="Center"
                                            ToolTip="Flashing mode speed (&quot;sharp&quot; pulsing)" />
-                                <ComboBox Style="{StaticResource CustomComboBoxStyle}"
+                            <ComboBox Style="{StaticResource CustomComboBoxStyle}"
                                           ItemsSource="{Binding Path=FlashingSpeedList, Mode=OneWay}"
                                           DisplayMemberPath="DisplayName"
                                           SelectedIndex="{Binding Path=FlashingSpeedSelectedIndex, Mode=TwoWay}" />
-                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                </GroupBox>
+                </StackPanel>
+            </GroupBox>
 
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Button Style="{StaticResource CustomButtonStyle}"
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Style="{StaticResource CustomButtonStyle}"
                             Margin="0,20,5,20" 
                             Padding="15"
                             Content="Apply"
                             ToolTip="Apply new colours and effects. Unloads any running scripts.">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding ApplyCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Button>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding ApplyCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                    <Button Style="{StaticResource CustomButtonStyle}"
+                <Button Style="{StaticResource CustomButtonStyle}"
                             Margin="0,20,0,20" 
                             HorizontalAlignment="Center"
                             Padding="15"
                             Content="Disable all lighting"
                             ToolTip="Disable all lighting. Unloads any running scripts.">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding DisableLightingCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Button>
-                </StackPanel>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding DisableLightingCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
             </StackPanel>
+        </StackPanel>
 
-            <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Scripts">
-                <StackPanel Margin="25,10,25,10" Orientation="Vertical">
-                    <TextBlock Style="{StaticResource CustomTextBlockStyle}" 
-                               Text="Click on any one of the following scripts to run them:"
-                               TextWrapping="Wrap"
-                               FontSize="14"
-                               Margin="0,0,0,10" />
-                    
-                    <ListView Style="{StaticResource CustomListViewStyle}"
-                              Width="150" 
-                              Height="150"
-                              ItemsSource="{Binding Path=ScriptsList, Mode=OneWay}"
-                              DisplayMemberPath="Name"
-                              SelectionMode="Single"
-                              SelectedIndex="{Binding Path=ScriptsSelectedIndex, Mode=TwoWay}"
-                              SelectionChanged="ScriptsListSelectedItemChangedEvent">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem" BasedOn="{StaticResource CustomListViewItemStyle}">
-                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ScriptsListItemPreviewMouseLeftButtonDown" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+        <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Scripts" Grid.Column="2">
+            <StackPanel Margin="25,10,25,10" Orientation="Vertical">
+                <ListView Style="{StaticResource CustomListViewStyle}"
+                                  Width="150" 
+                                  Height="200"
+                                  ItemsSource="{Binding Path=ScriptsList, Mode=OneWay}"
+                                  DisplayMemberPath="Name"
+                                  SelectionMode="Single"
+                                  SelectedIndex="{Binding Path=ScriptsSelectedIndex, Mode=TwoWay}"
+                                  SelectionChanged="ScriptsListSelectedItemChangedEvent">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource CustomListViewItemStyle}">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ScriptsListItemPreviewMouseLeftButtonDown" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
 
-                    <Button Style="{StaticResource CustomButtonStyle}"
+                <Button Style="{StaticResource CustomButtonStyle}"
                             VerticalAlignment="Center"
                             Margin="0,10,0,0"
                             Content="Stop running script"
                             IsEnabled="{Binding Path=StopRunningScriptBtnEnabled, Mode=OneWay}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding StopRunningScriptCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Button>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding StopRunningScriptCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
-                    <Button Style="{StaticResource CustomButtonStyle}"
+                <Button Style="{StaticResource CustomButtonStyle}"
                             VerticalAlignment="Center"
                             Margin="0,10,0,0"
                             Content="Open script log">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding OpenScriptLogCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Button>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding OpenScriptLogCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>

@@ -56,11 +56,6 @@ namespace MSIRGB
             }
         }
 
-        public void ColourCodeTextBoxTextChangedEvent(object sender, TextChangedEventArgs e)
-        {
-            ((MainWindowViewModel)DataContext).ColourCodeTextBoxTextChangedEvent((string)((Control)sender).Tag);
-        }
-
         public void StepDurationTextBoxTextChangedEvent(object sender, TextChangedEventArgs e)
         {
             ((MainWindowViewModel)DataContext).StepDurationTextBoxTextChangedEvent();

@@ -1,4 +1,4 @@
--- ISC License
+﻿-- ISC License
 --
 -- Copyright © 2017, Simonas Kazlauskas
 -- Copyright © 2018, Pedro Fanha

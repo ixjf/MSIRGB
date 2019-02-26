@@ -44,7 +44,11 @@ namespace MSIRGB
         {
             foreach(Byte index in Range(1,8))
             {
-                colours.Add(_lighting.GetColour(index).Value);
+                var c = _lighting.GetColour(index).Value;
+                c.R *= 0x11; // Colour is exposed as 12-bit depth, but colour picker expects 24-bit depth
+                c.G *= 0x11;
+                c.B *= 0x11;
+                colours.Add(c);
             }
 
             stepDuration = _lighting.GetStepDuration();
@@ -63,7 +67,11 @@ namespace MSIRGB
 
             foreach(Byte index in Range(1, 8))
             {
-                _lighting.SetColour(index, colours[index - 1]);
+                var c = colours[index - 1];
+                c.R /= 0x11; // Colour must be passed with 12-bit depth
+                c.G /= 0x11;
+                c.B /= 0x11;
+                _lighting.SetColour(index, c);
             }
 
             _lighting.SetStepDuration(stepDuration);

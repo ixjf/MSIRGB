@@ -68,12 +68,7 @@ namespace MSIRGB {
 
        bool SetColour(Byte index, Color colour)
        {
-           try {
-               return lighting->set_colour(index, logic::Lighting::Colour {colour.R, colour.G, colour.B});
-           }
-           catch (std::invalid_argument &) {
-               return false;
-           }
+           return lighting->set_colour(index, logic::Lighting::Colour {colour.R, colour.G, colour.B});
        }
 
        Nullable<Color> GetColour(Byte index)

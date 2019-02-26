@@ -282,68 +282,6 @@ namespace MSIRGB
             return true;
         }
 
-        public void ColourCodeTextBoxTextChangedEvent(string textBoxId)
-        {
-            string colourCodeText = String.Empty;
-
-            if (textBoxId == "R")
-            {
-                colourCodeText = ColourRText;
-            }
-            else if (textBoxId == "G")
-            {
-                colourCodeText = ColourGText;
-            }
-            else if (textBoxId == "B")
-            {
-                colourCodeText = ColourBText;
-            }
-
-            // Try to parse the colour code here
-            byte colourCode;
-
-            // But check if the value is in valid range first
-            if (String.IsNullOrEmpty(colourCodeText))
-            {
-                colourCodeText = "0";
-                colourCode = 0;
-            }
-            else
-            {
-                if (!byte.TryParse(colourCodeText, out colourCode))
-                {
-                    colourCodeText = "255";
-                    colourCode = 255;
-                }
-            }
-
-            // Update the text box & colour picker
-            if (textBoxId == "R")
-            {
-                ColourRText = colourCodeText;
-
-                PickerSelectedColour = Color.FromRgb(colourCode,
-                                                     PickerSelectedColour.G,
-                                                     PickerSelectedColour.B);
-            }
-            else if (textBoxId == "G")
-            {
-                ColourGText = colourCodeText;
-
-                PickerSelectedColour = Color.FromRgb(PickerSelectedColour.R,
-                                                     colourCode,
-                                                     PickerSelectedColour.B);
-            }
-            else if (textBoxId == "B")
-            {
-                ColourBText = colourCodeText;
-
-                PickerSelectedColour = Color.FromRgb(PickerSelectedColour.R,
-                                                     PickerSelectedColour.G,
-                                                     colourCode);
-            }
-        }
-
         public void StepDurationTextBoxTextChangedEvent()
         {
             // Is the value in valid range?
