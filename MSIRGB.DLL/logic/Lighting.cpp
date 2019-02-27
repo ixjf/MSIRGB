@@ -19,18 +19,42 @@ namespace logic {
     Lighting::Lighting(bool ignore_mb_check)
         : batch_calls(false), curr_batch(Batch {})
     {
+        csection_mutex = CreateMutex(NULL, false, L"Global\\MSIRGB_Mutex");
+
+        if (csection_mutex == NULL) {
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
         // Check MB support
         if (!ignore_mb_check && !has_supported_mb()) {
             throw Exception(ErrorCode::MotherboardNotSupported);
         }
 
         // Load SIO driver
+        enter_critical_section();
         try {
             sio.reset(new Sio);
         }
         catch (IsaDrv::Exception &) {
+            leave_critical_section();
             throw Exception(ErrorCode::DriverLoadFailed);
         }
+        leave_critical_section();
+    }
+
+    Lighting::~Lighting()
+    {
+        CloseHandle(csection_mutex);
+    }
+
+    void Lighting::enter_critical_section() const
+    {
+        WaitForSingleObject(csection_mutex, INFINITE);
+    }
+
+    void Lighting::leave_critical_section() const
+    {
+        ReleaseMutex(csection_mutex);
     }
 
     bool Lighting::batch_begin()
@@ -117,9 +141,13 @@ namespace logic {
 
         auto [byte_no, nibble_pos] = colour_cell_pos_from_index(index);
 
+        enter_critical_section();
+
         std::uint8_t r_cell = sio->read_uint8_from_bank(RGB_BANK, 0xF0 + byte_no);
         std::uint8_t g_cell = sio->read_uint8_from_bank(RGB_BANK, 0xF4 + byte_no);
         std::uint8_t b_cell = sio->read_uint8_from_bank(RGB_BANK, 0xF8 + byte_no);
+
+        leave_critical_section();
 
         std::uint8_t r = (r_cell >> (!nibble_pos * 4)) & 0x0F;
         std::uint8_t g = (g_cell >> (!nibble_pos * 4)) & 0x0F;
@@ -146,8 +174,12 @@ namespace logic {
 
     bool Lighting::is_breathing_mode_enabled() const
     {
+        enter_critical_section();
+
         // See Lighting::batch_commit for details
         std::uint8_t val_at_e4 = sio->read_uint8_from_bank(RGB_BANK, 0xE4);
+
+        leave_critical_section();
 
         return (val_at_e4 & 0b00001000) != 0b0;
     }
@@ -169,11 +201,15 @@ namespace logic {
 
     std::uint16_t Lighting::get_step_duration() const
     {
+        enter_critical_section();
+
         // See Lighting::batch_commit for details
 
         std::uint8_t val_at_fe = sio->read_uint8_from_bank(RGB_BANK, 0xFE);
 
         std::uint8_t val_at_ff = sio->read_uint8_from_bank(RGB_BANK, 0xFF);
+
+        leave_critical_section();
 
         return (std::uint16_t)(((val_at_ff & 0b1) << 8) | val_at_fe);
     }
@@ -193,7 +229,11 @@ namespace logic {
 
     Lighting::FlashingSpeed Lighting::get_flash_speed() const
     {
+        enter_critical_section();
+
         std::uint8_t val_at_e4 = sio->read_uint8_from_bank(RGB_BANK, 0xE4);
+
+        leave_critical_section();
 
         std::uint8_t flash_speed = val_at_e4 & 0b00000111;
 
@@ -261,6 +301,8 @@ namespace logic {
 
     void Lighting::batch_commit()
     {
+        enter_critical_section();
+
         std::uint8_t val_at_e4 = sio->read_uint8_from_bank(RGB_BANK, 0xE4);
         std::uint8_t val_at_2c = sio->read_uint8_from_bank(UNKNOWN_BANK, 0x2C);
         std::uint8_t val_at_e0 = sio->read_uint8_from_bank(RGB_BANK, 0xE0);
@@ -415,5 +457,7 @@ namespace logic {
         // Disable batch state
         batch_calls = false;
         curr_batch = Batch {};
+
+        leave_critical_section();
     }
 }

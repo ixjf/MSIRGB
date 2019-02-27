@@ -20,7 +20,8 @@ namespace MSIRGB {
 
         enum class ErrorCode : int {
             DriverLoadFailed = static_cast<int>(logic::Lighting::ErrorCode::DriverLoadFailed),
-            MotherboardNotSupported = static_cast<int>(logic::Lighting::ErrorCode::MotherboardNotSupported)
+            MotherboardNotSupported = static_cast<int>(logic::Lighting::ErrorCode::MotherboardNotSupported),
+            LoadFailed = static_cast<int>(logic::Lighting::ErrorCode::LoadFailed),
         };
 
         ref class Exception : public ::Exception {

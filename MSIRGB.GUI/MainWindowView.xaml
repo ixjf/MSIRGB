@@ -158,6 +158,12 @@
 
         <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Scripts" Grid.Column="2" VerticalAlignment="Top">
             <StackPanel Margin="25,10,25,10" Orientation="Vertical" >
+                <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+                           TextWrapping="Wrap"
+                           Margin="0, 0, 0, 10"
+                           Text="Alternatively, choose from between the available scripts. 
+                           These automatically run on Windows startup." />
+
                 <ListView Style="{StaticResource CustomListViewStyle}"
                                   Width="150" 
                                   Height="200"

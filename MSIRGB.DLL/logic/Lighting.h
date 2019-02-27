@@ -10,6 +10,7 @@ namespace logic {
         enum class ErrorCode {
             DriverLoadFailed,
             MotherboardNotSupported,
+            LoadFailed,
         };
 
         class Exception : public std::runtime_error {
@@ -48,7 +49,10 @@ namespace logic {
 
 
         Lighting                                            (bool ignore_mb_check);
-       ~Lighting                                            () = default;
+       ~Lighting                                            ();
+
+        void                    enter_critical_section      () const;
+        void                    leave_critical_section      () const;
 
         bool                    batch_begin                 ();
 
@@ -76,6 +80,8 @@ namespace logic {
             std::optional<std::uint16_t>                    step_duration;
             std::optional<FlashingSpeed>                    flash_speed;
         };
+
+        HANDLE                                              csection_mutex;
 
         std::unique_ptr<Sio>                                sio;
 

@@ -41,9 +41,6 @@ namespace logic {
             std::uint8_t  data;
         };
 
-        void            enter_critical_section              () const;
-        void            leave_critical_section              () const;
-
         void            inc_driver_instance_counter         () const;
         bool            dec_driver_instance_counter         () const;
 
@@ -59,6 +56,5 @@ namespace logic {
 
         HANDLE          drv_handle;
         HANDLE          drv_handle_count_sem;
-        HANDLE          op_mutex_handle;
     };
 }

@@ -26,7 +26,7 @@
                 <TextBox 
                     x:Name="RedChannelTextBox" 
                     Style="{StaticResource CustomTextBoxStyle}"
-                    Width="13"
+                    Width="18"
                     Margin="5, 0, 0, 0"
                     PreviewTextInput="TextBox_PreviewTextInput"
                     TextChanged="TextBox_TextChanged">0</TextBox>
@@ -50,7 +50,7 @@
                 <TextBox 
                     x:Name="GreenChannelTextBox" 
                     Style="{StaticResource CustomTextBoxStyle}"
-                    Width="13"
+                    Width="18"
                     Margin="5, 0, 0, 0"
                     PreviewTextInput="TextBox_PreviewTextInput"
                     TextChanged="TextBox_TextChanged">0</TextBox>
@@ -75,7 +75,7 @@
                     x:Name="BlueChannelTextBox" 
                     Style="{StaticResource CustomTextBoxStyle}"
                     Margin="5, 0, 0, 0"
-                    Width="13"
+                    Width="18"
                     PreviewTextInput="TextBox_PreviewTextInput"
                     TextChanged="TextBox_TextChanged">0</TextBox>
             </StackPanel>

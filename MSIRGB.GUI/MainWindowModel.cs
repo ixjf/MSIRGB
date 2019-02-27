@@ -152,7 +152,20 @@ namespace MSIRGB
                 }
                 else if (exc.GetErrorCode() == Lighting.ErrorCode.DriverLoadFailed)
                 {
-                    MessageBox.Show("Failed to load driver.", assemblyTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Failed to load driver. This could be either due to some program interfering with MSIRGB's driver, " +
+                                    "or it could be a bug. Please report this on the issue tracker at GitHub: https://github.com/ixjf/MSIRGB", 
+                                    assemblyTitle, 
+                                    MessageBoxButton.OK, 
+                                    MessageBoxImage.Error
+                                    );
+                }
+                else if (exc.GetErrorCode() == Lighting.ErrorCode.LoadFailed)
+                {
+                    MessageBox.Show("Failed to load. Please report this on the issue tracker at GitHub: https://github.com/ixjf/MSIRGB",
+                                    assemblyTitle,
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error
+                                    );
                 }
 
                 Application.Current.Shutdown();

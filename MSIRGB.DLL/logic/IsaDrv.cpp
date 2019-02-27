@@ -14,17 +14,8 @@ const auto IOCTL_WRITE_PORT_UCHAR = CTL_CODE(0x9C40, 0x802, METHOD_BUFFERED, FIL
 namespace logic {
     IsaDrv::IsaDrv()
     {
-        op_mutex_handle = CreateMutex(NULL, false, L"Global\\MSIRGB_Driver_Mutex");
-
-        if (op_mutex_handle == NULL) {
-            throw Exception(ErrorCode::LoadFailed);
-        }
-
-        enter_critical_section();
-        
         // Try to load the driver
         if (!load_drv()) {
-            leave_critical_section();
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -39,19 +30,14 @@ namespace logic {
                                 NULL);
 
         if (drv_handle == INVALID_HANDLE_VALUE) {
-            leave_critical_section();
             throw Exception(ErrorCode::LoadFailed);
         }
 
         inc_driver_instance_counter();
-
-        leave_critical_section();
     }
 
     IsaDrv::~IsaDrv()
     {
-        enter_critical_section();
-
         CloseHandle(drv_handle);
 
         if (dec_driver_instance_counter()) {
@@ -59,20 +45,6 @@ namespace logic {
         }
         
         CloseHandle(drv_handle_count_sem);
-
-        leave_critical_section();
-
-        CloseHandle(op_mutex_handle);
-    }
-
-    void IsaDrv::enter_critical_section() const
-    {
-        WaitForSingleObject(op_mutex_handle, INFINITE);
-    }
-
-    void IsaDrv::leave_critical_section() const
-    {
-        ReleaseMutex(op_mutex_handle);
     }
 
     void IsaDrv::inc_driver_instance_counter() const
@@ -97,7 +69,6 @@ namespace logic {
         }
 
         if (!SetSecurityDescriptorDacl(&sd, true, NULL, false)) {
-            leave_critical_section();
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -109,15 +80,12 @@ namespace logic {
         drv_handle_count_sem = CreateSemaphore(&sa, 0, 2, L"Global\\MSIRGB_Driver_Instance_Counter");
 
         if (drv_handle_count_sem == NULL) {
-            leave_critical_section();
             throw Exception(ErrorCode::LoadFailed);
         }
     }
 
     std::uint8_t IsaDrv::inb(std::uint8_t port) const
     {
-        enter_critical_section();
-
         IoctlInputBuffer input_buf;
         input_buf.port = static_cast<std::uint16_t>(port);
         input_buf.data = 0;
@@ -135,15 +103,11 @@ namespace logic {
             //std::cout << __FUNCTION__ << " DeviceIoCtrl failed with error " << GetLastError() << std::endl;
         }
 
-        leave_critical_section();
-
         return output_buf.data;
     }
 
     void IsaDrv::outb(std::uint8_t port, std::uint8_t data) const
     {
-        enter_critical_section();
-
         IoctlInputBuffer input_buf {0};
         input_buf.port = static_cast<std::uint16_t>(port);
         input_buf.data = data;
@@ -158,8 +122,6 @@ namespace logic {
                              NULL)) {
             //std::cout << __FUNCTION__ << " DeviceIoCtrl failed with error " << GetLastError() << std::endl;
         }
-
-        leave_critical_section();
     }
 
     DWORD IsaDrv::install_drv()
