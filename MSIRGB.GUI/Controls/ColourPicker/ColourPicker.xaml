@@ -11,13 +11,13 @@
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Vertical">
             <TextBlock 
-                Style="{StaticResource CustomTextBlockStyle}" 
-                Foreground="{StaticResource GamingRed}">Red: </TextBlock>
+                Style="{StaticResource CustomTextBlockStyle}"
+                Foreground="{StaticResource NiceSilver}">Red: </TextBlock>
             <StackPanel Orientation="Horizontal">
                 <Slider 
                     x:Name="RedChannelSlider" 
                     Style="{DynamicResource CustomSliderStyle}"
-                    Width="128"  
+                    Width="200"  
                     Minimum="0"
                     Maximum="15"
                     Ticks="{StaticResource Ticks}"
@@ -36,12 +36,12 @@
         <StackPanel Orientation="Vertical" Margin="0, 5, 0, 0">
             <TextBlock 
                 Style="{StaticResource CustomTextBlockStyle}"
-                 Foreground="{StaticResource GamingRed}">Green:</TextBlock>
+                Foreground="{StaticResource NiceSilver}">Green:</TextBlock>
             <StackPanel Orientation="Horizontal">
                 <Slider 
                     x:Name="GreenChannelSlider" 
                     Style="{StaticResource CustomSliderStyle}"
-                    Width="128" 
+                    Width="200" 
                     Minimum="0"
                     Maximum="15"
                     Ticks="{StaticResource Ticks}"
@@ -60,12 +60,12 @@
         <StackPanel Orientation="Vertical" Margin="0, 5, 0, 0">
             <TextBlock 
                 Style="{StaticResource CustomTextBlockStyle}"
-                 Foreground="{StaticResource GamingRed}">Blue:</TextBlock>
+                Foreground="{StaticResource NiceSilver}">Blue:</TextBlock>
             <StackPanel Orientation="Horizontal">
                 <Slider 
                     x:Name="BlueChannelSlider" 
                     Style="{StaticResource CustomSliderStyle}"
-                    Width="128" 
+                    Width="200" 
                     Minimum="0"
                     Maximum="15"
                     Ticks="{StaticResource Ticks}"

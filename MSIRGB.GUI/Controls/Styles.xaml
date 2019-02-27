@@ -408,7 +408,7 @@
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="TextTrimming" Value="None" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{StaticResource NiceSilver}" />
+        <Setter Property="Foreground" Value="{StaticResource GamingRed}" />
         <Setter Property="FontFamily" Value="{StaticResource FiraMono}" />
     </Style>
 
@@ -857,13 +857,13 @@
     <!-- Slider style -->
     <SolidColorBrush x:Key="SliderThumb.Static.Foreground" Color="{Binding Source={StaticResource QuiteBlack}, Path=Color}"/>
     <SolidColorBrush x:Key="SliderThumb.MouseOver.Background" Color="{Binding Source={StaticResource DarkGrey}, Path=Color}"/>
-    <SolidColorBrush x:Key="SliderThumb.MouseOver.Border" Color="{Binding Source={StaticResource NiceSilver}, Path=Color}"/>
+    <SolidColorBrush x:Key="SliderThumb.MouseOver.Border" Color="{Binding Source={StaticResource GamingRed}, Path=Color}"/>
     <SolidColorBrush x:Key="SliderThumb.Pressed.Background" Color="{Binding Source={StaticResource NiceSilver}, Path=Color}"/>
-    <SolidColorBrush x:Key="SliderThumb.Pressed.Border" Color="{Binding Source={StaticResource NiceSilver}, Path=Color}"/>
+    <SolidColorBrush x:Key="SliderThumb.Pressed.Border" Color="{Binding Source={StaticResource GamingRed}, Path=Color}"/>
     <SolidColorBrush x:Key="SliderThumb.Disabled.Background" Color="#FFF0F0F0"/>
     <SolidColorBrush x:Key="SliderThumb.Disabled.Border" Color="#FFD9D9D9"/>
     <SolidColorBrush x:Key="SliderThumb.Static.Background" Color="{Binding Source={StaticResource QuiteBlack}, Path=Color}"/>
-    <SolidColorBrush x:Key="SliderThumb.Static.Border" Color="{Binding Source={StaticResource NiceSilver}, Path=Color}"/>
+    <SolidColorBrush x:Key="SliderThumb.Static.Border" Color="{Binding Source={StaticResource GamingRed}, Path=Color}"/>
     <ControlTemplate x:Key="SliderThumbHorizontalTop" TargetType="{x:Type Thumb}">
         <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
             <Path x:Name="grip" Data="M 0,6 C0,6 5.5,0 5.5,0 5.5,0 11,6 11,6 11,6 11,18 11,18 11,18 0,18 0,18 0,18 0,6 0,6 z" Fill="{StaticResource SliderThumb.Static.Background}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{StaticResource SliderThumb.Static.Border}" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
@@ -903,7 +903,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <SolidColorBrush x:Key="SliderThumb.Track.Border" Color="{Binding Source={StaticResource QuiteBlack}, Path=Color}"/>
-    <SolidColorBrush x:Key="SliderThumb.Track.Background" Color="{Binding Source={StaticResource NiceSilver}, Path=Color}"/>
+    <SolidColorBrush x:Key="SliderThumb.Track.Background" Color="{Binding Source={StaticResource GamingRed}, Path=Color}"/>
     <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="Background" Value="Transparent"/>

@@ -156,8 +156,8 @@
             </StackPanel>
         </StackPanel>
 
-        <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Scripts" Grid.Column="2">
-            <StackPanel Margin="25,10,25,10" Orientation="Vertical">
+        <GroupBox Style="{StaticResource CustomGroupBoxStyle}" Header="Scripts" Grid.Column="2" VerticalAlignment="Top">
+            <StackPanel Margin="25,10,25,10" Orientation="Vertical" >
                 <ListView Style="{StaticResource CustomListViewStyle}"
                                   Width="150" 
                                   Height="200"
