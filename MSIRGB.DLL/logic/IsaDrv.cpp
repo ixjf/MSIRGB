@@ -14,56 +14,21 @@ const auto IOCTL_WRITE_PORT_UCHAR = CTL_CODE(0x9C40, 0x802, METHOD_BUFFERED, FIL
 namespace logic {
     IsaDrv::IsaDrv()
     {
-        // We need to lock this section so that neither MSIRGB nor the script service
-        // mess up between the load_drv call and opening a handle to the driver
-        op_mutex_handle = CreateMutex(NULL, false, L"Global\\MSIRGB_Driver_Load_Lock");
-        // initial ownership must be set to false above, else the script service
-        // might grab a handle to the mutex before the GUI tries to release it
-        // and then releasing the mutex won't work, because there are two handles to it
+        op_mutex_handle = CreateMutex(NULL, false, L"Global\\MSIRGB_Driver_Mutex");
 
         if (op_mutex_handle == NULL) {
             throw Exception(ErrorCode::LoadFailed);
         }
 
-        // Wait for control of the mutex
-        WaitForSingleObject(op_mutex_handle, INFINITE);
+        enter_critical_section();
         
         // Try to load the driver
         if (!load_drv()) {
-            ReleaseMutex(op_mutex_handle);
-            CloseHandle(op_mutex_handle);
+            leave_critical_section();
             throw Exception(ErrorCode::LoadFailed);
         }
 
-        // We use a semaphore to keep track of how many handles to the driver service
-        // are open at the same time. There can be at most two - one from the script service
-        // and one from the GUI.
-        SECURITY_DESCRIPTOR sd;
-        
-        if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION)) {
-            ReleaseMutex(op_mutex_handle);
-            CloseHandle(op_mutex_handle);
-            throw Exception(ErrorCode::LoadFailed);
-        }
-
-        if (!SetSecurityDescriptorDacl(&sd, true, NULL, false)) {
-            ReleaseMutex(op_mutex_handle);
-            CloseHandle(op_mutex_handle);
-            throw Exception(ErrorCode::LoadFailed);
-        }
-
-        SECURITY_ATTRIBUTES sa;
-        sa.nLength = sizeof(sa);
-        sa.lpSecurityDescriptor = &sd;
-        sa.bInheritHandle = false;
-
-        drv_handle_count_sem = CreateSemaphore(&sa, 0, 2, L"Global\\MSIRGB_Driver_Counter");
-
-        if (drv_handle_count_sem == NULL) {
-            ReleaseMutex(op_mutex_handle);
-            CloseHandle(op_mutex_handle);
-            throw Exception(ErrorCode::LoadFailed);
-        }
+        create_open_driver_instance_counter();
 
         drv_handle = CreateFile((L"\\\\.\\"s + DRV_DEVICE_NAME).c_str(),
                                 GENERIC_READ | GENERIC_WRITE,
@@ -74,42 +39,85 @@ namespace logic {
                                 NULL);
 
         if (drv_handle == INVALID_HANDLE_VALUE) {
-            ReleaseMutex(op_mutex_handle);
-            CloseHandle(op_mutex_handle);
-            CloseHandle(drv_handle_count_sem);
-            unload_drv();
+            leave_critical_section();
             throw Exception(ErrorCode::LoadFailed);
         }
 
-        // Increase the count of handles open to the driver service by 1
-        ReleaseSemaphore(drv_handle_count_sem, 1, NULL);
+        inc_driver_instance_counter();
 
-        ReleaseMutex(op_mutex_handle);
+        leave_critical_section();
     }
 
     IsaDrv::~IsaDrv()
     {
-        // We also need to lock this section. The script service could be deleting
-        // the service while the GUI was trying to start it again.
-        WaitForSingleObject(op_mutex_handle, INFINITE);
+        enter_critical_section();
 
         CloseHandle(drv_handle);
 
-        // If there are no more handles to the driver service, unload it
-        // WaitForSingleObject decrements the count already when called
-        if (WaitForSingleObject(drv_handle_count_sem, 0) == WAIT_TIMEOUT) {
+        if (dec_driver_instance_counter()) {
             unload_drv();
         }
         
         CloseHandle(drv_handle_count_sem);
 
-        ReleaseMutex(op_mutex_handle);
+        leave_critical_section();
 
         CloseHandle(op_mutex_handle);
     }
 
+    void IsaDrv::enter_critical_section() const
+    {
+        WaitForSingleObject(op_mutex_handle, INFINITE);
+    }
+
+    void IsaDrv::leave_critical_section() const
+    {
+        ReleaseMutex(op_mutex_handle);
+    }
+
+    void IsaDrv::inc_driver_instance_counter() const
+    {
+        ReleaseSemaphore(drv_handle_count_sem, 1, NULL);
+    }
+
+    bool IsaDrv::dec_driver_instance_counter() const
+    {
+        return WaitForSingleObject(drv_handle_count_sem, 0) == WAIT_TIMEOUT; // returns true if this was the last instance
+    }
+
+    void IsaDrv::create_open_driver_instance_counter()
+    {
+        // We use a semaphore to keep track of how many handles to the driver service
+        // are open at the same time. There can be at most two - one from the script service
+        // and one from the GUI.
+        SECURITY_DESCRIPTOR sd;
+        
+        if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION)) {
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
+        if (!SetSecurityDescriptorDacl(&sd, true, NULL, false)) {
+            leave_critical_section();
+            throw Exception(ErrorCode::LoadFailed);
+        }
+
+        SECURITY_ATTRIBUTES sa;
+        sa.nLength = sizeof(sa);
+        sa.lpSecurityDescriptor = &sd;
+        sa.bInheritHandle = false;
+
+        drv_handle_count_sem = CreateSemaphore(&sa, 0, 2, L"Global\\MSIRGB_Driver_Instance_Counter");
+
+        if (drv_handle_count_sem == NULL) {
+            leave_critical_section();
+            throw Exception(ErrorCode::LoadFailed);
+        }
+    }
+
     std::uint8_t IsaDrv::inb(std::uint8_t port) const
     {
+        enter_critical_section();
+
         IoctlInputBuffer input_buf;
         input_buf.port = static_cast<std::uint16_t>(port);
         input_buf.data = 0;
@@ -127,11 +135,15 @@ namespace logic {
             //std::cout << __FUNCTION__ << " DeviceIoCtrl failed with error " << GetLastError() << std::endl;
         }
 
+        leave_critical_section();
+
         return output_buf.data;
     }
 
     void IsaDrv::outb(std::uint8_t port, std::uint8_t data) const
     {
+        enter_critical_section();
+
         IoctlInputBuffer input_buf {0};
         input_buf.port = static_cast<std::uint16_t>(port);
         input_buf.data = data;
@@ -146,6 +158,8 @@ namespace logic {
                              NULL)) {
             //std::cout << __FUNCTION__ << " DeviceIoCtrl failed with error " << GetLastError() << std::endl;
         }
+
+        leave_critical_section();
     }
 
     DWORD IsaDrv::install_drv()
