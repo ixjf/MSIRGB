@@ -18,26 +18,26 @@
 -- cpu, gpu, fan or hue
 local mode = 'hue'
 
--- Min and Max speed of the CPU fan
+-- min and max speed of the CPU fan
 local fan = {700, 1800}
--- temperatur minimum and max, applies for gpu and cpu
+-- temperature min and max, applies for gpu and cpu
 local temp = {35, 65}
 
--- Max CPU temperature and color for alarm
+-- max CPU temperature and color for alarm
 local cpu = {}
 cpu['max_temp'] = 60
 cpu['r'] = 0
 cpu['g'] = 0
 cpu['b'] = 255
 
--- Max GPU temperature and color for alarm
+-- max GPU temperature and color for alarm
 local gpu = {}
 gpu['max_temp'] = 70
 gpu['r'] = 0
 gpu['g'] = 255
 gpu['b'] = 0
 
--- Max MB temperature and color for alarm
+-- max MB temperature and color for alarm
 local mb = {}
 mb['max_temp'] = 50
 mb['r'] = 255
@@ -103,22 +103,27 @@ function Alarm(r, g, b)
     os.sleep(200)
 end
 
-function Color(value, temp1, temp2)
-    local percent = (value - temp1) / (temp2 - temp1)
-    local color = color_max - percent * (color_max - color_min)
-    return color
-end
-
-local min = temp[1]
-local max = temp[2]
-if mode == 'cpu' then
-    hardware = 'TCPU'
-elseif mode == 'gpu' then
-    hardware = 'TGPU1DIO'
-elseif mode == 'fan' then
-    hardware = 'FCPU'
-    min = fan[1]
-    max = fan[2]
+if Aida64.IsInstalledAndRunning() then
+    min = temp[1]
+    max = temp[2]
+    if mode == 'cpu' then
+        hardware = 'TCPU'
+    elseif mode == 'gpu' then
+        hardware = 'TGPU1DIO'
+        if not Aida64.GetSensorValue(hardware) then
+            print('GPU temparature is only available in paid version of AIDA64!')
+            print('Switching to hue mode...')
+            mode = 'hue'
+        end
+    elseif mode == 'fan' then
+        hardware = 'FCPU'
+        min = fan[1]
+        max = fan[2]
+    end
+else
+    print('AIDA64 is not running!')
+    print('Switching to hue mode...')
+    mode = 'hue'
 end
 
 local color = 0
@@ -126,29 +131,40 @@ local alarm = false
 while true do
     if Aida64.IsInstalledAndRunning() then
         cpu['curr_temp'] = Aida64.GetSensorValue('TCPU')
-        gpu['curr_temp'] = Aida64.GetSensorValue('TGPU1DIO')
         mb['curr_temp'] = Aida64.GetSensorValue('TMOBO')
-    end
-    if mode ~= 'hue' then
-        if Aida64.IsInstalledAndRunning() then
-            local hardware_value = Aida64.GetSensorValue(hardware)
-            color = Color(hardware_value, min, max)
-        end
-    else
-        color = color + color_steps
-        if color == 360 then
-            color = 0
+        gpu['curr_temp'] = Aida64.GetSensorValue('TGPU1DIO')
+
+        -- temperature alarm
+        local devices = {cpu, gpu, mb}
+        for devicecount=1,3 do
+            local device = devices[devicecount]
+            -- check if we really got the value (non-paid version for gpu temparature)
+            if device['curr_temp'] then
+                if device['curr_temp'] >= device['max_temp'] then
+                    Alarm(device['r'], device['g'], device['b'])
+                    alarm = true
+                end
+            end
         end
     end
 
-    local devices = {cpu, gpu, mb}
-    for devicecount=1,3 do
-        if devices[devicecount]['curr_temp'] >= devices[devicecount]['max_temp'] then
-            Alarm(devices[devicecount]['r'], devices[devicecount]['g'], devices[devicecount]['b'])
-            alarm = true
-        end
-    end
     if alarm == false then
+        if mode ~= 'hue' then
+            if Aida64.IsInstalledAndRunning() then
+                local hardware_value = Aida64.GetSensorValue(hardware)
+                local percent = (hardware_value - min) / (max - min)
+                color = color_max - percent * (color_max - color_min)
+            else
+                print('AIDA64 is not running!')
+            end
+        else
+            color = color + color_steps
+            if color == 360 then
+                color = 0
+            end
+        end
+
+        -- finally, set the color; for all modes
         local r, g, b = HSVToRGB(color, 1.0, 1.0)
         for i = 1, 8 do
             Lighting.SetColour(i, r, g, b)

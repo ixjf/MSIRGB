@@ -15,12 +15,12 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
--- Min and Max speed of the CPU fan
+-- min and max speed of the CPU fan
 local fan = {700, 1800}
 
 local color_min = 0
 local color_max = 200
-local delay = 200
+local delay = 100
 
 Lighting.SetStepDuration(511)
 Lighting.SetFlashingSpeed(0)
@@ -39,19 +39,27 @@ function HSVToRGB( hue, saturation, value )
     local q = value * ( 1 - saturation * hue_sector_offset );
     local t = value * ( 1 - saturation * ( 1 - hue_sector_offset ) );
 
+    local r
+    local g
+    local b
     if hue_sector == 0 then
-        return value, t, p;
+        r, g, b = value, t, p;
     elseif hue_sector == 1 then
-        return q, value, p;
+        r, g, b = q, value, p;
     elseif hue_sector == 2 then
-        return p, value, t;
+        r, g, b = p, value, t;
     elseif hue_sector == 3 then
-        return p, q, value;
+        r, g, b = p, q, value;
     elseif hue_sector == 4 then
-        return t, p, value;
-    elseif hue_sector == 5 then
-        return value, p, q;
+        r, g, b = t, p, value;
+    else
+        r, g, b = value, p, q;
     end;
+    r = tonumber(("%x"):format(r * 15):rep(2), 16)
+    g = tonumber(("%x"):format(g * 15):rep(2), 16)
+    b = tonumber(("%x"):format(b * 15):rep(2), 16)
+
+    return r, g, b
 end;
 
 while true do
@@ -61,9 +69,6 @@ while true do
         local color = color_max - percent * (color_max - color_min)
 
         local r, g, b = HSVToRGB(color, 1.0, 1.0)
-        r = tonumber(("%x"):format(r * 15):rep(2), 16)
-        g = tonumber(("%x"):format(g * 15):rep(2), 16)
-        b = tonumber(("%x"):format(b * 15):rep(2), 16)
 
         for i = 1, 8 do
             Lighting.SetColour(i, r, g, b)
