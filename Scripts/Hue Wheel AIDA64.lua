@@ -68,27 +68,19 @@ function HSVToRGB(hue, saturation, value)
     local q = value * ( 1 - saturation * hue_sector_offset );
     local t = value * ( 1 - saturation * ( 1 - hue_sector_offset ) );
 
-    local r
-    local g
-    local b
     if hue_sector == 0 then
-        r, g, b = value, t, p;
+        return value, t, p;
     elseif hue_sector == 1 then
-        r, g, b = q, value, p;
+        return q, value, p;
     elseif hue_sector == 2 then
-        r, g, b = p, value, t;
+        return p, value, t;
     elseif hue_sector == 3 then
-        r, g, b = p, q, value;
+        return p, q, value;
     elseif hue_sector == 4 then
-        r, g, b = t, p, value;
-    else
-        r, g, b = value, p, q;
+        return t, p, value;
+    elseif hue_sector == 5 then
+        return value, p, q;
     end;
-    r = tonumber(("%x"):format(r * 15):rep(2), 16)
-    g = tonumber(("%x"):format(g * 15):rep(2), 16)
-    b = tonumber(("%x"):format(b * 15):rep(2), 16)
-
-    return r, g, b
 end;
 
 -- Blinks between red and configured hardware-color - the "alarm"
@@ -166,6 +158,10 @@ while true do
 
         -- finally, set the color; for all modes
         local r, g, b = HSVToRGB(color, 1.0, 1.0)
+        r = tonumber(("%x"):format(r * 15):rep(2), 16)
+        g = tonumber(("%x"):format(g * 15):rep(2), 16)
+        b = tonumber(("%x"):format(b * 15):rep(2), 16)
+
         for i = 1, 8 do
             Lighting.SetColour(i, r, g, b)
         end
