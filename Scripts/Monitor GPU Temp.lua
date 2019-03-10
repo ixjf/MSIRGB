@@ -61,9 +61,9 @@ while true do
         local color = color_max - percent * (color_max - color_min)
 
         local r, g, b = HSVToRGB(color, 1.0, 1.0)
-        r = tonumber(("%x"):format(r * 15):rep(2), 16)
-        g = tonumber(("%x"):format(g * 15):rep(2), 16)
-        b = tonumber(("%x"):format(b * 15):rep(2), 16)
+        r = tonumber(("%x"):format(r * 15), 16)
+        g = tonumber(("%x"):format(g * 15), 16)
+        b = tonumber(("%x"):format(b * 15), 16)
 
         Lighting.BatchBegin()
         for i = 1, 8 do
