@@ -85,15 +85,22 @@ end;
 
 -- Blinks between red and configured hardware-color - the "alarm"
 function Alarm(r, g, b)
+    Lighting.BatchBegin()
     for i = 1, 8 do
         Lighting.SetColour(i, 255, 0, 0)
     end
+    Lighting.BatchEnd()
     os.sleep(200)
+    Lighting.BatchBegin()
     for i = 1, 8 do
         Lighting.SetColour(i, r, g, b)
     end
+    Lighting.BatchEnd()
     os.sleep(200)
 end
+
+local min = 0
+local max = 0
 
 if Aida64.IsInstalledAndRunning() then
     min = temp[1]
@@ -163,9 +170,11 @@ while true do
         g = tonumber(("%x"):format(g * 15):rep(2), 16)
         b = tonumber(("%x"):format(b * 15):rep(2), 16)
 
+        Lighting.BatchBegin()
         for i = 1, 8 do
             Lighting.SetColour(i, r, g, b)
         end
+        Lighting.BatchEnd()
         os.sleep(delay)
     end
     alarm = false
