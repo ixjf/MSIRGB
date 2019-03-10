@@ -4,8 +4,6 @@
 #include "wmi_helper.h"
 #include "math_helper.h"
 
-const std::uint8_t INDEX_REG    = 0x4E; // All ML-supported chips are found at this port
-const std::uint8_t DATA_REG     = 0x4F; // INDEX_REG+1
 const std::uint8_t RGB_BANK     = 0x12;
 const std::uint8_t UNKNOWN_BANK = 0x09;
 
