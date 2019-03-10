@@ -27,17 +27,17 @@ Lighting.SetFlashingSpeed(0)
 Lighting.SetBreathingModeEnabled(false)
 
 -- https://gist.github.com/GigsD4X/8513963
-function HSVToRGB( hue, saturation, value )
+function HSVToRGB(hue, saturation, value)
     -- Returns the RGB equivalent of the given HSV-defined color
     -- (adapted from some code found around the web)
 
     -- Get the hue sector
-    local hue_sector = math.floor( hue / 60 );
-    local hue_sector_offset = ( hue / 60 ) - hue_sector;
+    local hue_sector = math.floor(hue / 60);
+    local hue_sector_offset = (hue / 60) - hue_sector;
 
-    local p = value * ( 1 - saturation );
-    local q = value * ( 1 - saturation * hue_sector_offset );
-    local t = value * ( 1 - saturation * ( 1 - hue_sector_offset ) );
+    local p = value * (1 - saturation);
+    local q = value * (1 - saturation * hue_sector_offset);
+    local t = value * (1 - saturation * (1 - hue_sector_offset));
 
     if hue_sector == 0 then
         return value, t, p;
@@ -65,9 +65,11 @@ while true do
         g = tonumber(("%x"):format(g * 15):rep(2), 16)
         b = tonumber(("%x"):format(b * 15):rep(2), 16)
 
+        Lighting.BatchBegin()
         for i = 1, 8 do
             Lighting.SetColour(i, r, g, b)
         end
+        Lighting.BatchEnd()
     end
     os.sleep(delay)
 end
