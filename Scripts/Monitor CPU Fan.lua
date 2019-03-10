@@ -65,9 +65,11 @@ while true do
         g = tonumber(("%x"):format(g * 15):rep(2), 16)
         b = tonumber(("%x"):format(b * 15):rep(2), 16)
 
+        Lighting.BatchBegin()
         for i = 1, 8 do
             Lighting.SetColour(i, r, g, b)
         end
+        Lighting.BatchEnd()
     end
     os.sleep(delay)
 end
