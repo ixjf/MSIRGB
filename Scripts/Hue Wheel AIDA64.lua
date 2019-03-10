@@ -144,8 +144,9 @@ while true do
         if mode ~= 'hue' then
             if Aida64.IsInstalledAndRunning() then
                 local hardware_value = Aida64.GetSensorValue(hardware)
-                local percent = (hardware_value - min) / (max - min)
+                local percent = (math.max(hardware_value, min) - min) / (max - min)
                 color = color_max - percent * (color_max - color_min)
+                color = math.max(color, color_min)
             else
                 print('AIDA64 is not running!')
             end
