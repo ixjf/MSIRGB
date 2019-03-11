@@ -15,38 +15,6 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-function HsvToRgb(h, s, v)
-    if s == 0.0 then
-        return v, v, v
-    end
-
-    local i = math.floor(h * 6.0)
-
-    local f = (h * 6.0) - i
-    local p, q, t = v * (1.0 - s), v * (1.0 - s * f), v * (1.0 - s * (1.0 - f))
-
-    i = i % 6
-
-    if i == 0 then
-        return v, t, p
-    end
-    if i == 1 then
-        return q, v, p
-    end
-    if i == 2 then
-        return p, v, t
-    end
-    if i == 3 then
-        return p, q, v
-    end
-    if i == 4 then
-        return t, p, v
-    end
-    if i == 5 then
-        return v, p, q
-    end
-end
-
 -- Adapted from nagisa/msi-rgb's Hue Wheel effect
 Lighting.BatchBegin()
 Lighting.SetStepDuration(511)
@@ -56,7 +24,7 @@ Lighting.BatchEnd()
 
 local i = 0
 while true do
-    local r, g, b = HsvToRgb((i % 98.0) / 98.0, 0.933, 1.0)
+    local r, g, b = Lighting.ColourUtils.HSVtoRGB((i % 98.0) / 98.0, 0.933, 1.0)
 
     r = tonumber(("%x"):format(r * 15), 16)
     g = tonumber(("%x"):format(g * 15), 16)

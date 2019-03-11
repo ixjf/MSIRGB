@@ -10,9 +10,12 @@ namespace MSIRGB.ScriptService.LuaBindings
     {
         private Lighting _lighting;
 
+        public ColourModule ColourUtils;
+
         public static void Register(Script script, bool ignoreMbCheck)
         {
             UserData.RegisterType(typeof(LightingModule));
+            UserData.RegisterType(typeof(ColourModule));
 
             script.Globals["Lighting"] = new LightingModule(ignoreMbCheck);
         }
@@ -20,6 +23,8 @@ namespace MSIRGB.ScriptService.LuaBindings
         private LightingModule(bool ignoreMbCheck)
         {
             _lighting = new Lighting(ignoreMbCheck); // This should just crash if it fails
+
+            ColourUtils = new ColourModule();
         }
 
         ~LightingModule()

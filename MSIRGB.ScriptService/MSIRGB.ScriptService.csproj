@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Log.cs" />
     <Compile Include="LuaBindings\Aida64Module.cs" />
+    <Compile Include="LuaBindings\ColourModule.cs" />
     <Compile Include="LuaBindings\CustomConverters.cs" />
     <Compile Include="LuaBindings\LightingModule.cs" />
     <Compile Include="LuaBindings\OsExtensions.cs" />
