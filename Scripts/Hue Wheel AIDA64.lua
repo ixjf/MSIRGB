@@ -37,43 +37,17 @@ mb["b"] = 0xf
 --
 --
 -- HSV color range (degrees)
-local hue_min = 0
-local hue_max = 200
+local hue_min = 0.0
+local hue_max = 0.60
 -- Steps for the "hue" mode
-local color_steps = 0.010
+local color_steps = 0.001
 local delay = 80 -- in milliseconds
 
+Lighting.BatchBegin()
 Lighting.SetStepDuration(511)
 Lighting.SetFlashingSpeed(0)
 Lighting.SetBreathingModeEnabled(false)
-
--- https://gist.github.com/GigsD4X/8513963
-local function HSVToRGB(hue, saturation, value)
-    -- Returns the RGB equivalent of the given HSV-defined color
-    -- (adapted from some code found around the web)
-
-    -- Get the hue sector
-    local hue_sector = math.floor(hue / 60)
-    local hue_sector_offset = (hue / 60) - hue_sector
-
-    local p = value * (1 - saturation)
-    local q = value * (1 - saturation * hue_sector_offset)
-    local t = value * (1 - saturation * (1 - hue_sector_offset))
-
-    if hue_sector == 0 then
-        return value, t, p
-    elseif hue_sector == 1 then
-        return q, value, p
-    elseif hue_sector == 2 then
-        return p, value, t
-    elseif hue_sector == 3 then
-        return p, q, value
-    elseif hue_sector == 4 then
-        return t, p, value
-    elseif hue_sector == 5 then
-        return value, p, q
-    end
-end
+Lighting.BatchEnd()
 
 -- Blinks between red and configured hardware-color - the "alarm"
 local function Alarm(r, g, b)
@@ -148,16 +122,20 @@ while true do
                 local percent = (math.max(hardware_value, min) - min) / (max - min)
                 color = hue_max - percent * (hue_max - hue_min)
                 color = math.max(color, hue_min)
+            else
+                print('AIDA64 is not running!')
+                print('Switching to hue mode...')
+                mode = 'hue'
             end
         else
             color = color + color_steps
-            if color == 360 then
+            if color == 1.0 then
                 color = 0
             end
         end
 
         -- finally, set the color for all modes
-        local r, g, b = HSVToRGB(color, 1.0, 1.0)
+        local r, g, b = Lighting.ColourUtils.HSVtoRGB(color, 1.0, 1.0)
         r = tonumber(("%x"):format(r * 15), 16)
         g = tonumber(("%x"):format(g * 15), 16)
         b = tonumber(("%x"):format(b * 15), 16)
