@@ -1,5 +1,5 @@
--- cpu, gpu, fan or hue
-local mode = "hue"
+-- cpu, gpu and fan
+local mode = "cpu"
 
 -- min and max speed of the CPU fan
 local fan = {700, 2400}
@@ -39,9 +39,6 @@ mb["b"] = 0xf
 -- HSV color range (degrees)
 local hue_min = 0.0
 local hue_max = 0.60
--- Steps for the "hue" mode
-local color_steps = 0.001
-local delay = 80 -- in milliseconds
 
 Lighting.BatchBegin()
 Lighting.SetStepDuration(511)
@@ -65,32 +62,28 @@ local function Alarm(r, g, b)
     os.sleep(200)
 end
 
-local min = 0
-local max = 0
-
 if Aida64.IsInstalledAndRunning() then
-    min = temp[1]
-    max = temp[2]
+    local min = temp[1]
+    local max = temp[2]
     if mode == "cpu" then
-        hardware = "TCPU"
+        local hardware = "TCPU"
     elseif mode == "gpu" then
-        hardware = "TGPU1DIO"
+        local hardware = "TGPU1DIO"
         if not Aida64.GetSensorValue(hardware) then
             print("GPU temparature is only available in paid version of AIDA64!")
-            print("Switching to hue mode...")
-            mode = "hue"
+            os.exit()
         end
     elseif mode == "fan" then
-        hardware = "FCPU"
+        local hardware = "FCPU"
         min = fan[1]
         max = fan[2]
+    else
+        print("Unknown mode!")
+        os.exit()
     end
 else
-    if mode ~= "hue" then
-        print("AIDA64 is not running!")
-        print("Switching to hue mode...")
-        mode = "hue"
-    end
+    print("Use this script only with AIDA64!")
+    os.exit()
 end
 
 local color = 0
@@ -116,22 +109,14 @@ while true do
     end
 
     if alarm == false then
-        if mode ~= "hue" then
-            if Aida64.IsInstalledAndRunning() then
-                local hardware_value = Aida64.GetSensorValue(hardware)
-                local percent = (math.max(hardware_value, min) - min) / (max - min)
-                color = hue_max - percent * (hue_max - hue_min)
-                color = math.max(color, hue_min)
-            else
-                print('AIDA64 is not running!')
-                print('Switching to hue mode...')
-                mode = 'hue'
-            end
+        if Aida64.IsInstalledAndRunning() then
+            local hardware_value = Aida64.GetSensorValue(hardware)
+            local percent = (math.max(hardware_value, min) - min) / (max - min)
+            color = hue_max - percent * (hue_max - hue_min)
+            color = math.max(color, hue_min)
         else
-            color = color + color_steps
-            if color == 1.0 then
-                color = 0
-            end
+            print("AIDA64 is not running!")
+            os.exit()
         end
 
         -- finally, set the color for all modes
