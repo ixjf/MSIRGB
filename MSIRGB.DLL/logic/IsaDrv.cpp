@@ -59,6 +59,8 @@ namespace logic {
 
     void IsaDrv::create_open_driver_instance_counter()
     {
+        // TODO: Review permissions on semaphore
+
         // We use a semaphore to keep track of how many handles to the driver service
         // are open at the same time. There can be at most two - one from the script service
         // and one from the GUI.

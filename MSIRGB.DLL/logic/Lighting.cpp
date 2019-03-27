@@ -17,8 +17,15 @@ namespace logic {
     Lighting::Lighting(bool ignore_mb_check)
         : batch_calls(false), curr_batch(Batch {})
     {
+        // TODO: Restrict permissions on mutex?
         csection_mutex = CreateMutex(NULL, false, L"Global\\MSIRGB_Mutex");
 
+        if (csection_mutex == NULL) {
+            if (GetLastError() == ERROR_ACCESS_DENIED) {
+                csection_mutex = OpenMutex(SYNCHRONIZE, false, L"Global\\MSIRGB_Mutex");
+            }
+        }
+        
         if (csection_mutex == NULL) {
             throw Exception(ErrorCode::LoadFailed);
         }
