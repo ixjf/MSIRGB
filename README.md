@@ -7,7 +7,7 @@
  **Many thanks to @nagisa for [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) (a tool for controlling MSI MBs' RGB LEDs on Linux), which this tool is based on and which made it all the much easier to get going and figure out how the hardware worked.**
 
 # Functionality
-![MSIRGB](https://i.imgur.com/QJi2SJs.png)
+![MSIRGB](https://i.imgur.com/J0wwBB3.png)
 
 **The program allows you to set up to 8 different colours for the LEDs to switch between.** The LED controller will switch between those colours in the order from 1-8 and back (from v1.1.0-beta2 onwards), with an interval between each switch, called 'step duration', and which can be changed. This function mirrors the hardware implementation, i.e. it merely provides you with a way to use the built-in functions of the MB's LED controller. **Scripts allow you to change between any number of colours.** There is a limit to how many colours the chip understands, which is (only) 4,096. Because of that, there is a limit to how smooth a colour transition can be (see the hue wheel effect, for example).
 
