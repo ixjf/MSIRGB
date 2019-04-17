@@ -742,7 +742,7 @@
                             </StackPanel>
 
                             <Grid Grid.ColumnSpan="2" Grid.Row="1">
-                                <ContentPresenter Margin="20,0,20,20" />
+                                <ContentPresenter Margin="30,10,30,20" />
                             </Grid>
                         </Grid>
                     </Border>

@@ -13,7 +13,7 @@ namespace MSIRGB
         private Lighting _lighting;
         private bool _ignoredMbCheck;
 
-        public static UInt16 STEP_DURATION_MAX_VALUE = Lighting.STEP_DURATION_MAX_VALUE;
+        public static ushort STEP_DURATION_MAX_VALUE = Lighting.STEP_DURATION_MAX_VALUE;
 
         public enum FlashingSpeed
         {
@@ -28,23 +28,26 @@ namespace MSIRGB
 
         public MainWindowModel()
         {
+            CheckForRunningMSIApps();
             TryInitializeSio();
         }
 
         ~MainWindowModel()
         {
             if (_lighting != null)
+            {
                 _lighting.Dispose();
+            }
         }
 
         public void GetCurrentConfig(ref List<Color> colours,
-                                     out UInt16 stepDuration, 
-                                     out bool breathingEnabled, 
+                                     out ushort stepDuration,
+                                     out bool breathingEnabled,
                                      out FlashingSpeed flashingSpeed)
         {
-            foreach(Byte index in Range(1,8))
+            foreach (byte index in Range(1, 8))
             {
-                var c = _lighting.GetColour(index).Value;
+                Color c = _lighting.GetColour(index).Value;
                 c.R *= 0x11; // Colour is exposed as 12-bit depth, but colour picker expects 24-bit depth
                 c.G *= 0x11;
                 c.B *= 0x11;
@@ -59,15 +62,15 @@ namespace MSIRGB
         }
 
         public void ApplyConfig(List<Color> colours,
-                                UInt16 stepDuration, 
-                                bool breathingEnabled, 
+                                ushort stepDuration,
+                                bool breathingEnabled,
                                 FlashingSpeed flashingSpeed)
         {
             _lighting.BatchBegin();
 
-            foreach(Byte index in Range(1, 8))
+            foreach (byte index in Range(1, 8))
             {
-                var c = colours[index - 1];
+                Color c = colours[index - 1];
                 c.R /= 0x11; // Colour must be passed with 12-bit depth
                 c.G /= 0x11;
                 c.B /= 0x11;
@@ -153,9 +156,9 @@ namespace MSIRGB
                 else if (exc.GetErrorCode() == Lighting.ErrorCode.DriverLoadFailed)
                 {
                     MessageBox.Show("Failed to load driver. This could be either due to some program interfering with MSIRGB's driver, " +
-                                    "or it could be a bug. Please report this on the issue tracker at GitHub: https://github.com/ixjf/MSIRGB", 
-                                    assemblyTitle, 
-                                    MessageBoxButton.OK, 
+                                    "or it could be a bug. Please report this on the issue tracker at GitHub: https://github.com/ixjf/MSIRGB",
+                                    assemblyTitle,
+                                    MessageBoxButton.OK,
                                     MessageBoxImage.Error
                                     );
                 }
@@ -172,6 +175,34 @@ namespace MSIRGB
             }
 
             _ignoredMbCheck = ignoreMbCheck;
+        }
+
+        private void CheckForRunningMSIApps()
+        {
+            string assemblyTitle = ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false))?.Title;
+
+            Process[] runningMSIProcesses = Process.GetProcessesByName("LEDKeeper");
+
+            if (runningMSIProcesses.Count() > 0)
+            {
+                switch (MessageBox.Show("MSIRGB detected that an MSI application that could potentially interfere is running. " +
+                    "This application is likely either MSI Mystic Light or MSI Gaming App. " + Environment.NewLine + Environment.NewLine +
+                    "In order to start MSIRGB, you must stop this application." + Environment.NewLine + Environment.NewLine +
+                    "Please make sure that neither of these applications are running at any time simultaneously with MSIRGB. " + "" +
+                    "If MSIRGB is set to autostart a script on Windows startup, please make sure neither of these MSI applications are autostarted as well.",
+                    assemblyTitle,
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning))
+                {
+                    case MessageBoxResult.OK:
+
+                        break;
+
+                    case MessageBoxResult.Cancel:
+                        Application.Current.Shutdown();
+                        break;
+                }
+            }
         }
     }
 }

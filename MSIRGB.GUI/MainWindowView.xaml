@@ -161,12 +161,14 @@
                 <TextBlock Style="{StaticResource CustomTextBlockStyle}"
                            TextWrapping="Wrap"
                            Margin="0, 0, 0, 10"
-                           Text="Alternatively, choose from between the available scripts. 
+                           Text="Alternatively, choose from between the available scripts.
+                           
+                           
                            These automatically run on Windows startup." />
 
                 <ListView Style="{StaticResource CustomListViewStyle}"
                                   Width="150" 
-                                  Height="200"
+                                  Height="175"
                                   ItemsSource="{Binding Path=ScriptsList, Mode=OneWay}"
                                   DisplayMemberPath="Name"
                                   SelectionMode="Single"
