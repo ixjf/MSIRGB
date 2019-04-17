@@ -70,13 +70,15 @@ Learn more about scripting functionality and find the API reference in the [wiki
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC
  
- **There are other boards not supported by Mystic Light which reportedly work as well. It may be that they're instead supported in MSI's Gaming App, which I did not look into. Motherboards which fit this criterion and are reportedly working are:**
+ **There are other boards not supported by MSI Mystic Light (at least the version I checked) which reportedly work as well. It may be that they're instead supported by MSI Gaming App, which I did not check. Motherboards which fit this criterion and are reportedly working are:**
  - MSI B350 TOMAHAWK
+ - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
  - MSI B350 PC MATE
  - MSI A320M BAZOOKA
  - MSI B250M MORTAR
  - MSI B350M MORTAR ARTIC
+ - MSI B350 KRAIT GAMING
  
  **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
  - MSI H270M MORTAR ARTIC
