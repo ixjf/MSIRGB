@@ -72,6 +72,7 @@ Learn more about scripting functionality and find the API reference in the [wiki
  
  **There are other boards not supported by MSI Mystic Light (at least the version I checked) which reportedly work as well. It may be that they're instead supported by MSI Gaming App, which I did not check. Motherboards which fit this criterion and are reportedly working are:**
  - MSI B350 TOMAHAWK
+ - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
  - MSI B350 PC MATE
  - MSI A320M BAZOOKA
