@@ -1,6 +1,6 @@
 ﻿-- Adapted from nagisa/msi-rgb's Hue Wheel effect
 
--- Variables
+-- User-changeable variables
 local saturation = 0.933
 local value = 1.0
 
