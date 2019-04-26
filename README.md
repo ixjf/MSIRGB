@@ -15,7 +15,7 @@ In the 'Effects' group, you're given the option to **change the step duration** 
 
 **Clicking on Apply automatically turns the LEDs on if they're off.**
 
-Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful. There are a few examples available right now, including a 'hue wheel' effect - which cycles through blue, violet, 'pinkish' red and 'blueish' green. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
+Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful. There are a few examples available right now, including a 'hue wheel' effect. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
 
 The tool has been reported to affect all motherboard LEDs as well as the headers.
 
