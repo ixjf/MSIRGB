@@ -1,4 +1,4 @@
--- Variables
+-- User-changeable variables
 local pumpkin_colour = {["r"] = 0xf, ["g"] = 0x2, ["b"] = 0x0}
 
 --
