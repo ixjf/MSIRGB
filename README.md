@@ -25,7 +25,9 @@ The tool has been reported to affect all motherboard LEDs as well as the headers
 
 This example can be found in Scripts\Hue Wheel.lua. If you downloaded the latest release, all you have to do is run MSIRGB and it'll find it.
 
-I welcome anyone to share scripts and open pull requests to add new ones here.
+New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
+
+You can download all available scripts separately from MSIRGB. See [How to install](#how-to-install) for instructions.
 
 # Scripts
 Learn more about scripting functionality and find the API reference in the [wiki](../../wiki/Scripts).
@@ -34,7 +36,8 @@ Learn more about scripting functionality and find the API reference in the [wiki
  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **PLEASE do not attempt to use this program with a non-MSI board. It will DEFINITELY not work**.
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
  3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/latest).
- 4. Unpack the archive and run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware, and there is literally no way around it (Mystic Light does it as well, just not on startup).
+ 4. Download the [latest available effects](https://github.com/ixjf/MSIRGB/releases), tagged as 'scripts-vx.x.x'.
+ 4. Unpack both archives into the same directory and run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
 
 # Motherboard support
  This tool **should** work with the following motherboards:
