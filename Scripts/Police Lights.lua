@@ -1,4 +1,4 @@
--- Variables
+-- User-changeable variables
 local flashes_per_second = 15
 local pulse_time = 0.4 -- how long each flashing pulse will take, in seconds (repeat flashes_per_second flashes pulse_time times)
 local pulse_delay = 1 -- how long between each flashing pulse, in milliseconds
