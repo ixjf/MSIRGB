@@ -23,8 +23,6 @@ The tool has been reported to affect all motherboard LEDs as well as the headers
 ## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
 ![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
 
-This example can be found in Scripts\Hue Wheel.lua. If you downloaded the latest release, all you have to do is run MSIRGB and it'll find it.
-
 New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
 
 You can download all available scripts separately from MSIRGB. See [How to install](#how-to-install) for instructions.
