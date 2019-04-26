@@ -1,4 +1,4 @@
- This program allows full control of the RGB LED controller on select MSI boards. Unlike MSI Mystic Light, there is no colour limitation (which is a software limitation, not a hardware one). Aside from being able to set colours and other hardware-implemented effects with a single click, it also allows you to create and run Lua scripts producing other effects, which are run every time the computer starts, so you don't have to worry about re-applying them.
+ This program allows full control of the RGB LED controller on select MSI boards. Unlike MSI Mystic Light, there is no colour limitation (which is a software limitation, not a hardware one). Aside from being able to set colours and other hardware-implemented effects with a single click, it also allows you to create and run Lua scripts producing other effects, which are also run every time the computer starts, so you don't have to worry about re-applying them.
 
  The program runs on Windows 10 (x64 only), so long as VC Redist 2017 x64 is installed and .NET support is enabled (which it is, by default).
 
@@ -13,9 +13,7 @@
 
 In the 'Effects' group, you're given the option to **change the step duration** (min 0, max 511, arbitrary time unit), and **enable/disable/adjust pulsing modes** - again, hardware implemented. Breathing mode is a smooth pulsing mode (gradually turning the LEDs brighter, and then less bright until they're off, then brighter again). Flashing mode is a 'sharp' pulsing mode, i.e., it'll turn the LEDs on and off instantly. There are 6 possible speeds, along with the option to keep the LEDs always on (flashing speed 'disabled').
 
-**Clicking on Apply automatically turns the LEDs on if they're off.**
-
-Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful. There are a few examples available right now, including a 'hue wheel' effect. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
+Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful (albeit there a few sorely missed functions which simply cannot be done without hardware support, like controlling brightness). There are a few examples available right now, including a 'hue wheel' effect. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
 
 The tool has been reported to affect all motherboard LEDs as well as the headers.
 
@@ -28,7 +26,7 @@ New effects are always welcome. Feel free to open a pull request if you'd like t
 You can download all available scripts separately from MSIRGB. See [How to install](#how-to-install) for instructions.
 
 # Scripts
-Learn more about scripting functionality and find the API reference in the [wiki](../../wiki/Scripts).
+Learn more about how to create scripts and find the API reference in the [wiki](../../wiki/Scripts).
 
 # How to install
  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **PLEASE do not attempt to use this program with a non-MSI board. It will DEFINITELY not work**.
@@ -69,9 +67,9 @@ Learn more about scripting functionality and find the API reference in the [wiki
  - MSI X399 SLI PLUS
 
 # Confirmed supported motherboards
- - MSI B450I GAMING PLUS AC
+ - MSI B450I GAMING PLUS AC (mine's, so I always know it works)
  
- **There are other boards not supported by MSI Mystic Light (at least the version I checked) which reportedly work as well. It may be that they're instead supported by MSI Gaming App, which I did not check. Motherboards which fit this criterion and are reportedly working are:**
+ **Some motherboards are not supported by MSI Mystic Light. The list of supported motherboards above is based only on the ones supported by this MSI tool. There are other motherboards which MSIRGB works on. The following are the ones that have been reported to work with MSIRGB:**
  - MSI B350 TOMAHAWK
  - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
@@ -81,7 +79,7 @@ Learn more about scripting functionality and find the API reference in the [wiki
  - MSI B350M MORTAR ARTIC
  - MSI B350 KRAIT GAMING
  
- **Some boards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and are part of the list above are as follows (and so should work with this tool as well):**
+ **Motherboards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and should work with MSIGB are as follows:**
  - MSI H270M MORTAR ARTIC
  - MSI X470 GAMING PRO
  - MSI X470 GAMING PLUS
