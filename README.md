@@ -69,7 +69,7 @@ Learn more about how to create scripts and find the API reference in the [wiki](
 # Confirmed supported motherboards
  - MSI B450I GAMING PLUS AC (mine's, so I always know it works)
  
- **Some motherboards are not supported by MSI Mystic Light. The list of supported motherboards above is based only on the ones supported by this MSI tool. There are other motherboards which MSIRGB works on. The following are the ones that have been reported to work with MSIRGB:**
+ **Certain motherboards are not supported by MSI Mystic Light and so are not on the list above but some have been reported to be working with MSIRGB. They are the following:**
  - MSI B350 TOMAHAWK
  - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
