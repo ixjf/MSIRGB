@@ -31,7 +31,7 @@ Learn more about how to create scripts and find the API reference in the [wiki](
 # How to install
  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **PLEASE do not attempt to use this program with a non-MSI board. It will DEFINITELY not work**.
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
- 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/latest), tagged as 'v2.0.0'.
+ 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases), tagged as 'vx.x.x'.
  4. Download the [latest available effects](https://github.com/ixjf/MSIRGB/releases), tagged as 'scripts-vx.x.x'.
  5. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there.
  6. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
