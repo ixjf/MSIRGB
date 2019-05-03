@@ -32,7 +32,7 @@ Hue Wheel (effect is smooth, GIF has low frame rate)
 Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).
 
 # How to install
- 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **Do not attempt to use this program with a non-MSI board. It will NOT work. You are solely responsible for any damage you cause to your hardware**.
+ 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **do not attempt to use this program with a non-MSI board. It will NOT work. You are solely responsible for any damage you cause to your hardware**.
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
  3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.0/MSIRGB-v2.2.0.7z).
  4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
@@ -78,7 +78,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  Other MSI motherboards may be supported. See the next section for more.
 
 # Confirmed or reported working motherboards
- - MSI B450I GAMING PLUS AC (mine's, so I always know it works)
+ - MSI B450I GAMING PLUS AC (mine, so I always know it works)
  
  **Certain motherboards are not supported by MSI Mystic Light and so are not on the list above but some of these have been reported to be working with MSIRGB. They are the following:**
  - MSI B350 TOMAHAWK
