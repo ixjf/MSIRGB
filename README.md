@@ -6,7 +6,7 @@
  
  This project originally began as a port of [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) for Windows, but eventually evolved to have a more Windows user-friendly interface, both visually and in the creation of effects, but it is still heavily based on exposing the hardware-implemented LED functionality through which the user can create those effects.
  
-* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
+\* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
  
 # How it works
 ![MSIRGB](https://i.imgur.com/J0wwBB3.png)
