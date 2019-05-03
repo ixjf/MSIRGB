@@ -1,35 +1,33 @@
- This program allows full control of the RGB LED controller on select MSI boards. Unlike MSI Mystic Light, there is no colour limitation (which is a software limitation, not a hardware one). Aside from being able to set colours and other hardware-implemented effects with a single click, it also allows you to create and run Lua scripts producing other effects, which are also run every time the computer starts, so you don't have to worry about re-applying them.
+ This program allows to control the LED lighting (motherboard* and headers) on select MSI boards. Unlike MSI Mystic Light, there is no limitation to only 7 colours. Aside from providing a GUI for quickly experimenting with different effects, it also provides a scripting interface to create more advanced effects like [this one](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif) and to auto-run these effects on Windows start-up.
 
- The program runs on Windows 10 (x64 only), so long as VC Redist 2017 x64 is installed and .NET support is enabled (which it is, by default).
+ MSIRGB runs on Windows 10 (x64 only), so long as VC Redist 2017 x64 is installed and .NET support is enabled (which it is, by default). Older versions of Windows have not been tested.
 
  Download is available [here](#how-to-install). **Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)**
  
- **Many thanks to @nagisa for [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) (a tool for controlling MSI MBs' RGB LEDs on Linux), which this tool is based on and which made it all the much easier to get going and figure out how the hardware worked.**
-
-# Functionality
+ This project originally began as a port of [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) for Windows, but eventually evolved to have a more Windows user-friendly interface, both visually and in the creation of effects, but it is still heavily based on exposing the hardware-implemented LED functionality through which the user can create those effects.
+ 
+* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
+ 
+# How it works
 ![MSIRGB](https://i.imgur.com/J0wwBB3.png)
 
-**The program allows you to set up to 8 different colours for the LEDs to switch between.** The LED controller will switch between those colours in the order from 1-8 and back (from v1.1.0-beta2 onwards), with an interval between each switch, called 'step duration', and which can be changed. This function mirrors the hardware implementation, i.e. it merely provides you with a way to use the built-in functions of the MB's LED controller. **Scripts allow you to change between any number of colours.** There is a limit to how many colours the chip understands, which is (only) 4,096. Because of that, there is a limit to how smooth a colour transition can be (see the hue wheel effect, for example).
+When you run MSIRGB, you will see this GUI. Here you can experiment with simple effects by changing hardware-implemented settings in your motherboard.
 
-In the 'Effects' group, you're given the option to **change the step duration** (min 0, max 511, arbitrary time unit), and **enable/disable/adjust pulsing modes** - again, hardware implemented. Breathing mode is a smooth pulsing mode (gradually turning the LEDs brighter, and then less bright until they're off, then brighter again). Flashing mode is a 'sharp' pulsing mode, i.e., it'll turn the LEDs on and off instantly. There are 6 possible speeds, along with the option to keep the LEDs always on (flashing speed 'disabled').
+- **Colours**: You can choose to change between 8 different colours. The order by which the motherboard switches between them is from left to right as displayed. You can choose from 4096 different colours (unfortunately, this is a hardware limitation).
 
-Along with those 'one-click-here-you-go' options, you also have the ability to **create and run scripts**. Scripts can bypass the hardware implemented functions and therefore should be much more powerful (albeit there a few sorely missed functions which simply cannot be done without hardware support, like controlling brightness). There are a few examples available right now, including a 'hue wheel' effect. Scripts run automatically on Windows startup, so you don't have to reapply them once you turn one on. To disable any running script, simply press 'Apply' or 'Disable all lighting'.
+- **Step duration**: This is the interval of time between each change of colour. Possible values are 0 to 511, inclusive. The unit of time is unknown.
 
-The tool has been reported to affect all motherboard LEDs as well as the headers.
+- **Breathing mode**: This is one of the two flashing modes supported by all the motherboards that MSIRGB targets. Breathing mode flashes from on to off and back again by gradually changing brightness. The speed of this effect cannot be changed.
 
-# Example scripts
-## Hue wheel (ported from [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb))
-![animation of hue wheel](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
+- **Flashing mode**: This other flashing mode flashes from on to off and back again instantly, and the speed of the effect can be changed to different preset values.
 
-New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
+- **Scripts**: Scripts allow you to leverage these hardware-implemented functions to create more advanced effects. While the functionality provided by the motherboard seems minimal, you can create some interesting effects with them. Currently MSIRGB has 4 example effects you can download and try: the [hue wheel effect](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif), the strobe effect, the police lights effect, and the pumpkin effect. New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
 
-You can download all available scripts separately from MSIRGB. See [How to install](#how-to-install) for instructions.
-
-# Scripts
-Learn more about how to create scripts and find the API reference in the [wiki](../../wiki/Scripts).
+# Scripting interface (for creating effects)
+Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).
 
 # How to install
- 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **PLEASE do not attempt to use this program with a non-MSI board. It will DEFINITELY not work**.
+ 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **Do not attempt to use this program with a non-MSI board. It will NOT work. You are solely responsible for any damage you cause to your hardware**.
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
  3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.0/MSIRGB-v2.2.0.7z).
  4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
@@ -42,7 +40,7 @@ Learn more about how to create scripts and find the API reference in the [wiki](
  6. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
 
 # Motherboard support
- This tool **should** work with the following motherboards:
+ MSIRGB should **theoretically** work with the following motherboards:
  - MSI B450I GAMING PLUS AC
  - MSI B350I PRO AC
  - MSI A320M GAMING PRO
@@ -71,11 +69,13 @@ Learn more about how to create scripts and find the API reference in the [wiki](
  - MSI X299 RAIDER
  - MSI X399 GAMING PRO CARBON AC
  - MSI X399 SLI PLUS
+ 
+ Other MSI motherboards may be supported. See the next section for more.
 
-# Confirmed supported motherboards
+# Confirmed or reported working motherboards
  - MSI B450I GAMING PLUS AC (mine's, so I always know it works)
  
- **Certain motherboards are not supported by MSI Mystic Light and so are not on the list above but some have been reported to be working with MSIRGB. They are the following:**
+ **Certain motherboards are not supported by MSI Mystic Light and so are not on the list above but some of these have been reported to be working with MSIRGB. They are the following:**
  - MSI B350 TOMAHAWK
  - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
