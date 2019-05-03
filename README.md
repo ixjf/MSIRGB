@@ -1,10 +1,10 @@
- This program allows to control the LED lighting (motherboard* and headers) on select MSI boards. Unlike MSI Mystic Light, there is no limitation to only 7 colours. Aside from providing a GUI for quickly experimenting with different effects, it also provides a scripting interface to create more advanced effects like [this one](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif) and to auto-run these effects on Windows start-up.
+ This program allows to control the LED lighting (motherboard* and headers) on select MSI boards. Unlike MSI Mystic Light, there is no limitation to only 7 colours. Aside from providing a GUI for quickly experimenting with different effects, it also provides a scripting interface to create more advanced effects like [this one](#example-effects) and to auto-run these effects on Windows start-up.
 
  MSIRGB runs on Windows 10 (x64 only), so long as VC Redist 2017 x64 is installed and .NET support is enabled (which it is, by default). Older versions of Windows have not been tested.
 
  Download is available [here](#how-to-install). **Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)**
  
- This project originally began as a port of [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) for Windows, but eventually evolved to have a more Windows user-friendly interface, both visually and in the creation of effects, but it is still heavily based on exposing the hardware-implemented LED functionality through which the user can create those effects.
+ This project began as a port of [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) for Windows, but eventually evolved to have a more Windows user-friendly interface, both visually and in the creation of effects, but it is still heavily based on exposing the hardware-implemented LED functionality through which the user can create those effects.
  
 \* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
  
@@ -21,7 +21,10 @@ When you run MSIRGB, you will see this GUI. Here you can experiment with simple 
 
 - **Flashing mode**: This other flashing mode flashes from on to off and back again instantly, and the speed of the effect can be changed to different preset values.
 
-- **Scripts**: Scripts allow you to leverage these hardware-implemented functions to create more advanced effects. While the functionality provided by the motherboard seems minimal, you can create some interesting effects with them. Currently MSIRGB has 4 example effects you can download and try: the [hue wheel effect](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif), the strobe effect, the police lights effect, and the pumpkin effect. New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
+- **Scripts**: Scripts allow you to leverage these hardware-implemented functions to create more advanced effects. While the functionality provided by the motherboard seems minimal, you can create some interesting effects with them. Currently MSIRGB has 4 example effects you can download and try: the [hue wheel effect](#example-effects), the strobe effect, the police lights effect, and the pumpkin effect. New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
+
+# Example effects
+ ![hue wheel effect](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
 
 # Scripting interface (for creating effects)
 Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).
