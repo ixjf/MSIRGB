@@ -53,28 +53,28 @@ namespace MSIRGB {
             }
         }
 
-       ~Lighting()
-       {
+        ~Lighting()
+        {
             delete lighting;
-       }
+        }
 
-       bool BatchBegin()
-       {
+        bool BatchBegin()
+        {
             return lighting->batch_begin();
-       }
+        }
 
-       void SetLedEnabled(bool enable)
-       {
+        void SetLedEnabled(bool enable)
+        {
             lighting->set_led_enabled(enable);
-       }
+        }
 
-       bool SetColour(Byte index, Color colour)
-       {
-           return lighting->set_colour(index, logic::Lighting::Colour {colour.R, colour.G, colour.B});
-       }
+        bool SetColour(Byte index, Color colour)
+        {
+            return lighting->set_colour(index, logic::Lighting::Colour{ colour.R, colour.G, colour.B });
+        }
 
-       Nullable<Color> GetColour(Byte index)
-       {
+        Nullable<Color> GetColour(Byte index)
+        {
             std::optional<logic::Lighting::Colour> colour = lighting->get_colour(index);
 
             if (!colour) {
@@ -82,44 +82,44 @@ namespace MSIRGB {
             }
 
             return Nullable<Color>(Color::FromRgb(colour->r, colour->g, colour->b));
-       }
+        }
 
-       bool SetBreathingModeEnabled(Boolean enabled)
-       {
-           return lighting->set_breathing_mode_enabled(enabled);
-       }
+        bool SetBreathingModeEnabled(Boolean enabled)
+        {
+            return lighting->set_breathing_mode_enabled(enabled);
+        }
 
-       Boolean IsBreathingModeEnabled()
-       {
+        Boolean IsBreathingModeEnabled()
+        {
             return lighting->is_breathing_mode_enabled();
-       }
+        }
 
-       Boolean SetStepDuration(UInt16 stepDuration)
-       {
+        Boolean SetStepDuration(UInt16 stepDuration)
+        {
             return lighting->set_step_duration(stepDuration);
-       }
+        }
 
-       UInt16 GetStepDuration()
-       {
+        UInt16 GetStepDuration()
+        {
             return lighting->get_step_duration();
-       }
+        }
 
-       void SetFlashingSpeed(FlashingSpeed flashSpeed)
-       {
+        void SetFlashingSpeed(FlashingSpeed flashSpeed)
+        {
             lighting->set_flash_speed(static_cast<logic::Lighting::FlashingSpeed>(flashSpeed));
-       }
+        }
 
-       FlashingSpeed GetFlashingSpeed()
-       {
+        FlashingSpeed GetFlashingSpeed()
+        {
             return static_cast<FlashingSpeed>(lighting->get_flash_speed());
-       }
+        }
 
-       bool BatchEnd()
-       {
+        bool BatchEnd()
+        {
             return lighting->batch_end();
-       }
+        }
 
     private:
         logic::Lighting *lighting;
-	};
+    };
 }

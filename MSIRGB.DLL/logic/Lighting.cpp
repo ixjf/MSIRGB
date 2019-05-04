@@ -4,7 +4,7 @@
 #include "wmi_helper.h"
 #include "math_helper.h"
 
-const std::uint8_t RGB_BANK     = 0x12;
+const std::uint8_t RGB_BANK = 0x12;
 const std::uint8_t UNKNOWN_BANK = 0x09;
 
 // This should support boards that don't have a separate LED control chip (like Renesas').
@@ -15,7 +15,7 @@ const std::uint8_t UNKNOWN_BANK = 0x09;
 
 namespace logic {
     Lighting::Lighting(bool ignore_mb_check)
-        : batch_calls(false), curr_batch(Batch {})
+        : batch_calls(false), curr_batch(Batch{})
     {
         // TODO: Restrict permissions on mutex?
         csection_mutex = CreateMutex(NULL, false, L"Global\\MSIRGB_Mutex");
@@ -25,7 +25,7 @@ namespace logic {
                 csection_mutex = OpenMutex(SYNCHRONIZE, false, L"Global\\MSIRGB_Mutex");
             }
         }
-        
+
         if (csection_mutex == NULL) {
             throw Exception(ErrorCode::LoadFailed);
         }
@@ -142,7 +142,7 @@ namespace logic {
         if (!batch_calls) {
             batch_commit();
         }
-        
+
         return true;
     }
 
@@ -154,7 +154,7 @@ namespace logic {
 
         // See Lighting::batch_commit for details
 
-        auto [byte_no, nibble_pos] = colour_cell_pos_from_index(index);
+        auto[byte_no, nibble_pos] = colour_cell_pos_from_index(index);
 
         enter_critical_section();
 
@@ -168,7 +168,7 @@ namespace logic {
         std::uint8_t g = (g_cell >> (!nibble_pos * 4)) & 0x0F;
         std::uint8_t b = (b_cell >> (!nibble_pos * 4)) & 0x0F;
 
-        return std::make_optional(Colour{r, g, b});
+        return std::make_optional(Colour{ r, g, b });
     }
 
     bool Lighting::set_breathing_mode_enabled(bool enable)
@@ -252,15 +252,15 @@ namespace logic {
 
         std::uint8_t flash_speed = val_at_e4 & 0b00000111;
 
-        return 
-            (flash_speed == 0 || flash_speed == 1) ? 
-                FlashingSpeed::Disabled : 
-                static_cast<FlashingSpeed>(flash_speed - 1);
+        return
+            (flash_speed == 0 || flash_speed == 1) ?
+            FlashingSpeed::Disabled :
+            static_cast<FlashingSpeed>(flash_speed - 1);
     }
 
     Lighting::MbCompatError Lighting::check_supported_mb()
     {
-        auto info = wmi_query(L"Win32_BaseBoard", {L"Manufacturer", L"Product", L"Version"});
+        auto info = wmi_query(L"Win32_BaseBoard", { L"Manufacturer", L"Product", L"Version" });
 
         if (info[L"Manufacturer"] != L"Micro-Star International Co., Ltd.") {
             return MbCompatError::UnsupportedVendor;
@@ -288,11 +288,11 @@ namespace logic {
             L"7B09"
         };
 
-        auto found = std::find_if(supported_mbs.begin(), 
-                                  supported_mbs.end(),
-                                  [&info](const std::wstring &mb_model) -> bool {
-                                      return info[L"Product"].find(mb_model) != std::wstring::npos;
-                                  });
+        auto found = std::find_if(supported_mbs.begin(),
+            supported_mbs.end(),
+            [&info](const std::wstring &mb_model) -> bool {
+            return info[L"Product"].find(mb_model) != std::wstring::npos;
+        });
 
         if (found == supported_mbs.end()) {
             return MbCompatError::UnsupportedModel;
@@ -304,8 +304,8 @@ namespace logic {
             return MbCompatError::UnsupportedModel;
         }
         else if (info[L"Product"].find(L"7B79") != std::wstring::npos &&
-                    info[L"Version"].find(L"1.") == std::wstring::npos &&
-                    info[L"Version"].find(L"2.") == std::wstring::npos) {
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos) {
             // MB model 7B79 but not revision 1.x or 2.x
             return MbCompatError::UnsupportedModel;
         }
@@ -388,7 +388,7 @@ namespace logic {
         // F4-F7: each nibble correspond to the green component of colours 1-8 (as shown in the row above)
         // F8-FB: each nibble correspond to the blue component of colours 1-8 (as shown in the row above)
         for (auto const &[index, colour] : curr_batch.colours) {
-            auto [byte_no, nibble_pos] = colour_cell_pos_from_index(index);
+            auto[byte_no, nibble_pos] = colour_cell_pos_from_index(index);
 
             std::uint8_t r_cell = sio->read_uint8_from_bank(RGB_BANK, 0xF0 + byte_no);
             std::uint8_t g_cell = sio->read_uint8_from_bank(RGB_BANK, 0xF4 + byte_no);
@@ -471,7 +471,7 @@ namespace logic {
 
         // Disable batch state
         batch_calls = false;
-        curr_batch = Batch {};
+        curr_batch = Batch{};
 
         leave_critical_section();
     }

@@ -8,7 +8,7 @@ const auto DRV_FILE_NAME = L"inpoutx64.sys";
 const auto DRV_DEVICE_NAME = L"inpoutx64";
 const auto DRV_SVC_NAME = L"inpoutx64";
 
-const auto IOCTL_READ_PORT_UCHAR  = CTL_CODE(0x9C40, 0x801, METHOD_BUFFERED, FILE_ANY_ACCESS);
+const auto IOCTL_READ_PORT_UCHAR = CTL_CODE(0x9C40, 0x801, METHOD_BUFFERED, FILE_ANY_ACCESS);
 const auto IOCTL_WRITE_PORT_UCHAR = CTL_CODE(0x9C40, 0x802, METHOD_BUFFERED, FILE_ANY_ACCESS);
 
 namespace logic {
@@ -22,12 +22,12 @@ namespace logic {
         create_open_driver_instance_counter();
 
         drv_handle = CreateFile((L"\\\\.\\"s + DRV_DEVICE_NAME).c_str(),
-                                GENERIC_READ | GENERIC_WRITE,
-                                0,
-                                NULL,
-                                OPEN_EXISTING,
-                                FILE_ATTRIBUTE_NORMAL,
-                                NULL);
+            GENERIC_READ | GENERIC_WRITE,
+            0,
+            NULL,
+            OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL,
+            NULL);
 
         if (drv_handle == INVALID_HANDLE_VALUE) {
             throw Exception(ErrorCode::LoadFailed);
@@ -43,7 +43,7 @@ namespace logic {
         if (dec_driver_instance_counter()) {
             unload_drv();
         }
-        
+
         CloseHandle(drv_handle_count_sem);
     }
 
@@ -65,7 +65,7 @@ namespace logic {
         // are open at the same time. There can be at most two - one from the script service
         // and one from the GUI.
         SECURITY_DESCRIPTOR sd;
-        
+
         if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION)) {
             throw Exception(ErrorCode::LoadFailed);
         }
@@ -92,16 +92,16 @@ namespace logic {
         input_buf.port = static_cast<std::uint16_t>(port);
         input_buf.data = 0;
 
-        IoctlOutputBuffer output_buf {0};
+        IoctlOutputBuffer output_buf{ 0 };
 
         if (!DeviceIoControl(drv_handle,
-                             IOCTL_READ_PORT_UCHAR,
-                             static_cast<LPVOID>(&input_buf),
-                             sizeof(IoctlInputBuffer),
-                             static_cast<LPVOID>(&output_buf),
-                             sizeof(IoctlOutputBuffer),
-                             NULL,
-                             NULL)) {
+            IOCTL_READ_PORT_UCHAR,
+            static_cast<LPVOID>(&input_buf),
+            sizeof(IoctlInputBuffer),
+            static_cast<LPVOID>(&output_buf),
+            sizeof(IoctlOutputBuffer),
+            NULL,
+            NULL)) {
             //std::cout << __FUNCTION__ << " DeviceIoCtrl failed with error " << GetLastError() << std::endl;
         }
 
@@ -110,18 +110,18 @@ namespace logic {
 
     void IsaDrv::outb(std::uint8_t port, std::uint8_t data) const
     {
-        IoctlInputBuffer input_buf {0};
+        IoctlInputBuffer input_buf{ 0 };
         input_buf.port = static_cast<std::uint16_t>(port);
         input_buf.data = data;
 
         if (!DeviceIoControl(drv_handle,
-                             IOCTL_WRITE_PORT_UCHAR,
-                             static_cast<LPVOID>(&input_buf),
-                             sizeof(IoctlInputBuffer),
-                             NULL,
-                             0,
-                             NULL,
-                             NULL)) {
+            IOCTL_WRITE_PORT_UCHAR,
+            static_cast<LPVOID>(&input_buf),
+            sizeof(IoctlInputBuffer),
+            NULL,
+            0,
+            NULL,
+            NULL)) {
             //std::cout << __FUNCTION__ << " DeviceIoCtrl failed with error " << GetLastError() << std::endl;
         }
     }
@@ -142,9 +142,9 @@ namespace logic {
 
         CoTaskMemFree(sysPath);
 
-        auto file = std::ofstream(drv_filepath, std::ofstream::out | 
-                                                std::ofstream::binary | 
-                                                std::ofstream::trunc);
+        auto file = std::ofstream(drv_filepath, std::ofstream::out |
+            std::ofstream::binary |
+            std::ofstream::trunc);
 
         file.write(reinterpret_cast<const char *>(raw_data), SizeofResource(mod, resource));
         file.flush();
@@ -153,19 +153,19 @@ namespace logic {
         // Create service for driver
         SC_HANDLE sc_manager = OpenSCManager(NULL, NULL, SC_MANAGER_CREATE_SERVICE);
 
-        SC_HANDLE service = CreateService(sc_manager, 
-                                          DRV_SVC_NAME, 
-                                          DRV_SVC_NAME, 
-                                          SERVICE_START | SERVICE_STOP,
-                                          SERVICE_KERNEL_DRIVER,
-                                          SERVICE_DEMAND_START,
-                                          SERVICE_ERROR_NORMAL,
-                                          drv_filepath.c_str(),
-                                          NULL,
-                                          NULL,
-                                          NULL,
-                                          NULL,
-                                          NULL);
+        SC_HANDLE service = CreateService(sc_manager,
+            DRV_SVC_NAME,
+            DRV_SVC_NAME,
+            SERVICE_START | SERVICE_STOP,
+            SERVICE_KERNEL_DRIVER,
+            SERVICE_DEMAND_START,
+            SERVICE_ERROR_NORMAL,
+            drv_filepath.c_str(),
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL);
 
         if (service == NULL) {
             DWORD err = GetLastError();
@@ -226,7 +226,7 @@ namespace logic {
             auto drv_filepath = std::wstring(sysPath).append(L"\\Drivers\\"s + DRV_FILE_NAME);
 
             CoTaskMemFree(sysPath);
-        
+
             if (!DeleteFile(drv_filepath.c_str())) {
                 //std::cout << __FUNCTION__ << " std::filesystem::remove failed" << std::endl;
             }

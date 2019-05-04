@@ -18,10 +18,10 @@ namespace logic {
         public:
             Exception(ErrorCode ec) : std::runtime_error(""), ec(ec)
             {
-            
+
             }
 
-            ErrorCode error_code() 
+            ErrorCode error_code()
             {
                 return ec;
             }
@@ -49,25 +49,25 @@ namespace logic {
         static const std::uint16_t  STEP_DURATION_MAX_VALUE = 511;
 
 
-        Lighting                                            (bool ignore_mb_check);
-       ~Lighting                                            ();
+        Lighting(bool ignore_mb_check);
+        ~Lighting();
 
-        void                    enter_critical_section      () const;
-        void                    leave_critical_section      () const;
+        void                    enter_critical_section() const;
+        void                    leave_critical_section() const;
 
-        bool                    batch_begin                 ();
+        bool                    batch_begin();
 
-        void                    set_led_enabled             (bool enable);
-        bool                    set_colour                  (std::uint8_t index, Colour colour);
-        std::optional<Colour>   get_colour                  (std::uint8_t index) const;
-        bool                    set_breathing_mode_enabled  (bool enable);
-        bool                    is_breathing_mode_enabled   () const;
-        bool                    set_step_duration           (std::uint16_t step_duration);
-        std::uint16_t           get_step_duration           () const;
-        void                    set_flash_speed             (FlashingSpeed flash_speed);
-        FlashingSpeed           get_flash_speed             () const;
+        void                    set_led_enabled(bool enable);
+        bool                    set_colour(std::uint8_t index, Colour colour);
+        std::optional<Colour>   get_colour(std::uint8_t index) const;
+        bool                    set_breathing_mode_enabled(bool enable);
+        bool                    is_breathing_mode_enabled() const;
+        bool                    set_step_duration(std::uint16_t step_duration);
+        std::uint16_t           get_step_duration() const;
+        void                    set_flash_speed(FlashingSpeed flash_speed);
+        FlashingSpeed           get_flash_speed() const;
 
-        bool                    batch_end                   ();
+        bool                    batch_end();
 
     private:
         enum class MbCompatError {
@@ -76,9 +76,9 @@ namespace logic {
             UnsupportedModel,
         };
 
-        static MbCompatError    check_supported_mb            ();
+        static MbCompatError    check_supported_mb();
 
-        void                    batch_commit                ();
+        void                    batch_commit();
 
         struct Batch {
             std::unordered_map<std::uint8_t, Colour>        colours;

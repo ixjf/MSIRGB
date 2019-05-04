@@ -13,10 +13,10 @@ namespace logic {
         public:
             Exception(ErrorCode ec) : std::runtime_error(""), ec(ec)
             {
-            
+
             }
 
-            ErrorCode error_code() 
+            ErrorCode error_code()
             {
                 return ec;
             }
@@ -26,10 +26,10 @@ namespace logic {
         };
 
         IsaDrv();
-       ~IsaDrv();
+        ~IsaDrv();
 
-        std::uint8_t    inb                                 (std::uint8_t port) const;
-        void            outb                                (std::uint8_t port, std::uint8_t data) const;
+        std::uint8_t    inb(std::uint8_t port) const;
+        void            outb(std::uint8_t port, std::uint8_t data) const;
 
     private:
         struct IoctlInputBuffer {
@@ -41,18 +41,18 @@ namespace logic {
             std::uint8_t  data;
         };
 
-        void            inc_driver_instance_counter         () const;
-        bool            dec_driver_instance_counter         () const;
+        void            inc_driver_instance_counter() const;
+        bool            dec_driver_instance_counter() const;
 
-        void            create_open_driver_instance_counter ();
+        void            create_open_driver_instance_counter();
 
-        DWORD           install_drv                         ();
-        DWORD           uninstall_drv                       ();
-        DWORD           start_drv                           ();
-        DWORD           stop_drv                            ();
+        DWORD           install_drv();
+        DWORD           uninstall_drv();
+        DWORD           start_drv();
+        DWORD           stop_drv();
 
-        bool            load_drv                            ();
-        bool            unload_drv                          ();
+        bool            load_drv();
+        bool            unload_drv();
 
         HANDLE          drv_handle;
         HANDLE          drv_handle_count_sem;

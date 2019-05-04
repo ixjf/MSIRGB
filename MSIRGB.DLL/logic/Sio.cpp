@@ -30,8 +30,8 @@ namespace logic {
 
         exit_extended_function_mode();
     }
-    
-    
+
+
     void Sio::enter_extended_function_mode() const
     {
         drv->outb(0x4E, 0x87);
