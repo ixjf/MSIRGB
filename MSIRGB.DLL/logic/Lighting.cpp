@@ -31,8 +31,18 @@ namespace logic {
         }
 
         // Check MB support
-        if (!ignore_mb_check && !has_supported_mb()) {
-            throw Exception(ErrorCode::MotherboardNotSupported);
+        if (!ignore_mb_check) {
+            switch (check_supported_mb())
+            {
+            case MbCompatError::UnsupportedVendor:
+                throw Exception(ErrorCode::MotherboardVendorNotSupported);
+
+            case MbCompatError::UnsupportedModel:
+                throw Exception(ErrorCode::MotherboardModelNotSupported);
+
+            case MbCompatError::Ok:
+                break;
+            }
         }
 
         // Load SIO driver
@@ -248,12 +258,12 @@ namespace logic {
                 static_cast<FlashingSpeed>(flash_speed - 1);
     }
 
-    bool Lighting::has_supported_mb()
+    Lighting::MbCompatError Lighting::check_supported_mb()
     {
         auto info = wmi_query(L"Win32_BaseBoard", {L"Manufacturer", L"Product", L"Version"});
 
         if (info[L"Manufacturer"] != L"Micro-Star International Co., Ltd.") {
-            return false;
+            return MbCompatError::UnsupportedVendor;
         }
 
         static const std::list<std::wstring> supported_mbs = {
@@ -285,22 +295,22 @@ namespace logic {
                                   });
 
         if (found == supported_mbs.end()) {
-            return false;
+            return MbCompatError::UnsupportedModel;
         }
         else if (info[L"Product"].find(L"7A38") != std::wstring::npos &&
             info[L"Version"].find(L"3.") == std::wstring::npos &&
             info[L"Version"].find(L"4.") == std::wstring::npos) {
             // MB model 7A38 but not revision 3.x or 4.x
-            return false;
+            return MbCompatError::UnsupportedModel;
         }
         else if (info[L"Product"].find(L"7B79") != std::wstring::npos &&
                     info[L"Version"].find(L"1.") == std::wstring::npos &&
                     info[L"Version"].find(L"2.") == std::wstring::npos) {
             // MB model 7B79 but not revision 1.x or 2.x
-            return false;
+            return MbCompatError::UnsupportedModel;
         }
         else {
-            return true;
+            return MbCompatError::Ok;
         }
     }
 

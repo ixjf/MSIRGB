@@ -9,7 +9,8 @@ namespace logic {
     public:
         enum class ErrorCode {
             DriverLoadFailed,
-            MotherboardNotSupported,
+            MotherboardVendorNotSupported,
+            MotherboardModelNotSupported,
             LoadFailed,
         };
 
@@ -69,7 +70,13 @@ namespace logic {
         bool                    batch_end                   ();
 
     private:
-        static bool             has_supported_mb            ();
+        enum class MbCompatError {
+            Ok,
+            UnsupportedVendor,
+            UnsupportedModel,
+        };
+
+        static MbCompatError    check_supported_mb            ();
 
         void                    batch_commit                ();
 

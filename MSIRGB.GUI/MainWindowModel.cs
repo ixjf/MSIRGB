@@ -29,7 +29,7 @@ namespace MSIRGB
         public MainWindowModel()
         {
             CheckForRunningMSIApps();
-            TryInitializeSio();
+            TryInitializeDll();
         }
 
         ~MainWindowModel()
@@ -127,7 +127,7 @@ namespace MSIRGB
             }
         }
 
-        private void TryInitializeSio(bool ignoreMbCheck = false)
+        private void TryInitializeDll(bool ignoreMbCheck = false)
         {
             string assemblyTitle = ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false))?.Title;
 
@@ -137,26 +137,34 @@ namespace MSIRGB
             }
             catch (Lighting.Exception exc)
             {
-                if (exc.GetErrorCode() == Lighting.ErrorCode.MotherboardNotSupported)
+                if (exc.GetErrorCode() == Lighting.ErrorCode.MotherboardModelNotSupported)
                 {
-                    if (!ignoreMbCheck)
+                    if (MessageBox.Show("Your motherboard is not on the list of supported motherboards. " +
+                                        "Attempting to use this program may cause irreversible damage to your hardware and/or personal data. " +
+                                        "Are you sure you want to continue?",
+                                        assemblyTitle,
+                                        MessageBoxButton.YesNo,
+                                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
                     {
-                        if (MessageBox.Show("Your motherboard is not on the list of supported motherboards. " +
-                                            "Attempting to use this program may cause irreversible damage to your hardware and/or personal data. " +
-                                            "Are you sure you want to continue?",
-                                            assemblyTitle,
-                                            MessageBoxButton.YesNo,
-                                            MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                        {
-                            TryInitializeSio(true);
-                            return;
-                        }
+                        TryInitializeDll(true);
+                        return;
                     }
+                }
+                else if (exc.GetErrorCode() == Lighting.ErrorCode.MotherboardVendorNotSupported)
+                {
+                    MessageBox.Show("Your motherboard's vendor was not detected to be MSI. MSIRGB only supports MSI motherboards. " +
+                        "To avoid damage to your hardware, MSIRGB will shutdown. " + Environment.NewLine + Environment.NewLine + 
+                        "If your motherboard's vendor is MSI, " + "" +
+                        "please report this problem on the issue tracker at: https://github.com/ixjf/MSIRGB",
+                        assemblyTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Stop
+                        );
                 }
                 else if (exc.GetErrorCode() == Lighting.ErrorCode.DriverLoadFailed)
                 {
                     MessageBox.Show("Failed to load driver. This could be either due to some program interfering with MSIRGB's driver, " +
-                                    "or it could be a bug. Please report this on the issue tracker at GitHub: https://github.com/ixjf/MSIRGB",
+                                    "or it could be a bug. Please report this on the issue tracker at: https://github.com/ixjf/MSIRGB",
                                     assemblyTitle,
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Error
@@ -164,7 +172,7 @@ namespace MSIRGB
                 }
                 else if (exc.GetErrorCode() == Lighting.ErrorCode.LoadFailed)
                 {
-                    MessageBox.Show("Failed to load. Please report this on the issue tracker at GitHub: https://github.com/ixjf/MSIRGB",
+                    MessageBox.Show("Failed to load. Please report this on the issue tracker at: https://github.com/ixjf/MSIRGB",
                                     assemblyTitle,
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Error
