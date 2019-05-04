@@ -24,9 +24,9 @@ When you run MSIRGB, you will see this GUI. Here you can experiment with simple 
 - **Scripts**: Scripts allow you to leverage these hardware-implemented functions to create more advanced effects. While the functionality provided by the motherboard seems minimal, you can create some interesting effects with them. Currently MSIRGB has 4 example effects you can download and try: the [hue wheel effect](#example-effects), the strobe effect, the police lights effect, and the pumpkin effect. New effects are always welcome. Feel free to open a pull request if you'd like to contribute.
 
 # Example effects
-Hue Wheel (effect is smooth, GIF has low frame rate)
+Hue Wheel
 
- ![hue wheel effect](https://i.imgur.com/wer1EeF.gifv)
+ ![hue wheel effect](https://i.imgur.com/wer1EeF.gif)
 
 # Scripting interface (for creating effects)
 Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).
