@@ -9,7 +9,7 @@
 \* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
  
 # How it works
-![MSIRGB](https://i.imgur.com/J0wwBB3.png)
+![MSIRGB](https://i.imgur.com/lnpch6a.png)
 
 When you run MSIRGB, you will see this GUI. Here you can experiment with simple effects by changing hardware-implemented settings in your motherboard.
 
@@ -26,7 +26,7 @@ When you run MSIRGB, you will see this GUI. Here you can experiment with simple 
 # Example effects
 Hue Wheel (effect is smooth, GIF has low frame rate)
 
- ![hue wheel effect](https://thumbs.gfycat.com/CanineShorttermAdamsstaghornedbeetle-size_restricted.gif)
+ ![hue wheel effect](https://i.imgur.com/wer1EeF.gifv)
 
 # Scripting interface (for creating effects)
 Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).

@@ -9,11 +9,11 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
 [assembly:AssemblyProductAttribute(L"MSIRGB.DLL")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2018")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c) Pedro Fanha,  2019")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 
-[assembly:AssemblyVersionAttribute("1.0.*")];
+[assembly:AssemblyVersionAttribute("2.2.1")];
 
 [assembly:ComVisible(false)];
 

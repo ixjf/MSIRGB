@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{26F6C912-B207-4BC5-B02E-0F4EEEF336D3}"
 	ProjectSection(SolutionItems) = preProject
 		Scripts\Hue Wheel.lua = Scripts\Hue Wheel.lua
+		Scripts\Police Lights.lua = Scripts\Police Lights.lua
+		Scripts\Pumpkin.lua = Scripts\Pumpkin.lua
+		Scripts\Strobe.lua = Scripts\Strobe.lua
 	EndProjectSection
 EndProject
 Global
