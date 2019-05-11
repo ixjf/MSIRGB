@@ -32,7 +32,7 @@ Hue Wheel
 Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).
 
 # How to install
- 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. There are MSI motherboards which aren't listed but are supported, but **do not attempt to use this program with a non-MSI board. It will NOT work. You are solely responsible for any damage you cause to your hardware**.
+ 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. Other MSI motherboards may be supported despite not being listed. Non-MSI motherboards are not supported and MSIRGB will not run on those.
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
  3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.1.1/MSIRGB-v2.2.1.1.7z).
  4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
