@@ -77,10 +77,11 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  
  Other MSI motherboards may be supported. See the next section for more.
 
-# Confirmed or reported working motherboards
- - MSI B450I GAMING PLUS AC (mine, so I always know it works)
+# Reported working motherboards
+ - MSI B450I GAMING PLUS AC
+ - MSI Z270 GAMING M7
  
- **Certain motherboards are not supported by MSI Mystic Light and so are not on the list above but some of these have been reported to be working with MSIRGB. They are the following:**
+ **Certain motherboards are not supported by MSI Mystic Light and so are not on the list in section [Motherboard support](#motherboard-support) but some of them have been reported to be working with MSIRGB all the same. They are the following:**
  - MSI B350 TOMAHAWK
  - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
