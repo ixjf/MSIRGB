@@ -262,7 +262,8 @@ namespace logic {
     {
         auto info = wmi_query(L"Win32_BaseBoard", { L"Manufacturer", L"Product", L"Version" });
 
-        if (info[L"Manufacturer"].find(L"Micro-Star International Co., Ltd") == std::wstring::npos) {
+        if (info[L"Manufacturer"].find(L"Micro-Star International Co., Ltd") == std::wstring::npos &&
+            info[L"Manufacturer"].find(L"MSI") == std::wstring::npos) {
             return MbCompatError::UnsupportedVendor;
         }
 
