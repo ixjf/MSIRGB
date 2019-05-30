@@ -137,11 +137,11 @@ namespace logic {
             return false;
         }
 
-		if (reverse_colours) {
-			colour.r = 0x0F - colour.r;
-			colour.g = 0x0F - colour.g;
-			colour.b = 0x0F - colour.b;
-		}
+        if (reverse_colours) {
+            colour.r = 0x0F - colour.r;
+            colour.g = 0x0F - colour.g;
+            colour.b = 0x0F - colour.b;
+        }
 
         curr_batch.colours.insert_or_assign(index, colour);
 
@@ -173,11 +173,11 @@ namespace logic {
         std::uint8_t r = (r_cell >> (!nibble_pos * 4)) & 0x0F;
         std::uint8_t g = (g_cell >> (!nibble_pos * 4)) & 0x0F;
         std::uint8_t b = (b_cell >> (!nibble_pos * 4)) & 0x0F;
-		if (reverse_colours) {
-			r = 0x0F - r;
-			g = 0x0F - g;
-			b = 0x0F - b;
-		}
+        if (reverse_colours) {
+            r = 0x0F - r;
+            g = 0x0F - g;
+            b = 0x0F - b;
+        }
 
         return std::make_optional(Colour{ r, g, b });
     }
@@ -298,12 +298,12 @@ namespace logic {
             L"7B40",
             L"7A94",
             L"7B09",
-			L"7B90"
+            L"7B90"
         };
 
-		static const std::list<std::wstring> reversed_mbs = { // colours are reversed on these.
-			L"7B90"
-		};
+        static const std::list<std::wstring> reversed_mbs = { // colours are reversed on these.
+            L"7B90"
+        };
 
         auto found = std::find_if(supported_mbs.begin(),
             supported_mbs.end(),
@@ -327,16 +327,16 @@ namespace logic {
             return MbCompatError::UnsupportedModel;
         }
         else {
-			auto rev_found = std::find_if(reversed_mbs.begin(),
-				reversed_mbs.end(),
-				[&info](const std::wstring & mb_model) -> bool {
-					return info[L"Product"].find(mb_model) != std::wstring::npos;
-			});
-			Lighting::reverse_colours = rev_found != reversed_mbs.end();
+            auto rev_found = std::find_if(reversed_mbs.begin(),
+                reversed_mbs.end(),
+                [&info](const std::wstring & mb_model) -> bool {
+                    return info[L"Product"].find(mb_model) != std::wstring::npos;
+            });
+            Lighting::reverse_colours = rev_found != reversed_mbs.end();
             return MbCompatError::Ok;
         }
     }
-	bool Lighting::reverse_colours = false;
+    bool Lighting::reverse_colours = false;
 
     void Lighting::batch_commit()
     {
