@@ -53,6 +53,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI A320M GRENADE
  - MSI B450M PRO-VDH
  - MSI B450M BAZOOKA
+ - MSI B450M BAZOOKA PLUS
  - MSI X470 GAMING PRO CARBON AC
  - MSI X470 GAMING M7 AC
  - MSI X470 GAMING PLUS
@@ -80,6 +81,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 # Reported working motherboards
  - MSI B450I GAMING PLUS AC
  - MSI Z270 GAMING M7
+ - MSI B450M BAZOOKA PLUS
  
  **Certain motherboards are not supported by MSI Mystic Light and so are not on the list in section [Motherboard support](#motherboard-support) but some of them have been reported to be working with MSIRGB all the same. They are the following:**
  - MSI B350 TOMAHAWK

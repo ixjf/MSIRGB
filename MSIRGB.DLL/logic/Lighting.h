@@ -77,6 +77,7 @@ namespace logic {
         };
 
         static MbCompatError    check_supported_mb();
+		static bool             reverse_colours;  // On some motherboards, the colours are reversed.
 
         void                    batch_commit();
 
