@@ -75,7 +75,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI X399 GAMING PRO CARBON AC
  - MSI X399 SLI PLUS
  
- Other MSI motherboards may be supported. See the next section for more.
+ Other MSI motherboards may be supported. See the next section for the list of all motherboards reported to be working with MSIRGB.
 
 # Reported working motherboards
  - MSI B450I GAMING PLUS AC
