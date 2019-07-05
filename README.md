@@ -53,6 +53,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI A320M GRENADE
  - MSI B450M PRO-VDH
  - MSI B450M BAZOOKA
+ - MSI B450M MORTAR
  - MSI X470 GAMING PRO CARBON AC
  - MSI X470 GAMING M7 AC
  - MSI X470 GAMING PLUS

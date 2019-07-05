@@ -286,7 +286,8 @@ namespace logic {
             L"7A68",
             L"7B40",
             L"7A94",
-            L"7B09"
+            L"7B09",
+            L"7B89"
         };
 
         auto found = std::find_if(supported_mbs.begin(),
@@ -357,8 +358,8 @@ namespace logic {
             // Also make sure some 'weird' fade in behaviour that happens in some boards is disabled
 
             // Invert value is second group of 3 bits from the left in 0xFF: BGR, in this order, from leftmost bit to rightmost bit
-            // If bit is set, channel is inverted
-            val_at_ff &= 0b11100011;
+            // Depending on MB, channel is inverted either if bit is set or not; this may have to do with the LED controller used
+            // val_at_ff &= 0b11100011;
 
             // Fade in value is first 3 bits: BGR, in this order, from leftmost bit to rightmost bit
             // If bit is set, fade in is disabled
