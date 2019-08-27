@@ -94,6 +94,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI X370 KRAIT GAMING
  - MSI B350M MORTAR
  - MSI B350M PRO-VDH
+ - MSI B450M BAZOOKA V2
  
  **Motherboards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and should work with MSIGB are as follows:**
  - MSI H270M MORTAR ARTIC
