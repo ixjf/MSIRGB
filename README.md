@@ -79,7 +79,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 
 # Reported working motherboards
 
- **It is still possible to use this program with any motherboard that isn't listed above or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
+ **It is still possible to use this program with any motherboard that isn't listed here or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
 
 ## Reported working from section [Motherboard support](#motherboard-support)
  - MSI B450I GAMING PLUS AC
