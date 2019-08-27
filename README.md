@@ -78,11 +78,16 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  Other MSI motherboards may be supported. See the next section for the list of all motherboards reported to be working with MSIRGB.
 
 # Reported working motherboards
+
+ **It is still possible to use this program with any motherboard that isn't listed above or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
+
+## Reported working from section [Motherboard support](#motherboard-support)
  - MSI B450I GAMING PLUS AC
  - MSI Z270 GAMING M7
  - MSI X470 GAMING PRO
+ - MSI X470 GAMING PLUS
  
- **Certain motherboards are not supported by MSI Mystic Light and so are not on the list in section [Motherboard support](#motherboard-support) but some of them have been reported to be working with MSIRGB all the same. They are the following:**
+ ## Reported working but not on the list from section [Motherboard support](#motherboard-support)
  - MSI B350 TOMAHAWK
  - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
@@ -96,15 +101,11 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI B350M PRO-VDH
  - MSI B450M BAZOOKA V2
  
- **Motherboards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and should work with MSIGB are as follows:**
- - MSI H270M MORTAR ARTIC
- - MSI X470 GAMING PRO
- - MSI X470 GAMING PLUS
- - MSI Z270 SLI PLUS
- - MSI Z370M MORTAR
+ ## Reported working but colours are reversed (fix in v2.2.1.3)
+ - MSI B450M MORTAR TITANIUM
+ - MSI B450M MORTAR
+ - MSI B450M BAZOOKA PLUS 
  
- **It is still possible to use this program with any motherboard that isn't listed above or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
-
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
  2. Open the solution (MSIRGB.sln)
