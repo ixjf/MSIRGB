@@ -102,6 +102,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI B450M BAZOOKA V2
  - MSI Z270 GAMING M3
  - MSI H270 GAMING PRO CARBON
+ - MSI B350M BAZOOKA
  
  ## Reported working but colours are reversed (fix in v2.2.1.3)
  - MSI B450M MORTAR TITANIUM
