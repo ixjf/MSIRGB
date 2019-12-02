@@ -86,7 +86,6 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI Z270 GAMING M7
  - MSI X470 GAMING PRO
  - MSI X470 GAMING PLUS
- - MSI B350 GAMING PRO CARBON
  
  ## Reported working but not on the list from section [Motherboard support](#motherboard-support)
  - MSI B350 TOMAHAWK
@@ -105,6 +104,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI H270 GAMING PRO CARBON
  - MSI B350M BAZOOKA
  - MSI B250M GAMING PRO
+ - MSI B350 GAMING PRO CARBON
  
  ## Reported working but colours are reversed (fix in v2.2.1.3)
  - MSI B450M MORTAR TITANIUM
