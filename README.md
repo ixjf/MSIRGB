@@ -86,6 +86,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI Z270 GAMING M7
  - MSI X470 GAMING PRO
  - MSI X470 GAMING PLUS
+ - MSI B350 GAMING PRO CARBON
  
  ## Reported working but not on the list from section [Motherboard support](#motherboard-support)
  - MSI B350 TOMAHAWK
