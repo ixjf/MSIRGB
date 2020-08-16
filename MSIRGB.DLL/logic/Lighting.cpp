@@ -267,31 +267,36 @@ namespace logic {
             return MbCompatError::UnsupportedVendor;
         }
 
-        static const std::list<std::wstring> supported_mbs = {
-            L"7A40",
-            L"7A39",
-            L"7A38",
-            L"7B78",
-            L"7B77",
-            L"7B79",
-            L"7B73",
-            L"7B61",
-            L"7B54",
-            L"7B49",
-            L"7B48",
-            L"7B45",
-            L"7B44",
-            L"7A59",
-            L"7A57",
-            L"7A68",
-            L"7B40",
-            L"7A94",
-            L"7B09"
+        static const std::map<std::wstring, MbFlags> supported_mbs = {
+            { L"7A40", MbFlags::NONE },
+            { L"7A39", MbFlags::NONE },
+            { L"7A38", MbFlags::NONE },
+            { L"7B78", MbFlags::NONE },
+            { L"7B77", MbFlags::NONE },
+            { L"7B79", MbFlags::NONE },
+            { L"7B73", MbFlags::NONE },
+            { L"7B61", MbFlags::NONE },
+            { L"7B54", MbFlags::NONE },
+            { L"7B49", MbFlags::NONE },
+            { L"7B48", MbFlags::NONE },
+            { L"7B45", MbFlags::NONE },
+            { L"7B44", MbFlags::NONE },
+            { L"7A59", MbFlags::NONE },
+            { L"7A57", MbFlags::NONE },
+            { L"7A68", MbFlags::NONE },
+            { L"7B40", MbFlags::NONE },
+            { L"7A94", MbFlags::NONE },
+            { L"7B09", MbFlags::NONE },
+            { L"7B89", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B90", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B19", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C02", MbFlags::INVERTED_COLOUR_CHANNELS }
         };
 
         auto found = std::find_if(supported_mbs.begin(),
             supported_mbs.end(),
-            [&info](const std::wstring &mb_model) -> bool {
+            [&info](const auto &pair) -> bool {
+            const std::wstring& mb_model = pair.first;
             return info[L"Product"].find(mb_model) != std::wstring::npos;
         });
 
@@ -311,6 +316,7 @@ namespace logic {
             return MbCompatError::UnsupportedModel;
         }
         else {
+            mb_flags = found->second;
             return MbCompatError::Ok;
         }
     }
@@ -344,12 +350,6 @@ namespace logic {
             // unknown purpose)
             val_at_e0 |= 0b11100000;
 
-            // 0xFD in bank 12h seems to be related to some rainbow mode
-            // but it is apparently not supported on my board, so I can't test it.
-            // I think it's only supported on other MBs that have RGB headers but are
-            // different somehow - those function differently from the MBs supported
-            // here.
-
             // Turn on RGB header
             val_at_ff |= 0b00000010;
 
@@ -358,7 +358,23 @@ namespace logic {
 
             // Invert value is second group of 3 bits from the left in 0xFF: BGR, in this order, from leftmost bit to rightmost bit
             // If bit is set, channel is inverted
-            val_at_ff &= 0b11100011;
+            // 0xFD in bank 12h seems to be related to some rainbow mode
+            // but it is apparently not supported on my board, so I can't test it.
+            // I think it's only supported on other MBs that have RGB headers but are
+            // different somehow - those function differently from the MBs supported
+            // here.
+            if (mb_flags & MbFlags::INVERTED_COLOUR_CHANNELS) {
+                val_at_ff |= 0b00011100;
+
+                std::uint8_t val_at_fd = sio->read_uint8_from_bank(RGB_BANK, 0xFD);
+                
+                val_at_fd &= 0b11111000;
+
+                sio->write_uint8_to_bank(RGB_BANK, 0xFD, val_at_fd);
+            }
+            else {
+                val_at_ff &= 0b11100011;
+            }
 
             // Fade in value is first 3 bits: BGR, in this order, from leftmost bit to rightmost bit
             // If bit is set, fade in is disabled

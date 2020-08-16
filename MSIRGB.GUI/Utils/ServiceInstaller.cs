@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Microsoft.Win32;
 
 namespace MSIRGB.Utils
 {
-    class ServiceInstaller
+    internal class ServiceInstaller
     {
         public static bool IsServiceInstalled(string svcName)
         {
@@ -36,7 +36,7 @@ namespace MSIRGB.Utils
                 IntPtr scManager = OpenSCManager(null, null, SC_MANAGER_CONNECT);
                 IntPtr svc = OpenService(scManager, svcName, SERVICE_STOP | SERVICE_QUERY_STATUS);
 
-                var svcStatus = new SERVICE_STATUS();
+                SERVICE_STATUS svcStatus = new SERVICE_STATUS();
 
                 ControlService(svc, SERVICE_CONTROL_STOP, out svcStatus);
 
@@ -102,14 +102,16 @@ namespace MSIRGB.Utils
 
         public static string[] GetPermanentArguments(string svcName)
         {
-            var imagePath = Registry.GetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\" + svcName,
+            object imagePath = Registry.GetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\" + svcName,
                                               "ImagePath",
                                               null);
 
             if (imagePath == null)
+            {
                 return new string[0];
+            }
 
-            var args = new List<string>();
+            List<string> args = new List<string>();
 
             // The following regex matches all non-empty (i.e. no characters or just white spaces) data 
             // within quotation marks
@@ -122,9 +124,14 @@ namespace MSIRGB.Utils
             // 
             // Basically, Regex.Matches will transform "aa a" "b"    "c" "2320%$)" into matches 'aa a', 'b', 'c', '2320%$'
             foreach (Match match in Regex.Matches((string)imagePath, "(?<=\")([^\"]*.\\S)(?=\")"))
+            {
                 args.Add(match.ToString());
+            }
 
-            args.RemoveAt(0); // Don't want the service EXE path
+            if (args.Count > 0)
+            {
+                args.RemoveAt(0); // Don't want the service EXE path
+            }
 
             return args.ToArray();
         }
@@ -132,10 +139,14 @@ namespace MSIRGB.Utils
         public static bool Start(string svcName)
         {
             if (!IsServiceInstalled(svcName))
+            {
                 return false;
+            }
 
             if (IsServiceNotStopped(svcName))
+            {
                 return false;
+            }
 
             IntPtr scManager = OpenSCManager(null, null, SC_MANAGER_CONNECT);
             IntPtr svc = OpenService(scManager, svcName, SERVICE_START);
@@ -159,7 +170,9 @@ namespace MSIRGB.Utils
             if (IsServiceInstalled(svcName))
             {
                 if (IsServiceNotStopped(svcName))
+                {
                     WaitStop(svcName);
+                }
 
                 IntPtr scManager = OpenSCManager(null, null, SC_MANAGER_CONNECT);
                 IntPtr svc = OpenService(scManager, svcName, DELETE);
@@ -182,7 +195,7 @@ namespace MSIRGB.Utils
             }
             else
             {
-                var svcStatus = new SERVICE_STATUS();
+                SERVICE_STATUS svcStatus = new SERVICE_STATUS();
                 QueryServiceStatus(svc, out svcStatus);
 
                 CloseServiceHandle(svc);

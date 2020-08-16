@@ -38,9 +38,9 @@ namespace MSIRGB.ScriptService
 
         private static void Proc(ManualResetEventSlim shutdownEvent, string logPath, string scriptPath, bool ignoreMbCheck)
         {
-            var log = new Log(logPath);
+            //var log = new Log(logPath);
 
-            log.OutputInfo(string.Format("Initializing script thread (script file: '{0}')", Path.GetFileName(scriptPath)));
+            //log.OutputInfo(string.Format("Initializing script thread (script file: '{0}')", Path.GetFileName(scriptPath)));
 
             // Add custom converters
             LuaBindings.CustomConverters.Register();
@@ -54,7 +54,7 @@ namespace MSIRGB.ScriptService
                                                         CoreModules.Bit32 |
                                                         CoreModules.OS_Time);
 
-            script.Options.DebugPrint = s => log.OutputScriptPrint(s);
+            //script.Options.DebugPrint = s => log.OutputScriptPrint(s);
 
             // Bind modules & extensions
             LuaBindings.LightingModule.Register(script, ignoreMbCheck);
@@ -75,10 +75,10 @@ namespace MSIRGB.ScriptService
             }
             catch (InterpreterException exc)
             {
-                log.OutputScriptError(exc.DecoratedMessage);
+                //log.OutputScriptError(exc.DecoratedMessage);
             }
 
-            log.OutputInfo(string.Format("Finalizing script thread (script file: '{0}')", Path.GetFileName(scriptPath)));
+            //log.OutputInfo(string.Format("Finalizing script thread (script file: '{0}')", Path.GetFileName(scriptPath)));
         }
     }
 }

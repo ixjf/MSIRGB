@@ -32,6 +32,9 @@ namespace logic {
         void            outb(std::uint8_t port, std::uint8_t data) const;
 
     private:
+        // DEBUG PURPOSES
+        std::ofstream   log_file;
+
         struct IoctlInputBuffer {
             std::uint16_t port;
             std::uint8_t  data;

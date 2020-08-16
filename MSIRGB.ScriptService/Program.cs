@@ -18,6 +18,7 @@ namespace MSIRGB.ScriptService
             {
                 new ScriptService()
             };
+
             ServiceBase.Run(ServicesToRun);
         }
     }

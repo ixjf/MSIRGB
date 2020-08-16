@@ -12,10 +12,11 @@ const auto IOCTL_READ_PORT_UCHAR = CTL_CODE(0x9C40, 0x801, METHOD_BUFFERED, FILE
 const auto IOCTL_WRITE_PORT_UCHAR = CTL_CODE(0x9C40, 0x802, METHOD_BUFFERED, FILE_ANY_ACCESS);
 
 namespace logic {
-    IsaDrv::IsaDrv()
+    IsaDrv::IsaDrv(): log_file("debug_log.txt", std::ios_base::trunc)
     {
         // Try to load the driver
         if (!load_drv()) {
+            log_file << "load_drv failed" << std::endl;
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -30,6 +31,7 @@ namespace logic {
             NULL);
 
         if (drv_handle == INVALID_HANDLE_VALUE) {
+            log_file << "drv_handle == INVALID_HANDLE_VALUE" << std::endl;
             throw Exception(ErrorCode::LoadFailed);
         }
 
@@ -174,7 +176,7 @@ namespace logic {
                 err = ERROR_SUCCESS;
             }
             else {
-                //std::cout << __FUNCTION__ << " CreateService failed with error " << err << std::endl;
+                log_file << "install_drv: CreateService failed with error " << err << std::endl;
             }
 
             CloseServiceHandle(sc_manager);
@@ -243,7 +245,7 @@ namespace logic {
 
         if (service == NULL) {
             DWORD err = GetLastError();
-            //std::cout << __FUNCTION__ << " OpenService failed with error " << err << std::endl;
+            log_file << "start_drv: OpenService failed with error " << err << std::endl;
 
             CloseServiceHandle(sc_manager);
             return err;
@@ -256,7 +258,7 @@ namespace logic {
                 err = ERROR_SUCCESS;
             }
             else {
-                //std::cout << __FUNCTION__ << " StartService failed with error " << err << std::endl;
+                log_file << "start_drv: StartService failed with error " << err << std::endl;
             }
 
             CloseServiceHandle(service);
@@ -309,14 +311,17 @@ namespace logic {
     bool IsaDrv::load_drv()
     {
         if (install_drv() != ERROR_SUCCESS) {
+            log_file << "load_drv: install_drv() != ERROR_SUCCESS" << std::endl;
             return false;
         }
         else {
             if (start_drv() != ERROR_SUCCESS) {
+                log_file << "load_drv: start_drv() != ERROR_SUCCESS" << std::endl;
                 uninstall_drv();
                 return false;
             }
             else {
+                log_file << "load_drv succeeded" << std::endl;
                 return true;
             }
         }

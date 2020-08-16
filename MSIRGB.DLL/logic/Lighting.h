@@ -76,7 +76,14 @@ namespace logic {
             UnsupportedModel,
         };
 
-        static MbCompatError    check_supported_mb();
+        enum MbFlags : uint8_t {
+            NONE,
+            INVERTED_COLOUR_CHANNELS // FIXME: name probably not accurate. also changes another setting in 0xFD that I don't know what it is (see batch_commit)
+            // seems to change rainbow mode settings
+            // TODO: is there anything else affected by INVERTED_COLOUR_CHANNELS? I think channels inverted is the only change for these motherboards
+        };
+
+        MbCompatError           check_supported_mb();
 
         void                    batch_commit();
 
@@ -87,6 +94,8 @@ namespace logic {
             std::optional<std::uint16_t>                    step_duration;
             std::optional<FlashingSpeed>                    flash_speed;
         };
+
+        MbFlags                                             mb_flags;
 
         HANDLE                                              csection_mutex;
 
