@@ -34,7 +34,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 # How to install
  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. Other MSI motherboards may be supported despite not being listed. Non-MSI motherboards are not supported and MSIRGB will not run on those.
  2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
- 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.1.1/MSIRGB-v2.2.1.1.7z).
+ 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.1.2/MSIRGB-v2.2.1.2.7z).
  4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
  5. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there, such that your directory structure is like this:
     - Scripts/
@@ -75,12 +75,19 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI X399 GAMING PRO CARBON AC
  - MSI X399 SLI PLUS
  
- Other MSI motherboards may be supported. See the next section for more.
+ Other MSI motherboards may be supported. See the next section for the list of all motherboards reported to be working with MSIRGB.
 
-# Confirmed or reported working motherboards
- - MSI B450I GAMING PLUS AC (mine, so I always know it works)
+# Reported working motherboards
+
+ **It is still possible to use this program with any motherboard that isn't listed here or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
+
+## Reported working from section [Motherboard support](#motherboard-support)
+ - MSI B450I GAMING PLUS AC
+ - MSI Z270 GAMING M7
+ - MSI X470 GAMING PRO
+ - MSI X470 GAMING PLUS
  
- **Certain motherboards are not supported by MSI Mystic Light and so are not on the list above but some of these have been reported to be working with MSIRGB. They are the following:**
+ ## Reported working but not on the list from section [Motherboard support](#motherboard-support)
  - MSI B350 TOMAHAWK
  - MSI B450 TOMAHAWK
  - MSI B350 GAMING PLUS
@@ -89,16 +96,26 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - MSI B250M MORTAR
  - MSI B350M MORTAR ARTIC
  - MSI B350 KRAIT GAMING
+ - MSI X370 KRAIT GAMING
+ - MSI B350M MORTAR
+ - MSI B350M PRO-VDH
+ - MSI B450M BAZOOKA V2
+ - MSI Z270 GAMING M3
+ - MSI H270 GAMING PRO CARBON
+ - MSI B350M BAZOOKA
+ - MSI B250M GAMING PRO
+ - MSI B350 GAMING PRO CARBON
+ - MSI B450 GAMING PLUS
+ - MSI B450 TOMAHAWK MAX
+ - MSI B250M BAZOOKA
+ - MSI H370 GAMING PLUS
+ - MSI Z270 GAMING M6 AC
  
- **Motherboards which [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) is reportedly working with and should work with MSIGB are as follows:**
- - MSI H270M MORTAR ARTIC
- - MSI X470 GAMING PRO
- - MSI X470 GAMING PLUS
- - MSI Z270 SLI PLUS
- - MSI Z370M MORTAR
+ ## Reported working but colours are reversed (fix in v2.2.1.3)
+ - MSI B450M MORTAR TITANIUM
+ - MSI B450M MORTAR
+ - MSI B450M BAZOOKA PLUS 
  
- **It is still possible to use this program with any motherboard that isn't listed above or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
-
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
  2. Open the solution (MSIRGB.sln)

@@ -33,7 +33,7 @@ namespace logic {
 
     private:
         // DEBUG PURPOSES
-        std::ofstream   log_file;
+        // std::ofstream   log_file;
 
         struct IoctlInputBuffer {
             std::uint16_t port;
