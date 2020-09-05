@@ -1,6 +1,6 @@
  This program allows to control the LED lighting (motherboard* and headers) on select MSI boards. Unlike MSI Mystic Light, there is no limitation to only 7 colours. Aside from providing a GUI for quickly experimenting with different effects, it also provides a scripting interface to create more advanced effects like [this one](#example-effects) and to auto-run these effects on Windows start-up.
 
- MSIRGB runs on Windows 10 (x64 only), so long as VC Redist 2017 x64 is installed and .NET support is enabled (which it is, by default). Older versions of Windows have not been tested.
+ MSIRGB runs on Windows 10 (x64 only), so long as VC Redist 2019 x64 is installed and .NET support is enabled (which it is, by default). Older versions of Windows have not been tested.
 
  Download is available [here](#how-to-install). **Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)**
  
@@ -33,7 +33,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 
 # How to install
  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. Other MSI motherboards may be supported despite not being listed. Non-MSI motherboards are not supported and MSIRGB will not run on those.
- 2. Install [VC Redist 2017 x64](https://aka.ms/vs/15/release/vc_redist.x64.exe).
+ 2. Install [VC Redist 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe).
  3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.1.2/MSIRGB-v2.2.1.2.7z).
  4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
  5. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there, such that your directory structure is like this:
@@ -45,77 +45,93 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  6. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
 
 # Motherboard support
- MSIRGB should **theoretically** work with the following motherboards:
- - MSI B450I GAMING PLUS AC
- - MSI B350I PRO AC
- - MSI A320M GAMING PRO
- - MSI B350M GAMING PRO
- - MSI A320M GRENADE
- - MSI B450M PRO-VDH
- - MSI B450M BAZOOKA
- - MSI X470 GAMING PRO CARBON AC
- - MSI X470 GAMING M7 AC
- - MSI X470 GAMING PLUS
- - MSI X470 GAMING PRO
- - MSI Z370 OC GAMING
- - MSI Z370 GAMING PLUS
- - MSI Z370M MORTAR
- - MSI Z370 PC PRO
- - MSI Z370-A PRO
- - MSI Z370 GAMING PRO CARBON AC
- - MSI Z370 GAMING PRO AC
- - MSI Z270 SLI PLUS
- - MSI Z270 KRAIT GAMING
- - MSI Z270 GAMING PRO
- - MSI Z270 GAMING M7
- - MSI Z270 TOMAHAWK
- - MSI H270 TOMAHAWK ARTIC
- - MSI Z299M-A PRO
- - MSI X299 RAIDER
- - MSI X399 GAMING PRO CARBON AC
- - MSI X399 SLI PLUS
- 
- Other MSI motherboards may be supported. See the next section for the list of all motherboards reported to be working with MSIRGB.
+ *This is not an exhaustive list of all motherboards supported by MSIRGB. There may be others not listed here that also work. It may also be the case that some of these aren't actually supported. Running MSIRGB on an unsupported motherboard and ignoring the warning message on startup may lead to damage to your data or the motherboard. Do it at your own risk.*
 
-# Reported working motherboards
-
- **It is still possible to use this program with any motherboard that isn't listed here or in section [Motherboard support](#motherboard-support), but do it at your own risk.**
-
-## Reported working from section [Motherboard support](#motherboard-support)
- - MSI B450I GAMING PLUS AC
- - MSI Z270 GAMING M7
- - MSI X470 GAMING PRO
- - MSI X470 GAMING PLUS
- 
- ## Reported working but not on the list from section [Motherboard support](#motherboard-support)
- - MSI B350 TOMAHAWK
- - MSI B450 TOMAHAWK
- - MSI B350 GAMING PLUS
- - MSI B350 PC MATE
- - MSI A320M BAZOOKA
- - MSI B250M MORTAR
- - MSI B350M MORTAR ARTIC
- - MSI B350 KRAIT GAMING
- - MSI X370 KRAIT GAMING
- - MSI B350M MORTAR
- - MSI B350M PRO-VDH
- - MSI B450M BAZOOKA V2
- - MSI Z270 GAMING M3
- - MSI H270 GAMING PRO CARBON
- - MSI B350M BAZOOKA
- - MSI B250M GAMING PRO
- - MSI B350 GAMING PRO CARBON
- - MSI B450 GAMING PLUS
- - MSI B450 TOMAHAWK MAX
- - MSI B250M BAZOOKA
- - MSI H370 GAMING PLUS
- - MSI Z270 GAMING M6 AC
- - MSI Z270 GAMING M5
- 
- ## Reported working but colours are reversed (fix in v2.2.1.3)
- - MSI B450M MORTAR TITANIUM
- - MSI B450M MORTAR
- - MSI B450M BAZOOKA PLUS 
+ - B450I GAMING PLUS AC (works)
+ - X470 GAMING PLUS (works)
+ - X470 GAMING PRO (works)
+ - Z270 GAMING M7 (works)
+ - B450 TOMAHAWK (works)
+ - B450 TOMAHAWK MAX (works)
+ - H370 GAMING PLUS (works)
+ - B450M MORTAR (works)
+ - B450M MORTAR TITANIUM (works)
+ - B450M BAZOOKA PLUS (works)
+ - B250M MORTAR (works)
+ - B350M PRO-VDH (works)
+ - B450M BAZOOKA V2 (works)
+ - B450 GAMING PLUS (works)
+ - B250M BAZOOKA (works)
+ - Z270 GAMING M6 AC (works)
+ - Z270 GAMING M5 (works)
+ - B350 TOMAHAWK (works, but will give warning message on start)
+ - B350 GAMING PLUS (works, but will give warning message on start)
+ - B350 PC MATE (works, but will give warning message on start)
+ - A320M BAZOOKA (works, but will give warning message on start)
+ - B350M MORTAR ARTIC (works, but will give warning message on start)
+ - B350 KRAIT GAMING (works, but will give warning message on start)
+ - X370 KRAIT GAMING (works, but will give warning message on start)
+ - B350M MORTAR (works, but will give warning message on start)
+ - Z270 GAMING M3 (works, but will give warning message on start)
+ - H270 GAMING PRO CARBON (works, but will give warning message on start)
+ - B350M BAZOOKA (works, but will give warning message on start)
+ - B250M GAMING PRO (works, but will give warning message on start)
+ - B350 GAMING PRO CARBON (works, but will give warning message on start)
+ - B350I PRO AC (untested, should work)
+ - A320M GAMING PRO (untested, should work)
+ - B350M GAMING PRO (untested, should work)
+ - A320M GRENADE (untested, should work)
+ - B450M PRO-VDH (untested, should work)
+ - B450M BAZOOKA (untested, should work)
+ - Z370 OC GAMING (untested, should work)
+ - Z370 GAMING PLUS (untested, should work)
+ - Z370M MORTAR (untested, should work)
+ - Z370 PC PRO (untested, should work)
+ - Z370-A PRO (untested, should work)
+ - Z370 GAMING PRO CARBON AC (untested, should work)
+ - Z370 GAMING PRO AC (untested, should work)
+ - Z270 SLI PLUS (untested, should work)
+ - Z270 KRAIT GAMING (untested, should work)
+ - Z270 GAMING PRO (untested, should work)
+ - Z270 TOMAHAWK (untested, should work)
+ - H270 TOMAHAWK ARTIC (untested, should work)
+ - Z299M-A PRO (untested, should work)
+ - X299 RAIDER (untested, should work)
+ - X399 GAMING PRO CARBON AC (untested, should work)
+ - X399 SLI PLUS (untested, should work)
+ - X299M GAMING PRO CARBON AC (untested, should work)
+ - Z270 XPOWER GAMING TITANIUM (untested, should work)
+ - H270 GAMING M3 (untested, should work)
+ - B250M MORTAR ARTIC (untested, should work)
+ - B250M PRO-VDH (untested, should work)
+ - B250 PC MATE (untested, should work)
+ - H270 PC MATE (untested, should work)
+ - 7A78 (revision >1.x, untested, should work)
+ - B250M BAZOOKA OPT BOOST (untested, should work)
+ - H310M PRO-VL (untested, should work)
+ - B360M MORTAR TITANIUM (untested, should work)
+ - B360M PRO-VDH (untested, should work)
+ - B360M BAZOOKA (untested, should work)
+ - H310M PRO-VHL (untested, should work)
+ - 7B30 (untested, should work)
+ - B360I GAMING PRO AC (untested, should work)
+ - MPG Z390 GAMING PLUS (untested, should work)
+ - MPG Z390I GAMING EDGE AC (untested, should work)
+ - MAG Z390M MORTAR (untested, should work)
+ - Z390-A PRO (untested, should work)
+ - Z390 PLUS? / 7C22 (untested, should work)
+ - 7C24 (untested, should work)
+ - 7C01 (untested, should work)
+ - B365M PRO-VDH (untested, should work)
+ - B450A-PRO (untested, should work)
+ - B450 GAMING PLUS MAX (untested, should work)
+ - B450-A PRO MAX (untested, should work)
+ - B450M GAMING PLUS (untested, should work)
+ - B350M PRO-VDH (untested, should work)
+ - B450M PRO-VDH MAX (untested, should work)
+ - B450M PRO-VDH PLUS (untested, should work)
+ - X470 GAMING PLUS MAX (untested, should work)
+ - B450M MORTAR MAX (untested, should work)
  
  # How to build
  1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.

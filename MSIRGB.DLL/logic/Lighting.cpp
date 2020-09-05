@@ -271,8 +271,8 @@ namespace logic {
             { L"7A40", MbFlags::NONE },
             { L"7A39", MbFlags::NONE },
             { L"7A38", MbFlags::NONE },
-            { L"7B78", MbFlags::NONE },
-            { L"7B77", MbFlags::NONE },
+            //{ L"7B78", MbFlags::NONE },
+            //{ L"7B77", MbFlags::NONE },
             { L"7B79", MbFlags::NONE },
             { L"7B73", MbFlags::NONE },
             { L"7B61", MbFlags::NONE },
@@ -287,10 +287,35 @@ namespace logic {
             { L"7B40", MbFlags::NONE },
             { L"7A94", MbFlags::NONE },
             { L"7B09", MbFlags::NONE },
+            { L"7B06", MbFlags::NONE },
+            { L"7A58", MbFlags::NONE },
+            { L"7A62", MbFlags::NONE },
+            { L"7A69", MbFlags::NONE },
+            { L"7A70", MbFlags::NONE },
+            { L"7A72", MbFlags::NONE },
+            { L"7A78", MbFlags::NONE },
+            { L"7A79", MbFlags::NONE },
             { L"7B89", MbFlags::INVERTED_COLOUR_CHANNELS },
             { L"7B90", MbFlags::INVERTED_COLOUR_CHANNELS },
             { L"7B19", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C02", MbFlags::INVERTED_COLOUR_CHANNELS }
+            { L"7C02", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B75", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B22", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B23", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B24", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B27", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B30", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B31", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B51", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C04", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C00", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B98", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C22", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C24", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C01", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7C39", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B86", MbFlags::INVERTED_COLOUR_CHANNELS },
+            { L"7B87", MbFlags::INVERTED_COLOUR_CHANNELS }
         };
 
         auto found = std::find_if(supported_mbs.begin(),
@@ -306,14 +331,108 @@ namespace logic {
         else if (info[L"Product"].find(L"7A38") != std::wstring::npos &&
             info[L"Version"].find(L"3.") == std::wstring::npos &&
             info[L"Version"].find(L"4.") == std::wstring::npos &&
-            info[L"Version"].find(L"7.") == std::wstring::npos) {
-            // MB model 7A38 but not revision 3.x, 4.x, 7.x
+            info[L"Version"].find(L"5.") == std::wstring::npos &&
+            info[L"Version"].find(L"6.") == std::wstring::npos &&
+            info[L"Version"].find(L"7.") == std::wstring::npos &&
+            info[L"Version"].find(L"8.") == std::wstring::npos) {
+            // MB model 7A38 but not revision 3.x, 4.x, 5.x, 6.x, 7.x or 8.x
             return MbCompatError::UnsupportedModel;
         }
         else if (info[L"Product"].find(L"7B79") != std::wstring::npos &&
             info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos &&
+            info[L"Version"].find(L"3.") == std::wstring::npos &&
+            info[L"Version"].find(L"4.") == std::wstring::npos) {
+            // MB model 7B79 but not revision 1.x, 2.x, 3.x or 4.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7B89") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
             info[L"Version"].find(L"2.") == std::wstring::npos) {
-            // MB model 7B79 but not revision 1.x or 2.x
+            // MB model 7B89 but not revision 1.x or 2.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A57") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos) {
+            // MB model 7A57 but not revision 1.x or 2.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A58") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos) {
+            // MB model 7A58 but not revision 1.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A59") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos) {
+            // MB model 7A59 but not revision 1.x or 2.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A62") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos) {
+            // MB model 7A62 but not revision 1.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A68") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos &&
+            info[L"Version"].find(L"3.") == std::wstring::npos) {
+            // MB model 7A68 but not revision 1.x, 2.x or 3.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A69") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos) {
+            // MB model 7A69 but not revision 1.x or 2.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A70") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos) {
+            // MB model 7A70 but not revision 1.x or 2.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A72") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos) {
+            // MB model 7A72 but not revision 1.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A78") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos) {
+            // MB model 7A78 but not revision 1.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A79") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos) {
+            // MB model 7A79 but not revision 1.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7B22") != std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos &&
+            info[L"Version"].find(L"3.") == std::wstring::npos) {
+            // MB model 7B22 but not revision 2.x or 3.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7B23") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos &&
+            info[L"Version"].find(L"3.") == std::wstring::npos) {
+            // MB model 7B23 but not revision 1.x, 2.x or 3.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7B86") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos &&
+            info[L"Version"].find(L"3.") == std::wstring::npos &&
+            info[L"Version"].find(L"4.") == std::wstring::npos) {
+            // MB model 7B86 but not revision 1.x, 2.x, 3.x or 4.x
+            return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7B90") != std::wstring::npos &&
+            info[L"Version"].find(L"1.") == std::wstring::npos &&
+            info[L"Version"].find(L"2.") == std::wstring::npos) {
+            // MB model 7B90 but not revision 1.x or 2.x
             return MbCompatError::UnsupportedModel;
         }
         else {
