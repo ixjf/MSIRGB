@@ -34,7 +34,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 # How to install
  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. Other MSI motherboards may be supported despite not being listed. Non-MSI motherboards are not supported and MSIRGB will not run on those.
  2. Install [VC Redist 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe).
- 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.2.1.2/MSIRGB-v2.2.1.2.7z).
+ 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.3.0/MSIRGB-v2.3.0.zip).
  4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
  5. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there, such that your directory structure is like this:
     - Scripts/
