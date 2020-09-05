@@ -65,6 +65,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - Z270 GAMING M6 AC (works)
  - Z270 GAMING M5 (works)
  - B360M GAMING PLUS (works)
+ - X370 GAMING PLUS (works)
  - B350 TOMAHAWK (works, but will give warning message on start)
  - B350 GAMING PLUS (works, but will give warning message on start)
  - B350 PC MATE (works, but will give warning message on start)
