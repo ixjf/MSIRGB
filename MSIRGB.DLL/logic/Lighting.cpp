@@ -305,8 +305,9 @@ namespace logic {
         }
         else if (info[L"Product"].find(L"7A38") != std::wstring::npos &&
             info[L"Version"].find(L"3.") == std::wstring::npos &&
-            info[L"Version"].find(L"4.") == std::wstring::npos) {
-            // MB model 7A38 but not revision 3.x or 4.x
+            info[L"Version"].find(L"4.") == std::wstring::npos &&
+            info[L"Version"].find(L"7.") == std::wstring::npos) {
+            // MB model 7A38 but not revision 3.x, 4.x, 7.x
             return MbCompatError::UnsupportedModel;
         }
         else if (info[L"Product"].find(L"7B79") != std::wstring::npos &&
