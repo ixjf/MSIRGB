@@ -136,7 +136,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - B450M MORTAR MAX (untested, should work)
  
  # How to build
- 1. Install Visual Studio 2017 (any edition) with C++ desktop development tools, C# and WPF support, and Blend for .NET. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
+ 1. Install Visual Studio 2019 with C++ desktop development tools, C# and WPF support. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
  2. Open the solution (MSIRGB.sln)
  3. Select debug/release target & build.
  
