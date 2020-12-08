@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
                     xmlns:localutils="clr-namespace:MSIRGB.Utils"
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
@@ -653,7 +652,7 @@
                                 <Rectangle Fill="Transparent">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="PreviewMouseDown">
-                                            <ei:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
                                                                  MethodName="DragWindowEvent" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
@@ -668,7 +667,7 @@
                                 <Button>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Click">
-                                            <ei:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
                                                                  MethodName="MinimizeWindowCommand" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
@@ -706,7 +705,7 @@
                                 <Button>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Click">
-                                            <ei:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
                                                                  MethodName="CloseWindowCommand" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
