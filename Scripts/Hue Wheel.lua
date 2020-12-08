@@ -5,7 +5,7 @@ local saturation = 0.933
 local value = 1.0
 
 local delay = 80 -- delay between each colour update, in milliseconds
-local colour_step = 1.1
+local colour_step = 98 -- ]0, 360], the higher, the smaller the step between colours
 
 --
 Lighting.SetStepDuration(511)
@@ -28,7 +28,7 @@ while true do
 
     os.sleep(delay)
 
-    i = i + colour_step
+    i = i + 1
 end
 
 -- ISC License
