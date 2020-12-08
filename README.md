@@ -69,6 +69,9 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - B450-A PRO MAX (works)
  - B450M PRO-VDH MAX (works)
  - MPG Z390 GAMING PLUS (works)
+ - B450 GAMING PLUS MAX (works)
+ - B450M MORTAR MAX (works)
+ - B450M PRO-VDH PLUS (works)
  - B350 TOMAHAWK (works, but will give warning message on start)
  - B350 GAMING PLUS (works, but will give warning message on start)
  - B350 PC MATE (works, but will give warning message on start)
@@ -128,12 +131,9 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - 7C01 (untested, should work)
  - B365M PRO-VDH (untested, should work)
  - B450A-PRO (untested, should work)
- - B450 GAMING PLUS MAX (untested, should work)
  - B450M GAMING PLUS (untested, should work)
  - B350M PRO-VDH (untested, should work)
- - B450M PRO-VDH PLUS (untested, should work)
  - X470 GAMING PLUS MAX (untested, should work)
- - B450M MORTAR MAX (untested, should work)
  
  # How to build
  1. Install Visual Studio 2019 with C++ desktop development tools, C# and WPF support. The project is currently set to use the Windows 10 SDK build 17663, but it should work with any other.
