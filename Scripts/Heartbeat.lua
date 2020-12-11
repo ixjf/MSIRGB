@@ -24,5 +24,5 @@ while true do
     end
     Lighting.BatchEnd()
     n = (n % #colours) + 1
-    os.sleep(130)
+    os.sleep(speed)
 end
