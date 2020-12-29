@@ -2,8 +2,8 @@
 local flashes_per_second = 15
 local pulse_time = 0.4 -- how long each flashing pulse will take, in seconds (repeat flashes_per_second flashes pulse_time times)
 local pulse_delay = 1 -- how long between each flashing pulse, in milliseconds
-local flash_colour = {["r"] = 0x2, ["g"] = 0xf, ["b"] = 0xf}
-local alt_flash_colour = {["r"] = 0xf, ["g"] = 0xf, ["b"] = 0x2}
+local flash_colour = {["r"] = 0xf, ["g"] = 0x0, ["b"] = 0x0}
+local alt_flash_colour = {["r"] = 0x0, ["g"] = 0x0, ["b"] = 0xf}
 
 local function flash(speed, time)
     -- speed: flashes/sec
