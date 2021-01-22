@@ -4,6 +4,8 @@
 
  Download is available [here](#how-to-install). **Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)**
  
+ **NOTE: Riot Vanguard and FACEIT Anti-Cheat users: These programs block execution of MSIRGB. If you have either of them installed, make sure to disable them prior to running MSIRGB.**
+ 
  This project began as a port of [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) for Windows, but eventually evolved to have a more Windows user-friendly interface, both visually and in the creation of effects, but it is still heavily based on exposing the hardware-implemented LED functionality through which the user can create those effects.
  
 \* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
