@@ -4,7 +4,7 @@
  
  Many thanks to [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) which helped me start this project.
  
- *NOTE: MSIRGB is in bug-fix only-mode. No new features will be added, so don't bother asking. Lua scripts already allow you to do whatever you might feel like doing, within the boundaries set by hardware limitations.
+ **NOTE: MSIRGB is in bug-fix only-mode. No new features will be added, so don't bother asking. Lua scripts already allow you to do whatever you might feel like doing, within the boundaries set by hardware limitations.**
  
  \* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
  
