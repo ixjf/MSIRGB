@@ -46,13 +46,7 @@ namespace MSIRGB.ScriptService
             LuaBindings.CustomConverters.Register();
 
             // Create new Lua environment
-            var script = new ExecutionConstrainedScript(CoreModules.Basic |
-                                                        CoreModules.TableIterators |
-                                                        CoreModules.String |
-                                                        CoreModules.Table |
-                                                        CoreModules.Math |
-                                                        CoreModules.Bit32 |
-                                                        CoreModules.OS_Time);
+            var script = new ExecutionConstrainedScript(CoreModules.Preset_Complete);
 
             script.Options.DebugPrint = s => log.OutputScriptPrint(s);
 
