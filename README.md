@@ -15,7 +15,7 @@
 
 When you run MSIRGB, you will see this GUI. Here you can experiment with simple effects by changing hardware-implemented settings in your motherboard.
 
-- **Colours**: You can choose to change between 8 different colours. The order by which the motherboard switches between them is from left to right as displayed. You can choose from 4096 different colours (unfortunately, this is a hardware limitation).
+- **Colours**: You can choose to change between 8 different colours. The order by which the motherboard switches between them is from left to right, and then right to left, as displayed. You can choose from 4096 different colours (4 bits per channel, hardware limited).
 
 - **Step duration**: This is the interval of time between each change of colour. Possible values are 0 to 511, inclusive. The unit of time is unknown.
 
