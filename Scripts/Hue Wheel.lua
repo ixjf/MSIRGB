@@ -14,7 +14,7 @@ Lighting.SetBreathingModeEnabled(false)
 
 local i = 0
 while true do
-    local r, g, b = Lighting.ColourUtils.HSVtoRGB((i % 98.0) / 98.0, saturation, value)
+    local r, g, b = Lighting.ColourUtils.HSVtoRGB((i % colour_step) / colour_step, saturation, value)
 
     r = tonumber(("%x"):format(r * 15), 16)
     g = tonumber(("%x"):format(g * 15), 16)
