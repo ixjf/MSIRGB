@@ -60,4 +60,31 @@ namespace logic {
         drv->outb(0x4E, index);
         drv->outb(0x4F, data);
     }
+
+    void Sio::debug_dump_bank(std::uint8_t bank) const
+    {
+        enter_extended_function_mode();
+        enter_bank(bank);
+
+        std::ostringstream filename;
+        filename << "msirgb_dump_bank_" << std::hex << static_cast<int>(bank) << "h.txt";
+
+        std::fstream f(
+            std::filesystem::temp_directory_path() / filename.str(), std::ios_base::out | std::ios_base::trunc);
+
+        f << "   | 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f" << std::endl;
+
+        for (uint8_t i = 0x0; i <= 0xF; i++) {
+            f << std::hex << static_cast<int>(i) << "0 | ";
+            
+            for (uint8_t j = 0x0; j <= 0xF; j++) {
+                std::uint8_t val_at_ij = read_uint8((i << 4) + j);
+                f << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(val_at_ij) << " ";
+            }
+
+            f << std::endl;
+        }
+
+        exit_extended_function_mode();
+    }
 }

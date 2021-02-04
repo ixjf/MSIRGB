@@ -13,6 +13,7 @@
 #include <stdexcept>
 #include <optional>
 #include <unordered_map>
+#include <filesystem>
 
 #include <Windows.h>
 #include <Wbemidl.h>

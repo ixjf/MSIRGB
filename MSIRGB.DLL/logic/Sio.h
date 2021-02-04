@@ -18,6 +18,8 @@ namespace logic {
         std::uint8_t            read_uint8_from_bank(std::uint8_t bank, std::uint8_t index) const;
         void                    write_uint8_to_bank(std::uint8_t bank, std::uint8_t index, std::uint8_t data) const;
 
+        void                    debug_dump_bank(std::uint8_t bank) const;
+
     private:
         void                    enter_extended_function_mode() const;
         void                    exit_extended_function_mode() const;
