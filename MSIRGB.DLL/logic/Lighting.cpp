@@ -283,7 +283,7 @@ namespace logic {
             { L"7B54", MbFlags::NONE },
             { L"7B49", MbFlags::NONE },
             { L"7B48", MbFlags::NONE },
-            { L"7B45", MbFlags::NONE },
+            { L"7B45", MbFlags::WHAT_THE_FUCK_DOES_THIS_DO },
             { L"7B44", MbFlags::NONE },
             { L"7A59", MbFlags::NONE },
             { L"7A57", MbFlags::NONE },
@@ -450,6 +450,7 @@ namespace logic {
         enter_critical_section();
 
         std::uint8_t val_at_e4 = sio->read_uint8_from_bank(RGB_BANK, 0xE4);
+        std::uint8_t val_at_2a = sio->read_uint8_from_bank(UNKNOWN_BANK, 0x2A);
         std::uint8_t val_at_2c = sio->read_uint8_from_bank(UNKNOWN_BANK, 0x2C);
         std::uint8_t val_at_e0 = sio->read_uint8_from_bank(RGB_BANK, 0xE0);
         std::uint8_t val_at_ff = sio->read_uint8_from_bank(RGB_BANK, 0xFF);
@@ -463,6 +464,11 @@ namespace logic {
             val_at_e4 |= 0b1; // (flashing mode (3 bits) = 0b001 == disabled)
         }
         else {
+            // Do some weird initialization stuff for 7B45 model
+            if (mb_flags & MbFlags::WHAT_THE_FUCK_DOES_THIS_DO) {
+                val_at_2a |= 0b01000000;
+            }
+
             // Enable RGB
             // Sets bit 5 to 1 and bit 4 to 0 of 0x2C
             // All other bits seem to do nothing (at least by themselves), but they MAY have a purpose

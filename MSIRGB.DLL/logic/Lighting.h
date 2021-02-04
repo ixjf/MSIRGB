@@ -78,9 +78,10 @@ namespace logic {
 
         enum MbFlags : uint8_t {
             NONE,
-            INVERTED_COLOUR_CHANNELS // FIXME: name probably not accurate. also changes another setting in 0xFD that I don't know what it is (see batch_commit)
-            // seems to change rainbow mode settings
+            INVERTED_COLOUR_CHANNELS, // FIXME: name probably not accurate. also changes another setting in 0xFD that I don't know what it is (see batch_commit)
+            // seems to change rainbow mode settings (see nagisa/msi-rgb for discussion)
             // TODO: is there anything else affected by INVERTED_COLOUR_CHANNELS? I think channels inverted is the only change for these motherboards
+            WHAT_THE_FUCK_DOES_THIS_DO // some additional initialization stuff for 7B45 model, MSIRGB crashes/doesn't do anything without it
         };
 
         MbCompatError           check_supported_mb();
