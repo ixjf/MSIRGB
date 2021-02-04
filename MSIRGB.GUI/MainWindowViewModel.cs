@@ -169,6 +169,7 @@ namespace MSIRGB
             ScriptsList = new ObservableCollection<ScriptItem>();
 
             ApplyCommand = new DelegateCommand(Apply);
+            SetForAllColoursCommand = new DelegateCommand(SetForAllColours);
             DisableLightingCommand = new DelegateCommand(DisableLighting);
             OpenScriptLogCommand = new DelegateCommand(OpenScriptLog);
             StopRunningScriptCommand = new DelegateCommand(StopRunningScript);
@@ -176,6 +177,7 @@ namespace MSIRGB
 
         #region Commands
         public DelegateCommand ApplyCommand { get; private set; }
+        public DelegateCommand SetForAllColoursCommand { get; private set; }
         public DelegateCommand DisableLightingCommand { get; private set; }
         public DelegateCommand OpenScriptLogCommand { get; private set; }
         public DelegateCommand StopRunningScriptCommand { get; private set; }
@@ -193,6 +195,14 @@ namespace MSIRGB
                                Convert.ToUInt16(StepDurationText), 
                                BreathingModeEnabled, 
                                FlashingSpeedList[FlashingSpeedSelectedIndex].Type);
+        }
+
+        public void SetForAllColours()
+        {
+            foreach (var colour in ColourList)
+            {
+                colour.Background = new SolidColorBrush(PickerSelectedColour);
+            }
         }
 
         public void DisableLighting()

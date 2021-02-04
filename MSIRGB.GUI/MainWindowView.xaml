@@ -80,6 +80,18 @@
                             Margin="0, 20,0,0"
                             SelectedColour="{Binding Path=PickerSelectedColour, Mode=TwoWay}"
                             SelectedColourChanged="PickerSelectedColourChangedEvent" />
+
+                            <Button Style="{StaticResource CustomButtonStyle}"
+                            Margin="0,20,5,20" 
+                            Padding="15"
+                            Content="Set for all colours"
+                            ToolTip="The chosen colour is set for all 8 colour choices.">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding SetForAllColoursCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
