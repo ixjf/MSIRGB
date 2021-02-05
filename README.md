@@ -1,12 +1,10 @@
- MSIRGB is an alternative to MSI Mystic Light for controlling motherboard LEDs*. Unlike the latter, there is no limitation to 7 fixed colours.
+ MSIRGB is an alternative to MSI Mystic Light for controlling motherboard LEDs & 5050? LED strips. Unlike the latter, there is no limitation to 7 fixed colours.
  
  Aside from providing a GUI for quickly experimenting with different basic effects, it also provides a scripting interface to create more advanced effects like [this one](#example-effects) and to auto-run these effects on Windows startup.
  
  Many thanks to [nagisa/msi-rgb](https://github.com/nagisa/msi-rgb) which helped me start this project.
  
  **NOTE: MSIRGB is in bug-fix only-mode. No new features will be added, so don't bother asking. Lua scripts already allow you to do whatever you might feel like doing, within the boundaries set by hardware limitations.**
- 
- \* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
  
  # How to use
   1. Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)
