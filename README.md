@@ -7,7 +7,7 @@
  **NOTE: MSIRGB is in bug-fix only-mode. No new features will be added, so don't bother asking. Lua scripts already allow you to do whatever you might feel like doing, within the boundaries set by hardware limitations.**
  
  # How to use
-  1. Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)
+  1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. Other MSI motherboards may be supported despite not being listed. Non-MSI motherboards are not supported and MSIRGB will not run on those. [I provide no warranty should your motherboard malfunction.](#license)
   1. Make sure you're running a 64-bit release of Windows 10.
   2. Make sure you don't have any anti-cheat enabled. Riot Vanguard and FACEIT Anti-Cheat are known to block MSIRGB from running.
   1. Follow the instructions [here](#how-to-install) to download & install MSIRGB.
@@ -36,17 +36,16 @@ When you run MSIRGB, you will see this GUI. Here you can experiment with simple 
 Learn more about how to create scripts and find the Lua API reference in the [wiki](../../wiki/Scripts).
 
 # How to install
- 1. Check if your motherboard is supported [here](#motherboard-support). If it is, you may proceed. If it isn't, it's possible the program won't work with your motherboard. Other MSI motherboards may be supported despite not being listed. Non-MSI motherboards are not supported and MSIRGB will not run on those.
- 2. Install [VC Redist 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe).
- 3. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.3.0/MSIRGB-v2.3.0.zip).
- 4. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
- 5. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there, such that your directory structure is like this:
+ 1. Install [VC Redist 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe).
+ 2. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.3.0/MSIRGB-v2.3.0.zip).
+ 3. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
+ 4. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there, such that your directory structure is like this:
     - Scripts/
         - Hue Wheel.lua
         - ...
     - ...
     - MSIRGB.exe
- 6. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
+ 5. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
 
 # Motherboard support
  *This is not an exhaustive list of all motherboards supported by MSIRGB. There may be others not listed here that also work. It may also be the case that some of these aren't actually supported. Running MSIRGB on an unsupported motherboard and ignoring the warning message on startup may lead to damage to your data or the motherboard. Do it at your own risk.*
