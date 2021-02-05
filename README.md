@@ -1,4 +1,4 @@
- MSIRGB is an alternative to MSI Mystic Light for controlling motherboard LEDs & 5050? LED strips. Unlike the latter, there is no limitation to 7 fixed colours.
+ MSIRGB is an alternative to MSI Mystic Light for controlling motherboard LEDs & 5050? LED strips. Unlike Mystic Light, there is no limitation to 7 fixed colours.
  
  Aside from providing a GUI for quickly experimenting with different basic effects, it also provides a scripting interface to create more advanced effects like [this one](#example-effects) and to auto-run these effects on Windows startup.
  
