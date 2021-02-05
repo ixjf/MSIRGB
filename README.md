@@ -9,9 +9,10 @@
  \* It has been reported to affect all motherboard LEDs as well, but I do not guarantee it.
  
  # How to use
+  1. Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)
   1. Make sure you're running a 64-bit release of Windows 10.
   2. Make sure you don't have any anti-cheat enabled. Riot Vanguard and FACEIT Anti-Cheat are known to block MSIRGB from running.
-  1. Follow the instructions [here](#how-to-install) to download & install MSIRGB. **Check if your motherboard is supported. [I provide no warranty should your motherboard malfunction.](#license)**
+  1. Follow the instructions [here](#how-to-install) to download & install MSIRGB.
   
 # Example effects
 Hue Wheel
