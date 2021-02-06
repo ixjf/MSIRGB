@@ -64,7 +64,7 @@ namespace logic {
     void Sio::debug_dump_bank(std::uint8_t bank) const
     {
         std::ostringstream filename;
-        filename << "msirgb_dump_bank_" << std::hex << static_cast<int>(bank) << "h_" << id << ".txt";
+        filename << "msirgb_dump_bank_" << std::hex << static_cast<int>(bank) << "h_" << ".txt";
 
         std::fstream f(
             std::filesystem::temp_directory_path() / filename.str(), std::ios_base::out | std::ios_base::trunc);
