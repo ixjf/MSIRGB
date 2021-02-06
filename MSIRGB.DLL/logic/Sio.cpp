@@ -63,11 +63,8 @@ namespace logic {
 
     void Sio::debug_dump_bank(std::uint8_t bank) const
     {
-        enter_extended_function_mode();
-        enter_bank(bank);
-
         std::ostringstream filename;
-        filename << "msirgb_dump_bank_" << std::hex << static_cast<int>(bank) << "h.txt";
+        filename << "msirgb_dump_bank_" << std::hex << static_cast<int>(bank) << "h_" << id << ".txt";
 
         std::fstream f(
             std::filesystem::temp_directory_path() / filename.str(), std::ios_base::out | std::ios_base::trunc);
@@ -76,15 +73,19 @@ namespace logic {
 
         for (uint8_t i = 0x0; i <= 0xF; i++) {
             f << std::hex << static_cast<int>(i) << "0 | ";
-            
+
             for (uint8_t j = 0x0; j <= 0xF; j++) {
+                enter_extended_function_mode();
+                enter_bank(bank);
+                    
                 std::uint8_t val_at_ij = read_uint8((i << 4) + j);
+                    
+                exit_extended_function_mode();
+                    
                 f << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(val_at_ij) << " ";
             }
 
             f << std::endl;
         }
-
-        exit_extended_function_mode();
     }
 }

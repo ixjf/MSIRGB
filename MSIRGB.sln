@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2048
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSIRGB.GUI", "MSIRGB.GUI\MSIRGB.GUI.csproj", "{E3A3E7A7-6095-47C7-BFFA-85ED119BBBAB}"
 EndProject
@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSIRGB.ScriptService", "MSI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{26F6C912-B207-4BC5-B02E-0F4EEEF336D3}"
 	ProjectSection(SolutionItems) = preProject
+		Scripts\Heartbeat.lua = Scripts\Heartbeat.lua
 		Scripts\Hue Wheel.lua = Scripts\Hue Wheel.lua
 		Scripts\Police Lights.lua = Scripts\Police Lights.lua
 		Scripts\Pumpkin.lua = Scripts\Pumpkin.lua

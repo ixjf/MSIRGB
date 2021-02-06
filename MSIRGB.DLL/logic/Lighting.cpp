@@ -55,10 +55,6 @@ namespace logic {
             throw Exception(ErrorCode::DriverLoadFailed);
         }
         leave_critical_section();
-
-        // Debug dump banks
-        sio->debug_dump_bank(RGB_BANK);
-        sio->debug_dump_bank(UNKNOWN_BANK);
     }
 
     Lighting::~Lighting()
