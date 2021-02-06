@@ -14,10 +14,11 @@
 
     <!-- Colours -->
     <SolidColorBrush x:Key="QuiteBlack" Color="#090B0A" />
-    <SolidColorBrush x:Key="DarkGrey" Color="#262827" />
+    <SolidColorBrush x:Key="DarkGrey" Color="#090b0a" />
+    <SolidColorBrush x:Key="SuaveGrey" Color="#141414" />
     <SolidColorBrush x:Key="NiceSilver" Color="#c1c1c1" />
     <SolidColorBrush x:Key="BloodRed" Color="#f90707" />
-    <SolidColorBrush x:Key="GamingRed" Color="#b71b1b" />
+    <SolidColorBrush x:Key="GamingRed" Color="#b50505" />
 
 
     <!-- TextBox style -->
@@ -409,6 +410,7 @@
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{StaticResource GamingRed}" />
         <Setter Property="FontFamily" Value="{StaticResource FiraMono}" />
+        <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
 
@@ -608,24 +610,28 @@
 
 
     <!-- Window style -->
-    <SolidColorBrush x:Key="Window.Background.Path" Color="{Binding Source={StaticResource QuiteBlack}, Path=Color}" />
+    <SolidColorBrush x:Key="Window.Background.Path" Color="{Binding Source={StaticResource DarkGrey}, Path=Color}" />
     <SolidColorBrush x:Key="Window.Border" Color="Black" />
     <Thickness x:Key="Window.BorderThickness">1</Thickness>
     <SolidColorBrush x:Key="Window.TitleBar.Button.Static" Color="{Binding Source={StaticResource NiceSilver}, Path=Color}" />
     <SolidColorBrush x:Key="Window.TitleBar.Button.MouseOver" Color="{Binding Source={StaticResource BloodRed}, Path=Color}" />
     <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}" BasedOn="{StaticResource {x:Type Window}}">
         <Style.Resources>
-            <VisualBrush x:Key="BackgroundBrush"
-                         TileMode="Tile"
-                         Viewport="0,0,5,5"
-                         ViewportUnits="Absolute"
-                         Viewbox="0,0,5,5"
-                         ViewboxUnits="Absolute">
+            <LinearGradientBrush x:Key="UnderBrush" EndPoint="0,1">
+                <GradientStop Color="#090b0a" Offset="1" />
+                <GradientStop Color="#00FF0000" Offset="0" />
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="OverBrush" EndPoint="1,0">
+                <GradientStop Color="#00000000" Offset="1" />
+                <GradientStop Color="#141414" Offset="0" />
+            </LinearGradientBrush>
+
+            <VisualBrush x:Key="BackgroundBrush">
                 <VisualBrush.Visual>
-                    <Grid Background="{StaticResource DarkGrey}">
-                        <Path Data="M 0 5 L 5 0" Stroke="{StaticResource Window.Background.Path}" />
-                        <Path Data="M 0 0 L 5 5" Stroke="{StaticResource Window.Background.Path}" />
-                    </Grid>
+                    <Border Background="{StaticResource UnderBrush}"> <!-- FIXME: would like to know where the red is coming from, thanks -->
+                        <Rectangle Fill="{StaticResource OverBrush}" Width="1" Height="1" />
+                    </Border>
                 </VisualBrush.Visual>
             </VisualBrush>
         </Style.Resources>
