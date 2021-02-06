@@ -30,10 +30,13 @@ namespace MSIRGB.ScriptService
         {
             _shutdownEvent.Set();
 
-            if (!_thread.Join(5000))
-            {
-                _thread.Abort();
-            }
+            // FIXME: if this happens, it could stop execution of batch_commit, which leads
+            // to messed up settings. But this usually doesn't happen. BUT if it does, just... don't abort?
+            // if it freezes, let the end user terminate if he so wishes
+            //if (!_thread.Join(5000))
+            //{
+                //_thread.Abort();
+            //}
         }
 
         private static void Proc(ManualResetEventSlim shutdownEvent, string logPath, string scriptPath, bool ignoreMbCheck)
