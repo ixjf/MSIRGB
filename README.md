@@ -18,7 +18,7 @@ Hue Wheel
  <img src="/media/hue_wheel.gif?raw=true">
  
 # How it works
-![MSIRGB](media/main_window.PNG)
+![MSIRGB](media/gui.PNG)
 
 When you run MSIRGB, you will see this GUI. Here you can experiment with simple effects by changing hardware-implemented settings in your motherboard.
 
