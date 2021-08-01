@@ -53,6 +53,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - B450I GAMING PLUS AC (works)
  - X470 GAMING PLUS (works)
  - X470 GAMING PRO (works)
+ - X470 GAMING PRO MAX (works)
  - Z270 GAMING M7 (works)
  - B450 TOMAHAWK (works)
  - B450 TOMAHAWK MAX (works)
