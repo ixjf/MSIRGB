@@ -184,7 +184,7 @@ namespace MSIRGB.Utils
             }
         }
 
-        private static bool IsServiceNotStopped(string svcName)
+        public static bool IsServiceNotStopped(string svcName)
         {
             IntPtr scManager = OpenSCManager(null, null, SC_MANAGER_CONNECT);
             IntPtr svc = OpenService(scManager, svcName, SERVICE_QUERY_STATUS);

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using static System.Linq.Enumerable;
+using MSIRGB.Utils;
 
 namespace MSIRGB
 {
@@ -28,6 +29,7 @@ namespace MSIRGB
 
         public MainWindowModel()
         {
+            CheckForRunningAC();
             CheckForRunningMSIApps();
             TryInitializeDll();
         }
@@ -164,7 +166,8 @@ namespace MSIRGB
                 else if (exc.GetErrorCode() == Lighting.ErrorCode.DriverLoadFailed)
                 {
                     MessageBox.Show("Failed to load driver. This could be either due to some program interfering with MSIRGB's driver, " +
-                                    "or it could be a bug. Please report this on the issue tracker at: https://github.com/ixjf/MSIRGB",
+                                    "or it could be a bug. Please make sure you have no anti-cheats installed, like Riot Vanguard or FACEIT. " +
+                                    "If the problem persists, report this on the issue tracker at: https://github.com/ixjf/MSIRGB",
                                     assemblyTitle,
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Error
@@ -210,6 +213,29 @@ namespace MSIRGB
                         Application.Current.Shutdown();
                         break;
                 }
+            }
+        }
+
+        private void CheckForRunningAC()
+        {
+            string assemblyTitle = ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false))?.Title;
+
+            String s = "MSIRGB detected that {0} is running. Anti-cheats do not work well with MSIRGB. Please turn it off first.";
+            String acName = null;
+
+            if (ServiceInstaller.IsServiceNotStopped("vgk")) // Riot Vanguard
+            {
+                acName = "Riot Vanguard";
+            }
+            else if (ServiceInstaller.IsServiceNotStopped("FACEIT")) // FACEIT
+            {
+                acName = "FACEIT Anti-Cheat";
+            }
+            
+            if (acName != null)
+            {
+                MessageBox.Show(String.Format(s, acName), assemblyTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
             }
         }
     }
