@@ -223,11 +223,11 @@ namespace MSIRGB
             String s = "MSIRGB detected that {0} is running. Anti-cheats do not work well with MSIRGB. Please turn it off first.";
             String acName = null;
 
-            if (ServiceInstaller.IsServiceNotStopped("vgk")) // Riot Vanguard
+            if (ServiceInstaller.IsServiceNotStopped("vgk"))
             {
                 acName = "Riot Vanguard";
             }
-            else if (ServiceInstaller.IsServiceNotStopped("FACEIT")) // FACEIT
+            else if (ServiceInstaller.IsServiceNotStopped("FACEIT"))
             {
                 acName = "FACEIT Anti-Cheat";
             }

@@ -53,12 +53,6 @@ namespace MSIRGB.ScriptService
 
             script.Options.DebugPrint = s => log.OutputScriptPrint(s);
 
-            foreach (var p in ((MoonSharp.Interpreter.Loaders.ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths)
-            {
-                log.OutputInfo("hello");
-                log.OutputInfo(string.Format("Module path: {0}", p));
-            }
-
             // Bind modules & extensions
             LuaBindings.LightingModule.Register(script, ignoreMbCheck);
             LuaBindings.Aida64Module.Register(script);
