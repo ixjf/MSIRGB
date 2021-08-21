@@ -78,6 +78,7 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - B450M PRO-VDH PLUS (works)
  - A320M GAMING PRO (works)
  - B365M PRO-VDH (works)
+ - Z370 PC PRO (works)
  - 
  - B350 TOMAHAWK (works despite giving warning message on start)
  - B350 GAMING PLUS (works despite giving warning message on start)
@@ -101,7 +102,6 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - Z370 OC GAMING (untested, should work)
  - Z370 GAMING PLUS (untested, should work)
  - Z370M MORTAR (untested, should work)
- - Z370 PC PRO (untested, should work)
  - Z370-A PRO (untested, should work)
  - Z370 GAMING PRO CARBON AC (untested, should work)
  - Z370 GAMING PRO AC (untested, should work)
