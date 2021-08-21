@@ -5,19 +5,8 @@ local pulse_delay = 1 -- how long between each flashing pulse, in milliseconds
 local flash_colour = {["r"] = 0x2, ["g"] = 0xf, ["b"] = 0xf}
 local alt_flash_colour = {["r"] = 0xf, ["g"] = 0xf, ["b"] = 0x2}
 
-local function flash(speed, time)
-    -- speed: flashes/sec
-    -- time: seconds
-    local num_flashes = speed * time
-    local delay = (time * 1000) / (num_flashes * 2)
-
-    for i = 1, num_flashes do
-        Lighting.SetAllEnabled(true)
-        os.sleep(delay)
-        Lighting.SetAllEnabled(false)
-        os.sleep(delay)
-    end
-end
+--
+local flash = require('utils.custom_flash')
 
 Lighting.SetFlashingSpeed(0)
 Lighting.SetBreathingModeEnabled(false)
