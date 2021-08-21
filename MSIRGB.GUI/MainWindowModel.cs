@@ -152,6 +152,19 @@ namespace MSIRGB
                         return;
                     }
                 }
+                else if (exc.GetErrorCode() == Lighting.ErrorCode.MotherboardModelMayOrMayNotBeSupported)
+                {
+                    if (MessageBox.Show("Your motherboard has been reported to work with MSIRGB but the maintainer of MSIRGB cannot guarantee it works fully and properly himself. " +
+                                        "Attempting to use this program may cause irreversible damage to your hardware and/or personal data. " +
+                                        "Are you sure you want to continue?",
+                                        assemblyTitle,
+                                        MessageBoxButton.YesNo,
+                                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    {
+                        TryInitializeDll(true);
+                        return;
+                    }
+                }
                 else if (exc.GetErrorCode() == Lighting.ErrorCode.MotherboardVendorNotSupported)
                 {
                     MessageBox.Show("Your motherboard's vendor was not detected to be MSI. MSIRGB only supports MSI motherboards. " +

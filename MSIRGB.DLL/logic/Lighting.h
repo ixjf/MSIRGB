@@ -11,6 +11,8 @@ namespace logic {
             DriverLoadFailed,
             MotherboardVendorNotSupported,
             MotherboardModelNotSupported,
+            MotherboardModelMayOrMayNotBeSupported, // for cases where I can't guarantee MSIRGB works, but it's been reported
+            // to work, and INVERTED_COLOUR_CHANNELS flag is required to be enabled
             LoadFailed,
         };
 
@@ -74,6 +76,7 @@ namespace logic {
             Ok,
             UnsupportedVendor,
             UnsupportedModel,
+            MayOrMayNotBeSupportedModel,
         };
 
         enum MbFlags : uint8_t {
@@ -84,7 +87,9 @@ namespace logic {
             WHAT_THE_FUCK_DOES_THIS_DO // some additional initialization stuff for 7B45 model, MSIRGB crashes/doesn't do anything without it
         };
 
-        MbCompatError           check_supported_mb();
+        static const std::map<std::wstring, MbFlags> all_mb_flags;
+
+        MbCompatError           initialize_for_mb(bool ignore_mb_check);
 
         void                    batch_commit();
 

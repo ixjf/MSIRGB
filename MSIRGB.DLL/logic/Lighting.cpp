@@ -14,6 +14,61 @@ const std::uint8_t UNKNOWN_BANK = 0x09;
 // even if they use similar chips.
 
 namespace logic {
+    const std::map<std::wstring, Lighting::MbFlags> Lighting::all_mb_flags = {
+        // OFFICIALLY SUPPORTED (though not necessarily tested)
+        { L"7A40", MbFlags::NONE },
+        { L"7A39", MbFlags::NONE },
+        { L"7A38", MbFlags::NONE },
+        //{ L"7B78", MbFlags::NONE },
+        //{ L"7B77", MbFlags::NONE },
+        { L"7B79", MbFlags::NONE },
+        { L"7B73", MbFlags::NONE },
+        { L"7B61", MbFlags::NONE },
+        { L"7B54", MbFlags::NONE },
+        { L"7B49", MbFlags::NONE },
+        { L"7B48", MbFlags::NONE },
+        { L"7B45", MbFlags::WHAT_THE_FUCK_DOES_THIS_DO },
+        { L"7B44", MbFlags::NONE },
+        { L"7A59", MbFlags::NONE },
+        { L"7A57", MbFlags::NONE },
+        { L"7A68", MbFlags::NONE },
+        { L"7B40", MbFlags::NONE },
+        { L"7A94", MbFlags::NONE },
+        { L"7B09", MbFlags::NONE },
+        { L"7B06", MbFlags::NONE },
+        { L"7A58", MbFlags::NONE },
+        { L"7A62", MbFlags::NONE },
+        { L"7A69", MbFlags::NONE },
+        { L"7A70", MbFlags::NONE },
+        { L"7A72", MbFlags::NONE },
+        { L"7A78", MbFlags::NONE },
+        { L"7A79", MbFlags::NONE },
+        { L"7B89", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B90", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B19", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C02", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B75", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B22", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B23", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B24", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B27", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B30", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B31", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B51", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C04", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C00", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B98", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C22", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C24", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C01", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7C39", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B86", MbFlags::INVERTED_COLOUR_CHANNELS },
+        { L"7B87", MbFlags::INVERTED_COLOUR_CHANNELS },
+
+        // REPORTED WORKING, NOT OFFICIALLY SUPPORTED, BUT WE NEED THE FLAGS
+        { L"7A37", MbFlags::INVERTED_COLOUR_CHANNELS }
+    };
+
     Lighting::Lighting(bool ignore_mb_check)
         : batch_calls(false), curr_batch(Batch{})
     {
@@ -31,18 +86,19 @@ namespace logic {
         }
 
         // Check MB support
-        if (!ignore_mb_check) {
-            switch (check_supported_mb())
-            {
-            case MbCompatError::UnsupportedVendor:
-                throw Exception(ErrorCode::MotherboardVendorNotSupported);
+        switch (initialize_for_mb(ignore_mb_check))
+        {
+        case MbCompatError::UnsupportedVendor:
+            throw Exception(ErrorCode::MotherboardVendorNotSupported);
 
-            case MbCompatError::UnsupportedModel:
-                throw Exception(ErrorCode::MotherboardModelNotSupported);
+        case MbCompatError::UnsupportedModel:
+            throw Exception(ErrorCode::MotherboardModelNotSupported);
 
-            case MbCompatError::Ok:
-                break;
-            }
+        case MbCompatError::MayOrMayNotBeSupportedModel:
+            throw Exception(ErrorCode::MotherboardModelMayOrMayNotBeSupported);
+
+        case MbCompatError::Ok:
+            break;
         }
 
         // Load SIO driver
@@ -258,7 +314,7 @@ namespace logic {
             static_cast<FlashingSpeed>(flash_speed - 1);
     }
 
-    Lighting::MbCompatError Lighting::check_supported_mb()
+    Lighting::MbCompatError Lighting::initialize_for_mb(bool ignore_mb_check)
     {
         auto info = wmi_query(L"Win32_BaseBoard", { L"Manufacturer", L"Product", L"Version" });
 
@@ -267,66 +323,26 @@ namespace logic {
             return MbCompatError::UnsupportedVendor;
         }
 
-        static const std::map<std::wstring, MbFlags> supported_mbs = {
-            { L"7A40", MbFlags::NONE },
-            { L"7A39", MbFlags::NONE },
-            { L"7A38", MbFlags::NONE },
-            //{ L"7B78", MbFlags::NONE },
-            //{ L"7B77", MbFlags::NONE },
-            { L"7B79", MbFlags::NONE },
-            { L"7B73", MbFlags::NONE },
-            { L"7B61", MbFlags::NONE },
-            { L"7B54", MbFlags::NONE },
-            { L"7B49", MbFlags::NONE },
-            { L"7B48", MbFlags::NONE },
-            { L"7B45", MbFlags::WHAT_THE_FUCK_DOES_THIS_DO },
-            { L"7B44", MbFlags::NONE },
-            { L"7A59", MbFlags::NONE },
-            { L"7A57", MbFlags::NONE },
-            { L"7A68", MbFlags::NONE },
-            { L"7B40", MbFlags::NONE },
-            { L"7A94", MbFlags::NONE },
-            { L"7B09", MbFlags::NONE },
-            { L"7B06", MbFlags::NONE },
-            { L"7A58", MbFlags::NONE },
-            { L"7A62", MbFlags::NONE },
-            { L"7A69", MbFlags::NONE },
-            { L"7A70", MbFlags::NONE },
-            { L"7A72", MbFlags::NONE },
-            { L"7A78", MbFlags::NONE },
-            { L"7A79", MbFlags::NONE },
-            { L"7B89", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B90", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B19", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C02", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B75", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B22", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B23", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B24", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B27", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B30", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B31", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B51", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C04", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C00", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B98", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C22", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C24", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C01", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7C39", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B86", MbFlags::INVERTED_COLOUR_CHANNELS },
-            { L"7B87", MbFlags::INVERTED_COLOUR_CHANNELS }
-        };
-
-        auto found = std::find_if(supported_mbs.begin(),
-            supported_mbs.end(),
+        auto found = std::find_if(all_mb_flags.begin(),
+            all_mb_flags.end(),
             [&info](const auto &pair) -> bool {
             const std::wstring& mb_model = pair.first;
             return info[L"Product"].find(mb_model) != std::wstring::npos;
         });
 
-        if (found == supported_mbs.end()) {
+        if (ignore_mb_check) {
+            if (found != all_mb_flags.end()) {
+                mb_flags = found->second;
+            }
+
+            return MbCompatError::Ok;
+        }
+
+        if (found == all_mb_flags.end()) {
             return MbCompatError::UnsupportedModel;
+        }
+        else if (info[L"Product"].find(L"7A37") != std::wstring::npos) {
+            return MbCompatError::MayOrMayNotBeSupportedModel;
         }
         else if (info[L"Product"].find(L"7A38") != std::wstring::npos &&
             info[L"Version"].find(L"3.") == std::wstring::npos &&

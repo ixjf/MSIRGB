@@ -22,6 +22,7 @@ namespace MSIRGB {
             DriverLoadFailed = static_cast<int>(logic::Lighting::ErrorCode::DriverLoadFailed),
             MotherboardVendorNotSupported = static_cast<int>(logic::Lighting::ErrorCode::MotherboardVendorNotSupported),
             MotherboardModelNotSupported = static_cast<int>(logic::Lighting::ErrorCode::MotherboardModelNotSupported),
+            MotherboardModelMayOrMayNotBeSupported = static_cast<int>(logic::Lighting::ErrorCode::MotherboardModelMayOrMayNotBeSupported),
             LoadFailed = static_cast<int>(logic::Lighting::ErrorCode::LoadFailed),
         };
 
