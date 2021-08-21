@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.IO;
+using System.Diagnostics;
 using MoonSharp.Interpreter;
+using MoonSharp.Interpreter.Loaders;
 
 namespace MSIRGB.ScriptService
 {
@@ -52,6 +54,9 @@ namespace MSIRGB.ScriptService
             var script = new ExecutionConstrainedScript(CoreModules.Preset_Complete);
 
             script.Options.DebugPrint = s => log.OutputScriptPrint(s);
+
+            var currPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = new string[] { Path.Combine(currPath, "Scripts", "?.lua") };
 
             // Bind modules & extensions
             LuaBindings.LightingModule.Register(script, ignoreMbCheck);
