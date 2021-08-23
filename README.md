@@ -103,7 +103,6 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
  - Z370 GAMING PLUS (untested, should work)
  - Z370M MORTAR (untested, should work)
  - Z370-A PRO (untested, should work)
- - Z370 GAMING PRO CARBON AC (untested, should work)
  - Z370 GAMING PRO AC (untested, should work)
  - Z270 SLI PLUS (untested, should work)
  - Z270 KRAIT GAMING (untested, should work)
