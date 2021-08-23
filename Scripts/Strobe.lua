@@ -9,14 +9,16 @@ local flash_colour = {["r"] = 0x2, ["g"] = 0x7, ["b"] = 0xf}
 --
 local flash = require('utils.custom_flash')
 
-Lighting.SetFlashingSpeed(0)
-Lighting.SetBreathingModeEnabled(false)
-
-for i = 1, 8 do
-    Lighting.SetColour(i, flash_colour.r, flash_colour.g, flash_colour.b)
-end
-
 while true do
+    Lighting.BatchBegin()
+    Lighting.SetFlashingSpeed(0)
+    Lighting.SetBreathingModeEnabled(false)
+    
+    for i = 1, 8 do
+        Lighting.SetColour(i, flash_colour.r, flash_colour.g, flash_colour.b)
+    end
+    Lighting.BatchEnd()
+
     flash(flashes_per_second, pulse_time)
     os.sleep(pulse_delay)
 end

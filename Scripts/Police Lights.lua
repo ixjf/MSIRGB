@@ -8,9 +8,6 @@ local alt_flash_colour = {["r"] = 0xf, ["g"] = 0xf, ["b"] = 0x2}
 --
 local flash = require('utils.custom_flash')
 
-Lighting.SetFlashingSpeed(0)
-Lighting.SetBreathingModeEnabled(false)
-
 local alt_color = true
 
 local function change_colour()
@@ -32,6 +29,11 @@ local function change_colour()
 end
 
 while true do
+    Lighting.BatchBegin()
+    Lighting.SetFlashingSpeed(0)
+    Lighting.SetBreathingModeEnabled(false)
+    Lighting.BatchEnd()
+
     change_colour()
     flash(flashes_per_second, pulse_time)
     os.sleep(pulse_delay)

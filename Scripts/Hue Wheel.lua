@@ -8,12 +8,12 @@ local delay = 80 -- delay between each colour update, in milliseconds
 local colour_step = 98 -- ]0, 360], the higher, the smaller the step between colours
 
 --
-Lighting.SetStepDuration(511)
-Lighting.SetFlashingSpeed(0)
-Lighting.SetBreathingModeEnabled(false)
-
 local i = 0
 while true do
+    Lighting.SetStepDuration(511)
+    Lighting.SetFlashingSpeed(0)
+    Lighting.SetBreathingModeEnabled(false)
+
     local r, g, b = Lighting.ColourUtils.HSVtoRGB((i % colour_step) / colour_step, saturation, value)
 
     r = tonumber(("%x"):format(r * 15), 16)

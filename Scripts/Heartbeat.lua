@@ -13,15 +13,16 @@ local colours = {
 --
 local n = 1
 
-Lighting.SetBreathingModeEnabled(false)
-Lighting.SetFlashingSpeed(0)
-Lighting.SetStepDuration(511)
-
 while true do
     Lighting.BatchBegin()
+    Lighting.SetBreathingModeEnabled(false)
+    Lighting.SetFlashingSpeed(0)
+    Lighting.SetStepDuration(511)
+
     for i = 1, 8 do
         Lighting.SetColour(i, colours[n][1], colours[n][2], colours[n][3])
     end
+    
     Lighting.BatchEnd()
     n = (n % #colours) + 1
     os.sleep(speed)
