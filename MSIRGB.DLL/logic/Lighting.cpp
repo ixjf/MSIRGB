@@ -27,7 +27,7 @@ namespace logic {
         { L"7B54", MbFlags::NONE },
         { L"7B49", MbFlags::NONE },
         { L"7B48", MbFlags::NONE },
-        { L"7B45", MbFlags::WHAT_THE_FUCK_DOES_THIS_DO },
+        //{ L"7B45", MbFlags::WHAT_THE_FUCK_DOES_THIS_DO },
         { L"7B44", MbFlags::NONE },
         { L"7A59", MbFlags::NONE },
         { L"7A57", MbFlags::NONE },
@@ -476,10 +476,10 @@ namespace logic {
             val_at_e4 |= 0b1; // (flashing mode (3 bits) = 0b001 == disabled)
         }
         else {
-            // Do some weird initialization stuff for 7B45 model
-            if (mb_flags & MbFlags::WHAT_THE_FUCK_DOES_THIS_DO) {
-                val_at_2a |= 0b01000000;
-            }
+            //// Do some weird initialization stuff for 7B45 model
+            //if (mb_flags & MbFlags::WHAT_THE_FUCK_DOES_THIS_DO) {
+            //    val_at_2a |= 0b01000000;
+            //}
 
             // Enable RGB
             // Sets bit 5 to 1 and bit 4 to 0 of 0x2C
