@@ -45,6 +45,8 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 
 # Motherboard support
  *This is not an exhaustive list of all motherboards supported by MSIRGB. There may be others not listed here that also work. It may also be the case that some of these aren't actually supported. Running MSIRGB on an unsupported motherboard and ignoring the warning message on startup may lead to damage to your data or the motherboard. Do it at your own risk.*
+ 
+ *This repository is archived, therefore this list may be out-of-date. The following list was correct at the time of archival. More motherboards may work.*
 
  - B450I GAMING PLUS AC (works)
  - X470 GAMING PLUS (works)
