@@ -24,6 +24,8 @@ When you run MSIRGB, you will see this GUI. Here you can experiment with simple 
 
 - **Colours**: You can choose to change between 8 different colours. The order by which the motherboard switches between them is from left to right, and then right to left, as displayed. You can choose from 4096 different colours (4 bits per channel, hardware limited).
 
+- **Invert channels**: RGB values as displayed in the GUI are inverted when shown in the LEDs. This is a setting on the chip that apparently creates more vivid colours.
+
 - **Step duration**: This is the interval of time between each change of colour. Possible values are 0 to 511, inclusive.
 
 - **Breathing mode**: This is one of the two flashing modes supported by all the motherboards that MSIRGB targets. Breathing mode flashes from on to off and back again by gradually changing brightness. The speed of this effect cannot be changed.
