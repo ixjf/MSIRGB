@@ -9,8 +9,13 @@ local flash_colour = {["r"] = 0x2, ["g"] = 0x7, ["b"] = 0xf}
 --
 local flash = require('utils.custom_flash')
 
+local defaultInvertedColourChannels = Lighting.GetDefaultColourChannelsInvertedSetting()
+
 while true do
     Lighting.BatchBegin()
+    Lighting.SetRChannelInverted(defaultInvertedColourChannels)
+    Lighting.SetGChannelInverted(defaultInvertedColourChannels)
+    Lighting.SetBChannelInverted(defaultInvertedColourChannels)
     Lighting.SetFlashingSpeed(0)
     Lighting.SetBreathingModeEnabled(false)
     

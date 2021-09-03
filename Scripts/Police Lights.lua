@@ -4,6 +4,7 @@ local pulse_time = 0.4 -- how long each flashing pulse will take, in seconds (re
 local pulse_delay = 1 -- how long between each flashing pulse, in milliseconds
 local flash_colour = {["r"] = 0x2, ["g"] = 0xf, ["b"] = 0xf}
 local alt_flash_colour = {["r"] = 0xf, ["g"] = 0xf, ["b"] = 0x2}
+local inverted_colours = true
 
 --
 local flash = require('utils.custom_flash')
@@ -28,8 +29,15 @@ local function change_colour()
     end
 end
 
+local defaultInvertedColourChannels = Lighting.GetDefaultColourChannelsInvertedSetting()
+
+local invert = inverted_colours and (not defaultInvertedColourChannels) or (defaultInvertedColourChannels)
+
 while true do
     Lighting.BatchBegin()
+    Lighting.SetRChannelInverted(invert)
+    Lighting.SetGChannelInverted(invert)
+    Lighting.SetBChannelInverted(invert)
     Lighting.SetFlashingSpeed(0)
     Lighting.SetBreathingModeEnabled(false)
     Lighting.BatchEnd()

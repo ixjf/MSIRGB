@@ -62,6 +62,13 @@ namespace logic {
         void                    set_led_enabled(bool enable);
         bool                    set_colour(std::uint8_t index, Colour colour);
         std::optional<Colour>   get_colour(std::uint8_t index) const;
+        bool                    get_default_colour_channels_inverted_setting() const;
+        void                    set_r_channel_inverted(bool inverted);
+        void                    set_g_channel_inverted(bool inverted);
+        void                    set_b_channel_inverted(bool inverted);
+        bool                    is_r_channel_inverted() const;
+        bool                    is_g_channel_inverted() const;
+        bool                    is_b_channel_inverted() const;
         bool                    set_breathing_mode_enabled(bool enable);
         bool                    is_breathing_mode_enabled() const;
         bool                    set_step_duration(std::uint16_t step_duration);
@@ -95,6 +102,9 @@ namespace logic {
 
         struct Batch {
             std::unordered_map<std::uint8_t, Colour>        colours;
+            std::optional<bool>                             r_channel_inverted;
+            std::optional<bool>                             g_channel_inverted;
+            std::optional<bool>                             b_channel_inverted;
             std::optional<bool>                             enabled;
             std::optional<bool>                             breathing_mode_enabled;
             std::optional<std::uint16_t>                    step_duration;

@@ -111,6 +111,12 @@ namespace logic {
             throw Exception(ErrorCode::DriverLoadFailed);
         }
         leave_critical_section();
+
+        // Set default inverted colour channels setting
+        bool default_colour_channels_inv = get_default_colour_channels_inverted_setting();
+        set_r_channel_inverted(default_colour_channels_inv);
+        set_g_channel_inverted(default_colour_channels_inv);
+        set_b_channel_inverted(default_colour_channels_inv);
     }
 
     Lighting::~Lighting()
@@ -225,6 +231,74 @@ namespace logic {
         std::uint8_t b = (b_cell >> (!nibble_pos * 4)) & 0x0F;
 
         return std::make_optional(Colour{ r, g, b });
+    }
+
+    bool Lighting::get_default_colour_channels_inverted_setting() const
+    {
+        return mb_flags & MbFlags::INVERTED_COLOUR_CHANNELS;
+    }
+
+    void Lighting::set_r_channel_inverted(bool inverted)
+    {
+        curr_batch.r_channel_inverted = inverted;
+
+        if (!batch_calls) {
+            batch_commit();
+        }
+    }
+
+    void Lighting::set_g_channel_inverted(bool inverted)
+    {
+        curr_batch.g_channel_inverted = inverted;
+
+        if (!batch_calls) {
+            batch_commit();
+        }
+    }
+
+    void Lighting::set_b_channel_inverted(bool inverted)
+    {
+        curr_batch.b_channel_inverted = inverted;
+
+        if (!batch_calls) {
+            batch_commit();
+        }
+    }
+
+    bool Lighting::is_r_channel_inverted() const
+    {
+        // See batch_commit for details
+        enter_critical_section();
+
+        std::uint8_t val_at_ff = sio->read_uint8_from_bank(RGB_BANK, 0xFF);
+
+        leave_critical_section();
+
+        return val_at_ff & 0b00010000;
+    }
+
+    bool Lighting::is_g_channel_inverted() const
+    {
+        // See batch_commit for details
+        enter_critical_section();
+
+        std::uint8_t val_at_ff = sio->read_uint8_from_bank(RGB_BANK, 0xFF);
+
+        leave_critical_section();
+
+        return val_at_ff & 0b00001000;
+    }
+
+    bool Lighting::is_b_channel_inverted() const
+    {
+        // See batch_commit for details
+        enter_critical_section();
+
+        std::uint8_t val_at_ff = sio->read_uint8_from_bank(RGB_BANK, 0xFF);
+
+        leave_critical_section();
+
+        return val_at_ff & 0b00000100;
     }
 
     bool Lighting::set_breathing_mode_enabled(bool enable)
@@ -505,17 +579,41 @@ namespace logic {
             // I think it's only supported on other MBs that have RGB headers but are
             // different somehow - those function differently from the MBs supported
             // here.
-            if (mb_flags & MbFlags::INVERTED_COLOUR_CHANNELS) {
-                val_at_ff |= 0b00011100;
-
+            if (mb_flags & MbFlags::INVERTED_COLOUR_CHANNELS) { // rainbow crap
+                // NOTE: This is within this IF because it seems to only be applied
+                // by Mystic Light when colour channels are inverted.
                 std::uint8_t val_at_fd = sio->read_uint8_from_bank(RGB_BANK, 0xFD);
-                
+
                 val_at_fd &= 0b11111000;
 
                 sio->write_uint8_to_bank(RGB_BANK, 0xFD, val_at_fd);
             }
-            else {
-                val_at_ff &= 0b11100011;
+
+            if (curr_batch.r_channel_inverted.has_value()) {
+                if (*(curr_batch.r_channel_inverted) == true) {
+                    val_at_ff |= 0b00010000;
+                }
+                else {
+                    val_at_ff &= 0b11101111;
+                }
+            }
+
+            if (curr_batch.g_channel_inverted.has_value()) {
+                if (*(curr_batch.g_channel_inverted) == true) {
+                    val_at_ff |= 0b00001000;
+                }
+                else {
+                    val_at_ff &= 0b11110111;
+                }
+            }
+
+            if (curr_batch.b_channel_inverted.has_value()) {
+                if (*(curr_batch.b_channel_inverted) == true) {
+                    val_at_ff |= 0b00000100;
+                }
+                else {
+                    val_at_ff &= 0b11111011;
+                }
             }
 
             // Fade in value is first 3 bits: BGR, in this order, from leftmost bit to rightmost bit

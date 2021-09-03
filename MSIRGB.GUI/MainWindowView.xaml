@@ -93,6 +93,41 @@
                                 </i:Interaction.Triggers>
                             </Button>
                         </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="55,0,0,0">
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+                                           Text="Invert channels: "
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,0,0"
+                                           ToolTip="Changes to inverted R channel on the chip. Colours are more vivid." />
+
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+                                           Text="R"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                            <CheckBox Style="{StaticResource CustomCheckBoxStyle}"
+                                          VerticalAlignment="Stretch" 
+                                          Margin="5,1,0,0"
+                                          IsChecked="{Binding Path=InvertedRChannel, Mode=TwoWay}" />
+
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+                                           Text="G"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,0,0" />
+                            <CheckBox Style="{StaticResource CustomCheckBoxStyle}"
+                                          VerticalAlignment="Stretch" 
+                                          Margin="5,1,0,0"
+                                          IsChecked="{Binding Path=InvertedGChannel, Mode=TwoWay}" />
+
+                            <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+                                           Text="B"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,0,0" />
+                            <CheckBox Style="{StaticResource CustomCheckBoxStyle}"
+                                          VerticalAlignment="Stretch" 
+                                          Margin="5,1,0,0"
+                                          IsChecked="{Binding Path=InvertedBChannel, Mode=TwoWay}" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>

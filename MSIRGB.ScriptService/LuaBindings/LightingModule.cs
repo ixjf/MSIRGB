@@ -75,6 +75,39 @@ namespace MSIRGB.ScriptService.LuaBindings
                 DynValue.NewNumber(c.B)
             });
         }
+        public bool GetDefaultColourChannelsInvertedSetting()
+        {
+            return _lighting.GetDefaultColourChannelsInvertedSetting();
+        }
+        public void SetRChannelInverted(bool inverted)
+        {
+            _lighting.SetRChannelInverted(inverted);
+        }
+
+        public void SetGChannelInverted(bool inverted)
+        {
+            _lighting.SetGChannelInverted(inverted);
+        }
+
+        public void SetBChannelInverted(bool inverted)
+        {
+            _lighting.SetBChannelInverted(inverted);
+        }
+
+        public bool IsRChannelInverted()
+        {
+            return _lighting.IsRChannelInverted();
+        }
+
+        public bool IsGChannelInverted()
+        {
+            return _lighting.IsGChannelInverted();
+        }
+
+        public bool IsBChannelInverted()
+        {
+            return _lighting.IsBChannelInverted();
+        }
 
         public bool SetBreathingModeEnabled(bool enabled)
         {

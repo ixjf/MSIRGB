@@ -85,6 +85,41 @@ namespace MSIRGB {
             return Nullable<Color>(Color::FromRgb(colour->r, colour->g, colour->b));
         }
 
+        Boolean GetDefaultColourChannelsInvertedSetting()
+        {
+            return lighting->get_default_colour_channels_inverted_setting();
+        }
+
+        void SetRChannelInverted(Boolean inverted)
+        {
+            lighting->set_r_channel_inverted(inverted);
+        }
+
+        void SetGChannelInverted(Boolean inverted)
+        {
+            lighting->set_g_channel_inverted(inverted);
+        }
+
+        void SetBChannelInverted(Boolean inverted)
+        {
+            lighting->set_b_channel_inverted(inverted);
+        }
+
+        Boolean IsRChannelInverted()
+        {
+            return lighting->is_r_channel_inverted();
+        }
+
+        Boolean IsGChannelInverted()
+        {
+            return lighting->is_g_channel_inverted();
+        }
+
+        Boolean IsBChannelInverted()
+        {
+            return lighting->is_b_channel_inverted();
+        }
+
         bool SetBreathingModeEnabled(Boolean enabled)
         {
             return lighting->set_breathing_mode_enabled(enabled);

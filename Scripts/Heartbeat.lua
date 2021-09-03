@@ -1,5 +1,5 @@
 -- User-changeable variables
-local speed = 130 -- seconds between each iteration of 'colours'
+local speed = 130 -- milliseconds between each iteration of 'colours'
 local colours = {
     {0x6, 0x2, 0xa}, 
     {0x6, 0x3, 0xa}, 
@@ -13,8 +13,13 @@ local colours = {
 --
 local n = 1
 
+local defaultInvertedColourChannels = Lighting.GetDefaultColourChannelsInvertedSetting()
+
 while true do
     Lighting.BatchBegin()
+    Lighting.SetRChannelInverted(defaultInvertedColourChannels)
+    Lighting.SetGChannelInverted(defaultInvertedColourChannels)
+    Lighting.SetBChannelInverted(defaultInvertedColourChannels)
     Lighting.SetBreathingModeEnabled(false)
     Lighting.SetFlashingSpeed(0)
     Lighting.SetStepDuration(511)

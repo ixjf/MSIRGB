@@ -45,6 +45,9 @@ namespace MSIRGB
         public void GetCurrentConfig(ref List<Color> colours,
                                      out ushort stepDuration,
                                      out bool breathingEnabled,
+                                     out bool invertedRChannel,
+                                     out bool invertedGChannel,
+                                     out bool invertedBChannel,
                                      out FlashingSpeed flashingSpeed)
         {
             foreach (byte index in Range(1, 8))
@@ -60,12 +63,19 @@ namespace MSIRGB
 
             breathingEnabled = _lighting.IsBreathingModeEnabled();
 
+            invertedRChannel = _lighting.IsRChannelInverted();
+            invertedGChannel = _lighting.IsGChannelInverted();
+            invertedBChannel = _lighting.IsBChannelInverted();
+
             flashingSpeed = (FlashingSpeed)_lighting.GetFlashingSpeed();
         }
 
         public void ApplyConfig(List<Color> colours,
                                 ushort stepDuration,
                                 bool breathingEnabled,
+                                bool invertedRChannel,
+                                bool invertedGChannel,
+                                bool invertedBChannel,
                                 FlashingSpeed flashingSpeed)
         {
             _lighting.BatchBegin();
@@ -76,6 +86,23 @@ namespace MSIRGB
                 c.R /= 0x11; // Colour must be passed with 12-bit depth
                 c.G /= 0x11;
                 c.B /= 0x11;
+
+                if (invertedRChannel) // if inverting colour channels, transform colours from
+                // colour picker appropriately (which are never inverted)
+                {
+                    c.R = (byte)(0x0F - c.R);
+                }
+
+                if (invertedGChannel)
+                {
+                    c.G = (byte)(0x0F - c.G);
+                }
+
+                if (invertedBChannel)
+                { 
+                    c.B = (byte)(0x0F - c.B);
+                }
+
                 _lighting.SetColour(index, c);
             }
 
@@ -86,6 +113,10 @@ namespace MSIRGB
             _lighting.SetFlashingSpeed((Lighting.FlashingSpeed)flashingSpeed);
 
             _lighting.SetBreathingModeEnabled(breathingEnabled);
+
+            _lighting.SetRChannelInverted(invertedRChannel);
+            _lighting.SetGChannelInverted(invertedGChannel);
+            _lighting.SetBChannelInverted(invertedBChannel);
 
             _lighting.BatchEnd();
         }

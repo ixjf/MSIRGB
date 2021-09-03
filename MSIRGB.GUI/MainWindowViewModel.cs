@@ -43,6 +43,24 @@ namespace MSIRGB
             typeof(MainWindowViewModel),
             new PropertyMetadata(false));
 
+        public static readonly DependencyProperty InvertedRChannelProperty = DependencyProperty.Register(
+            "InvertedRChannel",
+            typeof(bool),
+            typeof(MainWindowViewModel),
+            new PropertyMetadata(false));
+
+        public static readonly DependencyProperty InvertedGChannelProperty = DependencyProperty.Register(
+            "InvertedGChannel",
+            typeof(bool),
+            typeof(MainWindowViewModel),
+            new PropertyMetadata(false));
+
+        public static readonly DependencyProperty InvertedBChannelProperty = DependencyProperty.Register(
+            "InvertedBChannel",
+            typeof(bool),
+            typeof(MainWindowViewModel),
+            new PropertyMetadata(false));
+
         public static readonly DependencyProperty FlashingSpeedIndexProperty = DependencyProperty.Register(
             "FlashingSpeedIndex",
             typeof(int),
@@ -100,6 +118,27 @@ namespace MSIRGB
         {
             get { return (bool)GetValue(BreathingModeEnabledProperty); }
             set { SetValue(BreathingModeEnabledProperty, value); }
+        }
+
+
+        public bool InvertedRChannel
+        {
+            get { return (bool)GetValue(InvertedRChannelProperty); }
+            set { SetValue(InvertedRChannelProperty, value); }
+        }
+
+
+        public bool InvertedGChannel
+        {
+            get { return (bool)GetValue(InvertedGChannelProperty); }
+            set { SetValue(InvertedGChannelProperty, value); }
+        }
+
+
+        public bool InvertedBChannel
+        {
+            get { return (bool)GetValue(InvertedBChannelProperty); }
+            set { SetValue(InvertedBChannelProperty, value); }
         }
 
         public int FlashingSpeedSelectedIndex
@@ -194,6 +233,9 @@ namespace MSIRGB
             _model.ApplyConfig(colours, 
                                Convert.ToUInt16(StepDurationText), 
                                BreathingModeEnabled, 
+                               InvertedRChannel,
+                               InvertedGChannel,
+                               InvertedBChannel,
                                FlashingSpeedList[FlashingSpeedSelectedIndex].Type);
         }
 
@@ -231,6 +273,9 @@ namespace MSIRGB
             _model.GetCurrentConfig(ref colours,
                                     out ushort stepDuration,
                                     out bool breathingEnabled,
+                                    out bool invertedRChannel,
+                                    out bool invertedGChannel,
+                                    out bool invertedBChannel,
                                     out MainWindowModel.FlashingSpeed flashingSpeed);
 
             foreach(Byte index in Range(1, 8))
@@ -241,6 +286,10 @@ namespace MSIRGB
             StepDurationText = Convert.ToString(stepDuration);
 
             BreathingModeEnabled = breathingEnabled;
+
+            InvertedRChannel = invertedRChannel;
+            InvertedGChannel = invertedGChannel;
+            InvertedBChannel = invertedBChannel;
 
             FlashingSpeedSelectedIndex = FlashingSpeedList.IndexOf(FlashingSpeedList.Single(x => x.Type == flashingSpeed));
 

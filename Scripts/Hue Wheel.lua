@@ -8,8 +8,13 @@ local delay = 80 -- delay between each colour update, in milliseconds
 local colour_step = 98 -- ]0, 360], the higher, the smaller the step between colours
 
 --
+local defaultInvertedColourChannels = Lighting.GetDefaultColourChannelsInvertedSetting()
 local i = 0
 while true do
+    Lighting.BatchBegin()
+    Lighting.SetRChannelInverted(defaultInvertedColourChannels)
+    Lighting.SetGChannelInverted(defaultInvertedColourChannels)
+    Lighting.SetBChannelInverted(defaultInvertedColourChannels)
     Lighting.SetStepDuration(511)
     Lighting.SetFlashingSpeed(0)
     Lighting.SetBreathingModeEnabled(false)
@@ -20,7 +25,6 @@ while true do
     g = tonumber(("%x"):format(g * 15), 16)
     b = tonumber(("%x"):format(b * 15), 16)
 
-    Lighting.BatchBegin()
     for i = 1, 8 do
         Lighting.SetColour(i, r, g, b)
     end
