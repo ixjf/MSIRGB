@@ -39,15 +39,9 @@ Learn more about how to create scripts and find the Lua API reference in the [wi
 
 # How to install
  1. Install [VC Redist 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe).
- 2. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.3.0/MSIRGB-v2.3.0.zip).
- 3. Download the [latest example effects](https://github.com/ixjf/MSIRGB/releases/download/scripts-v2.2.0/MSIRGB-Scripts.7z).
- 4. Unpack the archive from 3. into any folder, then create a "Scripts" folder in that same directory and unpack the archive from 4. there, such that your directory structure is like this:
-    - Scripts/
-        - Hue Wheel.lua
-        - ...
-    - ...
-    - MSIRGB.exe
- 5. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
+ 2. Download the [latest release](https://github.com/ixjf/MSIRGB/releases/download/v2.4.0/MSIRGB-v.2.4.0_w_scripts.7z).
+ 3. Unpack the archive from 2. into any folder.
+ 4. Run MSIRGB.exe. It'll ask you for administrator privileges. This is required to access the hardware.
 
 # Motherboard support
  *This is not an exhaustive list of all motherboards supported by MSIRGB. There may be others not listed here that also work. It may also be the case that some of these aren't actually supported. Running MSIRGB on an unsupported motherboard and ignoring the warning message on startup may lead to damage to your data or the motherboard. Do it at your own risk.*
